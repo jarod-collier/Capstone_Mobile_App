@@ -8,16 +8,14 @@ export default class LoginScreen extends Component {
     Password: '',
   };
 
-  // eslint-disable-next-line no-undef
   handleUsername = text => {
     this.state.Username = text;
   };
-  // eslint-disable-next-line no-undef
+
   handlePassword = text => {
     this.state.Password = text;
   };
 
-  // eslint-disable-next-line no-undef
   checkUserInitials = () => {
     console.log(this.state.Username);
     console.log(this.state.Password);
