@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     margin: 100,
   },
   inputBox: {
-    borderRadius: 30,
+    borderRadius: 15,
     borderColor: 'white',
     borderWidth: 1,
     width: 250,

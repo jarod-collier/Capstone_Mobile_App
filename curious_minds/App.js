@@ -17,6 +17,7 @@ import LoginScreen from './Screens/LoginScreen';
 import UserTypeScreen from './Screens/UserTypeScreen';
 import PastorSecCodeScreen from './Screens/PastorSecCodeScreen';
 import UserSignUpScreen from './Screens/UserSignUpScreen';
+import PastorSignUpScreen from './Screens/PastorSignUpScreen';
 
 // const RootStack = createStackNavigator(
 //   {
@@ -41,7 +42,8 @@ const App: () => React$Node = () => {
     // <LoginScreen />
     // <UserTypeScreen />
     // <PastorSecCodeScreen />
-    <UserSignUpScreen />
+    // <UserSignUpScreen />
+    <PastorSignUpScreen />
   );
 };
 

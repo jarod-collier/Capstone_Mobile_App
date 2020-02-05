@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 70,
   },
   namesInput: {
-    borderRadius: 30,
+    borderRadius: 15,
     borderColor: 'white',
     borderWidth: 1,
     width: 150,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   inputBox: {
-    borderRadius: 30,
+    borderRadius: 15,
     borderColor: 'white',
     borderWidth: 1,
     width: 320,
