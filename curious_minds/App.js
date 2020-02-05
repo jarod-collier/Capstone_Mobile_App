@@ -15,7 +15,8 @@ import {StyleSheet} from 'react-native';
 
 import LoginScreen from './Screens/LoginScreen';
 import UserTypeScreen from './Screens/UserTypeScreen';
-import PastorSecCode from './Screens/PastorSecCodeScreen';
+import PastorSecCodeScreen from './Screens/PastorSecCodeScreen';
+import UserSignUpScreen from './Screens/UserSignUpScreen';
 
 // const RootStack = createStackNavigator(
 //   {
@@ -39,7 +40,8 @@ const App: () => React$Node = () => {
   return (
     // <LoginScreen />
     // <UserTypeScreen />
-    <PastorSecCode />
+    // <PastorSecCodeScreen />
+    <UserSignUpScreen />
   );
 };
 

@@ -5,8 +5,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
-  Button,
   TouchableOpacity,
   Image,
 } from 'react-native';
@@ -16,8 +14,7 @@ export default class UserTypeScreen extends Component {
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-            <Button title="Back" style={{justifyContent: 'left'}}/>
-            
+          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
           <View style={styles.logo}>
             <Image source={require('../images/logo_placeholder.png')} />
           </View>
