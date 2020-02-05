@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -8,13 +7,38 @@
  */
 
 import React from 'react';
-import {StyleSheet, View, Text, TextInput, Button} from 'react-native';
+import {StyleSheet} from 'react-native';
 
-//import FetchLocation from './components/FetchLocation';
+// import 'react-native-gesture-handler';
+// import {createAppContainer} from 'react-navigation';
+// import {createStackNavigator} from 'react-navigation-stack';
+
 import LoginScreen from './Screens/LoginScreen';
+import UserTypeScreen from './Screens/UserTypeScreen';
+
+// const RootStack = createStackNavigator(
+//   {
+//     LoginScreen: LoginScreen,
+//     UserTypeScreen: UserTypeScreen,
+//   },
+//   {
+//     initialRouteName: 'LoginScreen',
+//   },
+// );
+
+// const AppContainer = createAppContainer(RootStack);
+
+// export default class App extends React.Component {
+//   render() {
+//     return <LoginScreen />;
+//   }
+// }
 
 const App: () => React$Node = () => {
-  return <LoginScreen />;
+  return (
+    // <LoginScreen />
+    <UserTypeScreen />
+  );
 };
 
 const styles = StyleSheet.create({});

@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 // eslint-disable-next-line prettier/prettier
 import {SafeAreaView ,StyleSheet, View, Text, TextInput, Button, TouchableOpacity, Image} from 'react-native';
+// import 'react-native-gesture-handler';
+// import { createAppContainer } from 'react-navigation';
+// import { createStackNavigator } from 'react-navigation-stack';
+import UserTypeScreen from './UserTypeScreen';
 
 export default class LoginScreen extends Component {
   state = {
@@ -60,7 +64,7 @@ export default class LoginScreen extends Component {
           </View>
           <View style={styles.footer}>
             <Text>Don't have an account yet? </Text>
-            <Button title="Sign up" /*Add on press here*/ />
+            <Button title="Sign up" />
           </View>
         </View>
       </SafeAreaView>
@@ -87,8 +91,14 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   Buttons: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: {height: 3, width: 3}, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 4, // Android
     borderWidth: 1,
     backgroundColor: 'green',
+    borderColor: 'white',
     borderRadius: 50,
     width: 250,
     margin: 5,

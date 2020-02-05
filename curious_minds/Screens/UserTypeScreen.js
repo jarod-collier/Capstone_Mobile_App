@@ -1,0 +1,66 @@
+import React, {Component} from 'react';
+
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+
+export default class UserTypeScreen extends Component {
+  render() {
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+            <Button title="Back" style={{justifyContent: 'left'}}/>
+            
+          <View style={styles.logo}>
+            <Image source={require('../images/logo_placeholder.png')} />
+          </View>
+          <View>
+            <Text style={{fontSize: 48, textAlign: 'center'}}>I AM</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.Buttons}>
+              <Button title="A Pastor" /*Add on press*/ />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.Buttons}>
+              <Button title="A User" /*Add on press*/ />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#696969',
+    alignItems: 'center',
+  },
+  logo: {
+    margin: 100,
+  },
+  Buttons: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 4, // Android
+    borderWidth: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    borderColor: 'white',
+    borderRadius: 25,
+    width: 150,
+    height: 150,
+    margin: 10,
+    marginTop: 50,
+  },
+});
