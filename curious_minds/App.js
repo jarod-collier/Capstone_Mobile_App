@@ -39,11 +39,11 @@ import PastorSignUpScreen from './Screens/PastorSignUpScreen';
 
 const App: () => React$Node = () => {
   return (
-    // <LoginScreen />
-    // <UserTypeScreen />
-    // <PastorSecCodeScreen />
-    // <UserSignUpScreen />
-    <PastorSignUpScreen />
+//     <LoginScreen />
+     <UserTypeScreen />
+//     <PastorSecCodeScreen />
+//     <UserSignUpScreen />
+//    <PastorSignUpScreen />
   );
 };
 
