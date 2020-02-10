@@ -1,3 +1,6 @@
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
 
 import {
@@ -7,8 +10,12 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  Button,
+  Alert
 } from 'react-native';
 
+// how to pass this navigation into the function?
+// export default class UserTypeScreen(navigation) extends Component {
 export default class UserTypeScreen extends Component {
   render() {
     return (
@@ -23,10 +30,17 @@ export default class UserTypeScreen extends Component {
           </View>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity style={styles.Buttons}>
-              <Button title="A Pastor" /*Add on press*/ />
+              <Button
+                title="A Pastor"
+                // onPress={() => Alert.alert('Pressed the pastor button')}
+                onPress={() => navigation.navigate('PastorSecCodeScreen', {name: 'Jane'})}
+              />
             </TouchableOpacity>
             <TouchableOpacity style={styles.Buttons}>
-              <Button title="A User" /*Add on press*/ />
+              <Button
+                title="A User"
+                onPress={() => Alert.alert('Pressed the user button')}
+              />
             </TouchableOpacity>
           </View>
         </View>

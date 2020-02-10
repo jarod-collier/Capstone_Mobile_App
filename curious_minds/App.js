@@ -1,13 +1,15 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
+/******************************************************************************
+ * Authors: Jarod Collier, Mazen Ashgar, and Brendan Cronan
  *
  * @format
  * @flow
- */
-
-import React from 'react';
+ *****************************************************************************/
+import 'react-native-gesture-handler';
+import * as React from 'react';
 import {StyleSheet} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+
 
 // import 'react-native-gesture-handler';
 // import {createAppContainer} from 'react-navigation';
@@ -36,17 +38,42 @@ import PastorSignUpScreen from './Screens/PastorSignUpScreen';
 //     return <LoginScreen />;
 //   }
 // }
+// const App: () => React$Node = () => {
+//   return (
+//     // <LoginScreen />
+//      <UserTypeScreen />
+//     // <PastorSecCodeScreen />
+//     // <UserSignUpScreen />
+//    // <PastorSignUpScreen />
+//   );
+// };
 
-const App: () => React$Node = () => {
+// const styles = StyleSheet.create({});
+//
+// export default App;
+
+const Stack = createStackNavigator();
+
+export default function MyStack() {
   return (
-//     <LoginScreen />
-     <UserTypeScreen />
-//     <PastorSecCodeScreen />
-//     <UserSignUpScreen />
-//    <PastorSignUpScreen />
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={UserTypeScreen}
+          options={{title: 'Welcome'}}
+        />
+        <Stack.Screen name="PastorSecCodeScreen" component={PastorSecCodeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
+}
 
-const styles = StyleSheet.create({});
-
-export default App;
+// function HomeScreen({navigation}) {
+//   return (
+//     <Button
+//       title="Go to Jane's profile"
+//       onPress={() => navigation.navigate('Profile', {name: 'Jane'})}
+//     />
+//   );
+// }
