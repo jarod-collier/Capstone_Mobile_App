@@ -14,39 +14,34 @@ import {
   Alert
 } from 'react-native';
 
-// how to pass this navigation into the function?
-// export default class UserTypeScreen(navigation) extends Component {
-export default class UserTypeScreen extends Component {
-  render() {
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
-          <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
-          </View>
-          <View>
-            <Text style={{fontSize: 48, textAlign: 'center'}}>I AM</Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={styles.Buttons}>
-              <Button
-                title="A Pastor"
-                // onPress={() => Alert.alert('Pressed the pastor button')}
-                onPress={() => navigation.navigate('PastorSecCodeScreen', {name: 'Jane'})}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.Buttons}>
-              <Button
-                title="A User"
-                onPress={() => Alert.alert('Pressed the user button')}
-              />
-            </TouchableOpacity>
-          </View>
+function UserTypeScreen({navigation}) {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
+        <View style={styles.logo}>
+          <Image source={require('../images/logo_placeholder.png')} />
         </View>
-      </SafeAreaView>
-    );
-  }
+        <View>
+          <Text style={{fontSize: 48, textAlign: 'center'}}>I AM</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={styles.Buttons}>
+            <Button
+              title="A Pastor"
+              onPress={() => navigation.navigate('PastorSecCodeScreen')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.Buttons}>
+            <Button
+              title="A User"
+              onPress={() => navigation.navigate('UserSignUpScreen')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -75,3 +70,5 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 });
+
+export default UserTypeScreen;

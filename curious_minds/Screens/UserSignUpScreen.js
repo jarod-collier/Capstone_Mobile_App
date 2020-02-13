@@ -1,3 +1,6 @@
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
 
 import {
@@ -11,90 +14,32 @@ import {
   Image,
 } from 'react-native';
 
-export default class UserSignUpScreen extends Component {
-  state = {
-    FirstName: '',
-    LastName: '',
-    Username: '',
-    Password: '',
-    Email: '',
-  };
-  handleFirstName = text => {
-    this.state.FirstName = text;
-  };
-  handleLastName = text => {
-    this.state.LastName = text;
-  };
-  handleUsername = text => {
-    this.state.Username = text;
-  };
-  handlePassword = text => {
-    this.state.Password = text;
-  };
-  handleEmail = text => {
-    this.state.Email = text;
-  };
+this.state = {
+  FirstName: '',
+  LastName: '',
+  Username: '',
+  Password: '',
+  Email: '',
+};
+// There has to be something in this last string otherwise a classic undefined is not an object. no idea why
+// looks like if you refresh the whole thing then it works fine. Once you try to update
+// this specific page while editing it then it gets wonky
 
-  render() {
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
-          <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
-          </View>
-          <View>
-            <Text style={{fontSize: 24, textAlign: 'center'}}>
-              INFO{'\n'}HERE
-            </Text>
-          </View>
-          <View>
-            <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-              <TextInput
-                style={styles.namesInput}
-                placeholder="FirstName"
-                placeholderTextColor="white"
-                onChangeText={this.handleFirstName}
-              />
-              <TextInput
-                style={styles.namesInput}
-                placeholder="LastName"
-                placeholderTextColor="white"
-                onChangeText={this.handleLastName}
-              />
-            </View>
-            <View style={{flexDirection: 'column'}}>
-              <TextInput
-                style={styles.inputBox}
-                placeholder="Username"
-                placeholderTextColor="white"
-                onChangeText={this.handleUsername}
-              />
-              <TextInput
-                style={styles.inputBox}
-                placeholder="Password"
-                secureTextEntry={true}
-                placeholderTextColor="white"
-                onChangeText={this.handlePassword}
-              />
-              <TextInput
-                style={styles.inputBox}
-                placeholder="Email"
-                placeholderTextColor="white"
-                onChangeText={this.handleEmail}
-              />
-            </View>
-          </View>
-          <View>
-            <TouchableOpacity style={styles.Buttons}>
-              <Button title="Sign Up" /*Add on press*/ />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+this.handleFirstName = text => {
+  this.state.FirstName = text;
+};
+this.handleLastName = text => {
+  this.state.LastName = text;
+};
+this.handleUsername = text => {
+  this.state.Username = text;
+};
+this.handlePassword = text => {
+  this.state.Password = text;
+};
+this.handleEmail = text => {
+  this.state.Email = text;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -141,3 +86,68 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
+
+function UserSignUpScreen({navigation}) {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
+        <View style={styles.logo}>
+          <Image source={require('../images/logo_placeholder.png')} />
+        </View>
+        <View>
+          <Text style={{fontSize: 24, textAlign: 'center'}}>
+            INFO{'\n'}HERE
+          </Text>
+        </View>
+        <View>
+          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+            <TextInput
+              style={styles.namesInput}
+              placeholder="FirstName"
+              placeholderTextColor="white"
+              onChangeText={this.handleFirstName}
+            />
+            <TextInput
+              style={styles.namesInput}
+              placeholder="LastName"
+              placeholderTextColor="white"
+              onChangeText={this.handleLastName}
+            />
+          </View>
+          <View style={{flexDirection: 'column'}}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Username"
+              placeholderTextColor="white"
+              onChangeText={this.handleUsername}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Password"
+              secureTextEntry={true}
+              placeholderTextColor="white"
+              onChangeText={this.handlePassword}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Email"
+              placeholderTextColor="white"
+              onChangeText={this.handleEmail}
+            />
+          </View>
+        </View>
+        <View>
+          <TouchableOpacity style={styles.Buttons}>
+            <Button
+              title="Sign Up"
+              onPress={() => navigation.navigate('LoginScreen')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+export default UserSignUpScreen;

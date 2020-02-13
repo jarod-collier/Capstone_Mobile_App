@@ -1,76 +1,36 @@
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
-// eslint-disable-next-line prettier/prettier
-import {SafeAreaView ,StyleSheet, View, Text, TextInput, Button, TouchableOpacity, Image} from 'react-native';
-// import 'react-native-gesture-handler';
-// import { createAppContainer } from 'react-navigation';
-// import { createStackNavigator } from 'react-navigation-stack';
-import UserTypeScreen from './UserTypeScreen';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Image
+} from 'react-native';
 
-export default class LoginScreen extends Component {
-  state = {
-    Username: '',
-    Password: '',
-  };
 
-  handleUsername = text => {
-    this.state.Username = text;
-  };
+this.state = {
+  Username: '',
+  Password: '',
+};
 
-  handlePassword = text => {
-    this.state.Password = text;
-  };
+this.handleUsername = text => {
+  this.state.Username = text;
+};
 
-  checkUserInitials = () => {
-    console.log(this.state.Username);
-    console.log(this.state.Password);
-  };
+this.handlePassword = text => {
+  this.state.Password = text;
+};
 
-  render() {
-    return (
-      // eslint-disable-next-line react-native/no-inline-styles
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
-          </View>
-          <View>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Enter your Username"
-              placeholderTextColor="white"
-              onChangeText={this.handleUsername}
-            />
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Password"
-              placeholderTextColor="white"
-              secureTextEntry={true}
-              onChangeText={this.handlePassword}
-            />
-            <View>
-              <TouchableOpacity style={styles.Buttons}>
-                <Button
-                  title="Log In"
-                  color="white"
-                  onPress={this.checkUserInitials}
-                />
-              </TouchableOpacity>
-              <Button
-                style={styles.forget}
-                title="Forgot Password?"
-                /*TODO: add on pressed here*/
-              />
-            </View>
-          </View>
-          <View style={styles.footer}>
-            <Text>Don't have an account yet? </Text>
-            <Button title="Sign up" />
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+this.checkUserInitials = () => {
+  console.log(this.state.Username);
+  console.log(this.state.Password);
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -109,3 +69,54 @@ const styles = StyleSheet.create({
     bottom: 50,
   },
 });
+
+function LoginScreen({navigation}) {
+  return (
+    // eslint-disable-next-line react-native/no-inline-styles
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.logo}>
+          <Image source={require('../images/logo_placeholder.png')} />
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Enter your Username"
+            placeholderTextColor="white"
+            onChangeText={this.handleUsername}
+          />
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Password"
+            placeholderTextColor="white"
+            secureTextEntry={true}
+            onChangeText={this.handlePassword}
+          />
+          <View>
+            <TouchableOpacity style={styles.Buttons}>
+              <Button
+                title="Log In"
+                color="white"
+                onPress={this.checkUserInitials}
+              />
+            </TouchableOpacity>
+            <Button
+              style={styles.forget}
+              title="Forgot Password?"
+              /*TODO: add on pressed here*/
+            />
+          </View>
+        </View>
+        <View style={styles.footer}>
+          <Text>Don't have an account yet? </Text>
+          <Button
+            title="Sign up"
+            onPress={() => navigation.navigate('UserTypeScreen')}
+          />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+export default LoginScreen;

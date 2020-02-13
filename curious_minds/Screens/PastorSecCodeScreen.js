@@ -14,43 +14,6 @@ import {
   Image,
 } from 'react-native';
 
-export default class PastorSecCodeScreen extends Component {
-    state = {
-        Code: '',
-      };
-    handleCode = text => {
-        this.state.Code = text;
-      };
-
-  render() {
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
-          <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
-          </View>
-          <View>
-            <Text style={{fontSize: 48, textAlign: 'center'}}>Pastors{"\n"}Security Code</Text>
-          </View>
-          <View style={{justifyContent:'center'}}>
-          <TextInput
-              style={styles.inputBox}
-              placeholder="Enter Code Here"
-              //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
-              placeholderTextColor="white"
-              onChangeText={this.handleCode}
-            />
-            <TouchableOpacity style={styles.Buttons}>
-              <Button title="Confirm" /*Add on press*/ />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -85,3 +48,43 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 });
+
+this.state = {
+    Code: '',
+  };
+this.handleCode = text => {
+    this.state.Code = text;
+  };
+
+function PastorSecCodeScreen({navigation}) {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
+        <View style={styles.logo}>
+          <Image source={require('../images/logo_placeholder.png')} />
+        </View>
+        <View>
+          <Text style={{fontSize: 48, textAlign: 'center'}}>Pastors{"\n"}Security Code</Text>
+        </View>
+        <View style={{justifyContent:'center'}}>
+        <TextInput
+            style={styles.inputBox}
+            placeholder="Enter Code Here"
+            //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
+            placeholderTextColor="white"
+            onChangeText={this.handleCode}
+          />
+          <TouchableOpacity style={styles.Buttons}>
+            <Button
+              title="Confirm"
+              onPress={() => navigation.navigate('PastorSignUpScreen')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+export default PastorSecCodeScreen;
