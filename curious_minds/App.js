@@ -25,6 +25,7 @@ import UserTypeScreen from './Screens/UserTypeScreen';
 import PastorSecCodeScreen from './Screens/PastorSecCodeScreen';
 import UserSignUpScreen from './Screens/UserSignUpScreen';
 import PastorSignUpScreen from './Screens/PastorSignUpScreen';
+import NewPostScreen from './Screens/NewPostScreen';
 
 const Stack = createStackNavigator();
 
@@ -32,11 +33,12 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="UserTypeScreen" component={UserTypeScreen} />
-        <Stack.Screen name="PastorSecCodeScreen" component={PastorSecCodeScreen} />
-        <Stack.Screen name="PastorSignUpScreen" component={PastorSignUpScreen} />
-        <Stack.Screen name="UserSignUpScreen" component={UserSignUpScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="User Type" component={UserTypeScreen} />
+        <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
+        <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
+        <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
+        <Stack.Screen name="New Post" component={NewPostScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

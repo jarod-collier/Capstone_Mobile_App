@@ -109,7 +109,6 @@ function PastorSignUpScreen({navigation}) {
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
         <View style={styles.container}>
-          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
           <View style={styles.logo}>
             <Image source={require('../images/logo_placeholder.png')} />
           </View>
@@ -179,7 +178,7 @@ function PastorSignUpScreen({navigation}) {
             <TouchableOpacity style={styles.Buttons}>
               <Button
                 title="Sign Up"
-                onPress={() => navigation.navigate('LoginScreen')}
+                onPress={() => navigation.navigate('Login')}
               />
             </TouchableOpacity>
           </View>
@@ -190,121 +189,3 @@ function PastorSignUpScreen({navigation}) {
 }
 
 export default PastorSignUpScreen;
-// export default class PastorSignUpScreen extends Component {
-//   state = {
-//     FirstName: '',
-//     LastName: '',
-//     Username: '',
-//     Password: '',
-//     Email: '',
-//     preach: '',
-//     seminary: '',
-//     addintionalInfo: '',
-//   };
-//   handleFirstName = text => {
-//     this.state.FirstName = text;
-//   };
-//   handleLastName = text => {
-//     this.state.LastName = text;
-//   };
-//   handleUsername = text => {
-//     this.state.Username = text;
-//   };
-//   handlePassword = text => {
-//     this.state.Password = text;
-//   };
-//   handleEmail = text => {
-//     this.state.Email = text;
-//   };
-//   handlePreach = text => {
-//     this.state.preach = text;
-//   };
-//   handleSeminary = text => {
-//     this.state.seminary = text;
-//   };
-//   handleAdditionalInfo = text => {
-//     this.state.addintionalInfo = text;
-//   };
-//
-//   render() {
-//     return (
-//       <SafeAreaView style={{flex: 1}}>
-//         <ScrollView>
-//           <View style={styles.container}>
-//             {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
-//             <View style={styles.logo}>
-//               <Image source={require('../images/logo_placeholder.png')} />
-//             </View>
-//             <View>
-//               <Text style={{fontSize: 24, textAlign: 'center'}}>
-//                 INFO{'\n'}HERE
-//               </Text>
-//             </View>
-//             <View>
-//               <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-//                 <TextInput
-//                   style={styles.namesInput}
-//                   placeholder="  FirstName"
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handleFirstName}
-//                 />
-//                 <TextInput
-//                   style={styles.namesInput}
-//                   placeholder="  LastName"
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handleLastName}
-//                 />
-//               </View>
-//               <View style={{flexDirection: 'column'}}>
-//                 <TextInput
-//                   style={styles.inputBox}
-//                   placeholder="  Username"
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handleUsername}
-//                 />
-//                 <TextInput
-//                   style={styles.inputBox}
-//                   placeholder="  Password"
-//                   secureTextEntry={true}
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handlePassword}
-//                 />
-//                 <TextInput
-//                   style={styles.inputBox}
-//                   placeholder="  Email"
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handleEmail}
-//                 />
-//                 <TextInput
-//                   style={styles.inputBox}
-//                   placeholder="  Church preaching at"
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handlePreach}
-//                 />
-//                 <TextInput
-//                   style={styles.inputBox}
-//                   placeholder="  Where did you attend Seminary?"
-//                   placeholderTextColor="white"
-//                   onChangeText={this.handleSeminary}
-//                 />
-//                 <TextInput
-//                   style={styles.multiline}
-//                   placeholder="  Any additional information you would like to share"
-//                   placeholderTextColor="white"
-//                   multiline={true}
-//                   numberOfLines={10}
-//                   onChangeText={this.handleAdditionalInfo}
-//                 />
-//               </View>
-//             </View>
-//             <View>
-//               <TouchableOpacity style={styles.Buttons}>
-//                 <Button title="Sign Up" /*Add on press*/ />
-//               </TouchableOpacity>
-//             </View>
-//           </View>
-//         </ScrollView>
-//       </SafeAreaView>
-//     );
-//   }
-// }
