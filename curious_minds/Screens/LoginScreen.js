@@ -103,7 +103,6 @@ function LoginScreen({navigation}) {
             <Button
               style={styles.forget}
               title="Forgot Password?"
-              /*TODO: add on pressed here*/
             />
           </View>
         </View>
@@ -111,7 +110,8 @@ function LoginScreen({navigation}) {
           <Text>Don't have an account yet? </Text>
           <Button
             title="Sign up"
-            onPress={() => navigation.navigate('UserTypeScreen')}
+            // onPress={() => navigation.navigate('UserTypeScreen')}
+            onPress={()=> navigation.navigate('New Post')}
           />
         </View>
       </View>
