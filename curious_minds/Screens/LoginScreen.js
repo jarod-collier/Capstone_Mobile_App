@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
+import Firebase from 'firebase';
 import {
   SafeAreaView,
   StyleSheet,
@@ -110,7 +111,8 @@ function LoginScreen({navigation}) {
           <Text>Don't have an account yet? </Text>
           <Button
             title="Sign up"
-            // onPress={() => navigation.navigate('UserTypeScreen')}
+            // onPress={() => navigation.navigate('User Type')}
+            //TESTING
             onPress={()=> navigation.navigate('New Post')}
           />
         </View>

@@ -10,6 +10,7 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView
 } from 'react-native';
 
 state = {

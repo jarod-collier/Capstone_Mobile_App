@@ -60,7 +60,6 @@ function PastorSecCodeScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
         <View style={styles.logo}>
           <Image source={require('../images/logo_placeholder.png')} />
         </View>
@@ -78,7 +77,7 @@ function PastorSecCodeScreen({navigation}) {
           <TouchableOpacity style={styles.Buttons}>
             <Button
               title="Confirm"
-              onPress={() => navigation.navigate('PastorSignUpScreen')}
+              onPress={() => navigation.navigate('Pastor SignUp')}
             />
           </TouchableOpacity>
         </View>

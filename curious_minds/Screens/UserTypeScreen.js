@@ -29,13 +29,13 @@ function UserTypeScreen({navigation}) {
           <TouchableOpacity style={styles.Buttons}>
             <Button
               title="A Pastor"
-              onPress={() => navigation.navigate('PastorSecCodeScreen')}
+              onPress={() => navigation.navigate('Security Code')}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.Buttons}>
             <Button
               title="A User"
-              onPress={() => navigation.navigate('UserSignUpScreen')}
+              onPress={() => navigation.navigate('User SignUp')}
             />
           </TouchableOpacity>
         </View>
