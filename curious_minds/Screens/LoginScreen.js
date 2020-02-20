@@ -5,12 +5,14 @@ import React, {Component} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
+  ScrollView,
   View,
   Text,
   TextInput,
   Button,
   TouchableOpacity,
-  Image
+  Image,
+  Platform
 } from 'react-native';
 
 
@@ -32,11 +34,67 @@ this.checkUserInitials = () => {
   console.log(this.state.Password);
 };
 
+function LoginScreen({navigation}) {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.logo}>
+            <Image source={require('../images/logo_placeholder.png')} />
+          </View>
+          <View>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter your Username"
+              placeholderTextColor="white"
+              onChangeText={this.handleUsername}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Password"
+              placeholderTextColor="white"
+              secureTextEntry={true}
+              onChangeText={this.handlePassword}
+            />
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={()=> navigation.navigate('User Type')}>
+                <Text style={styles.customBtnText}>Log In</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={()=> navigation.navigate('New Post')}>
+                <Text style={styles.customBtnText}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <Text
+              style={styles.customBtnText}>
+              Don't have an account yet?
+            </Text>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => navigation.navigate('User Type')}>
+              <Text style={styles.customBtnText}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#696969',
     alignItems: 'center',
+    justifyContent: "space-evenly",
+    padding: 10,
   },
   logo: {
     margin: 100,
@@ -49,74 +107,50 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 10,
     margin: 5,
+    marginBottom: 10
   },
   Buttons: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 3, width: 3}, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
-    elevation: 4, // Android
-    borderWidth: 1,
-    backgroundColor: 'green',
-    borderColor: 'white',
-    borderRadius: 50,
-    width: 250,
-    margin: 5,
-    marginTop: 35,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowOffset: {height: 3, width: 3}, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 1, //IOS
+        borderWidth: 1,
+        backgroundColor: 'green',
+        borderColor:  'red',
+        borderRadius: 50,
+        width: 250,
+        height: 10,
+        margin: 5,
+      },
+      android: {
+        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowOffset: {height: 5, width: 5}, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 1, //IOS
+        elevation: 4, // Android
+        borderWidth: 1,
+        backgroundColor: 'dodgerblue',
+        justifyContent: 'center',
+        borderColor: 'white',
+        borderRadius: 25,
+        width: 250,
+        //margin: 10,
+        marginVertical: 12,
+      },
+    }),
   },
   footer: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 20,
+  },
+  customBtnText: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
   },
 });
-
-function LoginScreen({navigation}) {
-  return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <View style={styles.logo}>
-          <Image source={require('../images/logo_placeholder.png')} />
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Enter your Username"
-            placeholderTextColor="white"
-            onChangeText={this.handleUsername}
-          />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Password"
-            placeholderTextColor="white"
-            secureTextEntry={true}
-            onChangeText={this.handlePassword}
-          />
-          <View>
-            <TouchableOpacity style={styles.Buttons}>
-              <Button
-                title="Log In"
-                color="white"
-                onPress={this.checkUserInitials}
-              />
-            </TouchableOpacity>
-            <Button
-              style={styles.forget}
-              title="Forgot Password?"
-            />
-          </View>
-        </View>
-        <View style={styles.footer}>
-          <Text>Don't have an account yet? </Text>
-          <Button
-            title="Sign up"
-            // onPress={() => navigation.navigate('UserTypeScreen')}
-            onPress={()=> navigation.navigate('New Post')}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-}
 
 export default LoginScreen;

@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
+  ScrollView,
   View,
   Text,
   TextInput,
@@ -13,6 +14,44 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+
+this.state = {
+  Code: '',
+};
+this.handleCode = text => {
+  this.state.Code = text;
+};
+
+function PastorSecCodeScreen({navigation}) {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.logo}>
+            <Image source={require('../images/logo_placeholder.png')} />
+          </View>
+          <View>
+            <Text style={{fontSize: 48, textAlign: 'center'}}>Pastors{"\n"}Security Code</Text>
+          </View>
+          <View style = {{alignItems: 'center'}}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter Code Here"
+              //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
+              placeholderTextColor="white"
+              onChangeText={this.handleCode}
+            />
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => navigation.navigate('Pastor SignUp')}>
+              <Text style={styles.customBtnText}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +69,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.0,
     width: 250,
     textAlign: 'center',
-    marginTop: 100,
+    marginTop: 50,
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
@@ -39,52 +78,21 @@ const styles = StyleSheet.create({
     shadowRadius: 1, //IOS
     elevation: 4, // Android
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'dodgerblue',
+    flexDirection: 'row',
     justifyContent: 'center',
     borderColor: 'white',
     borderRadius: 25,
-    width: 250,
+    width: 150,
     //margin: 10,
-    marginTop: 50,
+    marginTop: 25,
+  },
+  customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
   },
 });
-
-this.state = {
-    Code: '',
-  };
-this.handleCode = text => {
-    this.state.Code = text;
-  };
-
-function PastorSecCodeScreen({navigation}) {
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
-        <View style={styles.logo}>
-          <Image source={require('../images/logo_placeholder.png')} />
-        </View>
-        <View>
-          <Text style={{fontSize: 48, textAlign: 'center'}}>Pastors{"\n"}Security Code</Text>
-        </View>
-        <View style={{justifyContent:'center'}}>
-        <TextInput
-            style={styles.inputBox}
-            placeholder="Enter Code Here"
-            //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
-            placeholderTextColor="white"
-            onChangeText={this.handleCode}
-          />
-          <TouchableOpacity style={styles.Buttons}>
-            <Button
-              title="Confirm"
-              onPress={() => navigation.navigate('PastorSignUpScreen')}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-}
 
 export default PastorSecCodeScreen;

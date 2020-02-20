@@ -11,7 +11,8 @@ import {
   TouchableOpacity,
   Image,
   Button,
-  Alert
+  Alert,
+  Platform,
 } from 'react-native';
 
 function UserTypeScreen({navigation}) {
@@ -26,17 +27,15 @@ function UserTypeScreen({navigation}) {
           <Text style={{fontSize: 48, textAlign: 'center'}}>I AM</Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.Buttons}>
-            <Button
-              title="A Pastor"
-              onPress={() => navigation.navigate('PastorSecCodeScreen')}
-            />
+          <TouchableOpacity
+            style={styles.Buttons}
+            onPress={() => navigation.navigate('Security Code')}>
+            <Text style={styles.customBtnText}>A Pastor</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Buttons}>
-            <Button
-              title="A User"
-              onPress={() => navigation.navigate('UserSignUpScreen')}
-            />
+          <TouchableOpacity
+            style={styles.Buttons}
+            onPress={() => navigation.navigate('User SignUp')}>
+            <Text style={styles.customBtnText}>A User</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1, //IOS
     elevation: 4, // Android
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'dodgerblue',
     justifyContent: 'center',
     borderColor: 'white',
     borderRadius: 25,
@@ -68,6 +67,12 @@ const styles = StyleSheet.create({
     height: 150,
     margin: 10,
     marginTop: 50,
+  },
+  customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
   },
 });
 

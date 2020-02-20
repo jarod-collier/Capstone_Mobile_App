@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
+  ScrollView,
   View,
   Text,
   TextInput,
@@ -41,6 +42,68 @@ this.handleEmail = text => {
   this.state.Email = text;
 };
 
+function UserSignUpScreen({navigation}) {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
+        <View style={styles.container}>
+          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
+          <View style={styles.logo}>
+            <Image source={require('../images/logo_placeholder.png')} />
+          </View>
+          <View>
+            <Text style={styles.infoHereText}>INFO HERE</Text>
+          </View>
+          <View>
+            <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+              <TextInput
+                style={styles.namesInput}
+                placeholder="FirstName"
+                placeholderTextColor="white"
+                onChangeText={this.handleFirstName}
+              />
+              <TextInput
+                style={styles.namesInput}
+                placeholder="LastName"
+                placeholderTextColor="white"
+                onChangeText={this.handleLastName}
+              />
+            </View>
+            <View style={{flexDirection: 'column'}}>
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Username"
+                placeholderTextColor="white"
+                onChangeText={this.handleUsername}
+              />
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Password"
+                secureTextEntry={true}
+                placeholderTextColor="white"
+                onChangeText={this.handlePassword}
+              />
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Email"
+                placeholderTextColor="white"
+                onChangeText={this.handleEmail}
+              />
+            </View>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.customBtnText}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -49,7 +112,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: 100,
-    marginBottom: 70,
+    marginBottom: 50,
   },
   namesInput: {
     borderRadius: 15,
@@ -78,76 +141,26 @@ const styles = StyleSheet.create({
     shadowRadius: 1, //IOS
     elevation: 4, // Android
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'dodgerblue',
+    flexDirection: 'row',
     justifyContent: 'center',
     borderColor: 'white',
     borderRadius: 25,
     width: 250,
-    marginTop: 30,
+    marginTop: 15,
+  },
+  customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
+  },
+  infoHereText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
   },
 });
-
-function UserSignUpScreen({navigation}) {
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
-        <View style={styles.logo}>
-          <Image source={require('../images/logo_placeholder.png')} />
-        </View>
-        <View>
-          <Text style={{fontSize: 24, textAlign: 'center'}}>
-            INFO{'\n'}HERE
-          </Text>
-        </View>
-        <View>
-          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-            <TextInput
-              style={styles.namesInput}
-              placeholder="FirstName"
-              placeholderTextColor="white"
-              onChangeText={this.handleFirstName}
-            />
-            <TextInput
-              style={styles.namesInput}
-              placeholder="LastName"
-              placeholderTextColor="white"
-              onChangeText={this.handleLastName}
-            />
-          </View>
-          <View style={{flexDirection: 'column'}}>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Username"
-              placeholderTextColor="white"
-              onChangeText={this.handleUsername}
-            />
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Password"
-              secureTextEntry={true}
-              placeholderTextColor="white"
-              onChangeText={this.handlePassword}
-            />
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Email"
-              placeholderTextColor="white"
-              onChangeText={this.handleEmail}
-            />
-          </View>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.Buttons}>
-            <Button
-              title="Sign Up"
-              onPress={() => navigation.navigate('LoginScreen')}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-}
 
 export default UserSignUpScreen;

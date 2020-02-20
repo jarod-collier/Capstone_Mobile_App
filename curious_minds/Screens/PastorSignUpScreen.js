@@ -47,63 +47,6 @@ handleAdditionalInfo = text => {
   this.state.addintionalInfo = text;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#696969',
-    alignItems: 'center',
-  },
-  logo: {
-    marginTop: 100,
-    marginBottom: 70,
-  },
-  namesInput: {
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    width: 150,
-    height: 40,
-    textAlign: 'left',
-    marginTop: 10,
-    margin: 10,
-  },
-  inputBox: {
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    width: 320,
-    height: 40,
-    textAlign: 'left',
-    marginTop: 10,
-    margin: 10,
-  },
-  multiline: {
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    width: 320,
-    height: 100,
-    textAlign: 'left',
-    marginTop: 10,
-    margin: 10,
-  },
-  Buttons: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 5, width: 5}, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
-    elevation: 4, // Android
-    borderWidth: 1,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    borderColor: 'white',
-    borderRadius: 25,
-    width: 250,
-    marginTop: 30,
-    bottom: 20,
-  },
-});
-
 function PastorSignUpScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -175,11 +118,10 @@ function PastorSignUpScreen({navigation}) {
             </View>
           </View>
           <View>
-            <TouchableOpacity style={styles.Buttons}>
-              <Button
-                title="Sign Up"
-                onPress={() => navigation.navigate('Login')}
-              />
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -187,5 +129,68 @@ function PastorSignUpScreen({navigation}) {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#696969',
+    alignItems: 'center',
+  },
+  logo: {
+    marginTop: 100,
+    marginBottom: 70,
+  },
+  namesInput: {
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 1,
+    width: 150,
+    height: 40,
+    textAlign: 'left',
+    marginTop: 10,
+    margin: 10,
+  },
+  inputBox: {
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 1,
+    width: 320,
+    height: 40,
+    textAlign: 'left',
+    marginTop: 10,
+    margin: 10,
+  },
+  multiline: {
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 1,
+    width: 320,
+    height: 100,
+    textAlign: 'left',
+    marginTop: 10,
+    margin: 10,
+  },
+  Buttons: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 4, // Android
+    borderWidth: 1,
+    backgroundColor: 'dodgerblue',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderColor: 'white',
+    borderRadius: 25,
+    width: 250,
+    marginTop: 15,
+  },
+  customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
+  },
+});
 
 export default PastorSignUpScreen;
