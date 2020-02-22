@@ -37,7 +37,6 @@ this.checkUserInitials = () => {
 function LoginScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView>
         <View style={styles.container}>
           <View style={styles.logo}>
             <Image source={require('../images/logo_placeholder.png')} />
@@ -83,7 +82,6 @@ function LoginScreen({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -110,36 +108,50 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   Buttons: {
-    ...Platform.select({
-      ios: {
-        shadowColor: 'rgba(0,0,0, .4)', // IOS
-        shadowOffset: {height: 3, width: 3}, // IOS
-        shadowOpacity: 1, // IOS
-        shadowRadius: 1, //IOS
-        borderWidth: 1,
-        backgroundColor: 'green',
-        borderColor:  'red',
-        borderRadius: 50,
-        width: 250,
-        height: 10,
-        margin: 5,
-      },
-      android: {
-        shadowColor: 'rgba(0,0,0, .4)', // IOS
-        shadowOffset: {height: 5, width: 5}, // IOS
-        shadowOpacity: 1, // IOS
-        shadowRadius: 1, //IOS
-        elevation: 4, // Android
-        borderWidth: 1,
-        backgroundColor: 'dodgerblue',
-        justifyContent: 'center',
-        borderColor: 'white',
-        borderRadius: 25,
-        width: 250,
-        //margin: 10,
-        marginVertical: 12,
-      },
-    }),
+    // ...Platform.select({
+    //   ios: {
+    //     shadowColor: 'rgba(0,0,0, .4)', // IOS
+    //     shadowOffset: {height: 3, width: 3}, // IOS
+    //     shadowOpacity: 1, // IOS
+    //     shadowRadius: 1, //IOS
+    //     borderWidth: 1,
+    //     backgroundColor: 'green',
+    //     borderColor:  'red',
+    //     borderRadius: 50,
+    //     width: 250,
+    //     height: 10,
+    //     margin: 5,
+    //   },
+    //   android: {
+    //     shadowColor: 'rgba(0,0,0, .4)', // IOS
+    //     shadowOffset: {height: 5, width: 5}, // IOS
+    //     shadowOpacity: 1, // IOS
+    //     shadowRadius: 1, //IOS
+    //     elevation: 4, // Android
+    //     borderWidth: 1,
+    //     backgroundColor: 'dodgerblue',
+    //     justifyContent: 'center',
+    //     borderColor: 'white',
+    //     borderRadius: 25,
+    //     width: 250,
+    //     //margin: 10,
+    //     marginVertical: 12,
+    //   },
+    // }),
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 4, // Android
+    borderWidth: 1,
+    backgroundColor: 'dodgerblue',
+    justifyContent: 'center',
+    borderColor: 'white',
+    borderRadius: 25,
+    width: 250,
+    // height: 150,
+    margin: 10,
+    // marginTop: 50,
   },
   footer: {
     position: 'absolute',

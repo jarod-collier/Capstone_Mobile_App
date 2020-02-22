@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SafeAreaView,
@@ -51,7 +52,11 @@ function PastorSignUpScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
-        <View style={styles.container}>
+        <KeyboardAwareScrollView
+         resetScrollToCoords={{x: 0, y: 0}}
+         contentContainerStyle={styles.container}
+         scrollEnabled={false}
+        >
           <View style={styles.logo}>
             <Image source={require('../images/logo_placeholder.png')} />
           </View>
@@ -124,7 +129,7 @@ function PastorSignUpScreen({navigation}) {
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
     </SafeAreaView>
   );

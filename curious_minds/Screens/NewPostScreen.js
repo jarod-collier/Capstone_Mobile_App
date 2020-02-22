@@ -1,10 +1,6 @@
 import 'react-native-gesture-handler';
-// import {NavigationContainer} from '@react-navigation/native';
-// import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
 import {CheckBox} from 'react-native-elements';
-import {FontAwesomeIcon} from '@fortawesome/free-solid-svg-icons';
-// import CheckboxFormX from 'react-native-checkbox-form';
 
 import {
   SafeAreaView,
@@ -98,8 +94,10 @@ function NewPostScreen({navigation}) {
                 Options:</Text> 
           <CheckBox
             title='post anonymous'
-            // checkedIcon='dot-circle-o'
-            // uncheckedIcon='check'
+            // style={{backgroundColor='rgba(52, 52, 52, 0.8)'}}
+            // checked={true}
+            checkedIcon='dot-circle-o'
+            uncheckedIcon='circle-o'
             onPress={()=> this.handleOptionAnon()}
           />
           <CheckBox

@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SafeAreaView,
@@ -45,9 +44,12 @@ this.handleEmail = text => {
 function UserSignUpScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView>
-        <View style={styles.container}>
-          {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
+      <KeyboardAwareScrollView
+         resetScrollToCoords={{x: 0, y: 0}}
+         contentContainerStyle={styles.container}
+         scrollEnabled={false}
+         extraHeight={100}
+        >
           <View style={styles.logo}>
             <Image source={require('../images/logo_placeholder.png')} />
           </View>
@@ -98,8 +100,7 @@ function UserSignUpScreen({navigation}) {
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
+        </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

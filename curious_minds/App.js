@@ -9,16 +9,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Button,
-  Alert
-} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import LoginScreen from './Screens/LoginScreen';
 import UserTypeScreen from './Screens/UserTypeScreen';
@@ -28,6 +19,7 @@ import PastorSignUpScreen from './Screens/PastorSignUpScreen';
 import NewPostScreen from './Screens/NewPostScreen';
 
 const Stack = createStackNavigator();
+Icon.loadFont();
 
 function App() {
   return (
