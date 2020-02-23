@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {CheckBox} from 'react-native-elements';
+// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import {
   SafeAreaView,
@@ -15,11 +16,14 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 
 this.state = {
+    checked: {},
     Question: '',
     Description: '',
     Anon: false,
     pastorOnly: false,
   };
+
+  
 
 this.handleQuestion = text => {
     this.state.Question = text;
@@ -30,13 +34,16 @@ this.handleDescription = text => {
 };
 
 this.handleOptionAnon = Boolean => {
-    this.state.Anon = !this.state.Anon;
-    //console.log(this.state.Anon);
+    // console.log(this.state.Anon);
+    
+    return this.state.Anon = !this.state.Anon;
 };
 
 this.handleOptionPastorOnly = Boolean => {
-    this.state.pastorOnly = !this.state.pastorOnly;
-    //console.log(this.state.pastorOnly);
+  // alert("" + !this.state.pastorOnly)  
+  return this.state.pastorOnly = !this.state.pastorOnly;
+    
+    // console.log(this.state.pastorOnly);
 };
 
 function NewPostScreen({navigation}) {
@@ -92,18 +99,23 @@ function NewPostScreen({navigation}) {
              fontSize: 24,
             }}>
                 Options:</Text> 
-          <CheckBox
-            title='post anonymous'
-            // style={{backgroundColor='rgba(52, 52, 52, 0.8)'}}
-            // checked={true}
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            onPress={()=> this.handleOptionAnon()}
-          />
-          <CheckBox
-            title='only pastor response'
-            onPress={()=> this.handleOptionPastorOnly()}
-          />
+          <View style={{ flexDirection: 'row'}}>
+            <CheckBox
+              checked={this.state.Anon}
+              onPress={()=> {this.handleOptionAnon(); 
+                checked = this.state.Anon; 
+                console.log("checked:" + checked)}}
+              // onChange={()=>{}}
+            />
+            <Text style={{marginTop: 15, fontSize: 18}}>post anonymous</Text>
+          </View>
+          <View style={{ flexDirection: 'row'}}>
+            <CheckBox
+              checked={this.state.pastorOnly}
+              onPress={() => {checked = this.handleOptionPastorOnly(); console.log("checked: " + checked)}}
+            /> 
+            <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
+          </View>
       </View>
       </View>
     </SafeAreaView>

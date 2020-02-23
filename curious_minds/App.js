@@ -9,7 +9,10 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+//FIREBASE
+import {db} from './FireDatabase/config';
 
 import LoginScreen from './Screens/LoginScreen';
 import UserTypeScreen from './Screens/UserTypeScreen';
