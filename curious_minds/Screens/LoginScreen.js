@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
+import firebase from 'react-native-firebase';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,6 +20,7 @@ import {
 this.state = {
   Username: '',
   Password: '',
+  isAuthenticated: false,
 };
 
 this.handleUsername = text => {
@@ -30,6 +32,17 @@ this.handlePassword = text => {
 };
 
 this.checkUserInitials = () => {
+  //if no credentials, send to sign up screen.
+  if (this.state.Username == null || this.state.Password == null) {
+    console.log("no username or password");
+    firebase.auth().signInAnonymously()
+      .then(() => {
+        this.setState({
+          isAuthenticated: true,
+        });
+      });
+  }
+  console.log("Is auth:" + this.state.isAuthenticated);
   console.log(this.state.Username);
   console.log(this.state.Password);
 };
