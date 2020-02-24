@@ -104,9 +104,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 250,
     textAlign: 'center',
-    padding: 10,
-    margin: 5,
-    marginBottom: 10
+    padding: 8,
+    marginVertical: 10
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
@@ -120,9 +119,8 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 25,
     width: 250,
-    // height: 150,
-    margin: 10,
-    // marginTop: 50,
+    height: 30,
+    marginVertical: 10,
   },
   footer: {
     position: 'absolute',
