@@ -1,4 +1,6 @@
 import Firebase from 'firebase';
+import firebase from 'react-native-firebase';
+
 let config = {
     apiKey: "AIzaSyDHl3Mn1tvUCYnYpppveP4JEpGKMNB07kY",
     authDomain: "capstone-d8f0d.firebaseapp.com",
@@ -9,5 +11,6 @@ let config = {
     appId: "1:1063814651823:web:b5a0c93990d020f5e5995a",
     measurementId: "G-F2G5YS6CD9"
   };
+  
   let app = Firebase.initializeApp(config);
   export const db = app.database();
