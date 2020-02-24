@@ -2,6 +2,8 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
+import firebase from 'firebase';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -29,9 +31,67 @@ this.handlePassword = text => {
   this.state.Password = text;
 };
 
-this.checkUserInitials = () => {
-  console.log(this.state.Username);
-  console.log(this.state.Password);
+this.checkCredentials = () => {
+  //if no credentials, send to sign up screen.
+  if (this.state.Username == null || this.state.Password == null) {
+    console.log("no username or password");
+    return false;
+  }
+  //TODO: make this a regexp check for email?
+  else if (!this.state.Username.includes("@") || !this.state.Username.includes(".com") ){
+    console.log("Improper username format");
+    return false;
+  }
+  else {
+    return true;
+  }
+};
+
+this.logInUser = () => {
+  if(this.checkCredentials()){
+    firebase.auth().signInWithEmailAndPassword(this.state.Username, this.state.Password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode + errorMessage);
+      if (errorCode == "auth/user-not-found"){//user doesn't exist
+        //navigation.navigate('User Type');  //Don't know why this doesn't work.
+        console.log("No user found.  Please sign in.")
+      }
+
+      // ...
+    });
+  }
+  else {
+    firebase.auth().signInAnonymously().catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode + errorMessage);
+      //navigation.navigate('New Post'); //Don't know why this doesn't work.
+
+      // ...
+    });
+  }
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("User is signed in.");
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
+      // ...
+    } else {
+      console.log("no user found");
+      // User is signed out.
+      // ...
+    }
+  });
+
 };
 
 function LoginScreen({navigation}) {
@@ -58,7 +118,9 @@ function LoginScreen({navigation}) {
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> navigation.navigate('New Post')}>
+                onPress={()=> this.logInUser() }> 
+                //onPress={()=> navigation.navigate('New Post')}>
+
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>
