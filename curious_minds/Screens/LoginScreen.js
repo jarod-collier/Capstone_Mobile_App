@@ -77,8 +77,7 @@ function LoginScreen({navigation}) {
             </Text>
             <TouchableOpacity
               style={styles.Buttons}
-              // onPress={() => navigation.navigate('User Type')}>
-              onPress={() => navigation.navigate('New Post')}>
+              onPress={() => navigation.navigate('User Type')}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
