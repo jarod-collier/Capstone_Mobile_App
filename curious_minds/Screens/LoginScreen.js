@@ -119,13 +119,15 @@ function LoginScreen({navigation}) {
               <TouchableOpacity
                 style={styles.Buttons}
                 onPress={()=> this.logInUser() }> 
+                //onPress={()=> navigation.navigate('New Post')}>
+
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> navigation.navigate('New Post')}>
+                onPress={()=> navigation.navigate('User Type')}>
                 <Text style={styles.customBtnText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
@@ -137,7 +139,6 @@ function LoginScreen({navigation}) {
             </Text>
             <TouchableOpacity
               style={styles.Buttons}
-              // onPress={() => navigation.navigate('User Type')}>
               onPress={() => navigation.navigate('User Type')}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
@@ -169,36 +170,6 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   Buttons: {
-    // ...Platform.select({
-    //   ios: {
-    //     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    //     shadowOffset: {height: 3, width: 3}, // IOS
-    //     shadowOpacity: 1, // IOS
-    //     shadowRadius: 1, //IOS
-    //     borderWidth: 1,
-    //     backgroundColor: 'green',
-    //     borderColor:  'red',
-    //     borderRadius: 50,
-    //     width: 250,
-    //     height: 10,
-    //     margin: 5,
-    //   },
-    //   android: {
-    //     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    //     shadowOffset: {height: 5, width: 5}, // IOS
-    //     shadowOpacity: 1, // IOS
-    //     shadowRadius: 1, //IOS
-    //     elevation: 4, // Android
-    //     borderWidth: 1,
-    //     backgroundColor: 'dodgerblue',
-    //     justifyContent: 'center',
-    //     borderColor: 'white',
-    //     borderRadius: 25,
-    //     width: 250,
-    //     //margin: 10,
-    //     marginVertical: 12,
-    //   },
-    // }),
     shadowColor: 'rgba(0,0,0, .4)', // IOS
     shadowOffset: {height: 5, width: 5}, // IOS
     shadowOpacity: 1, // IOS

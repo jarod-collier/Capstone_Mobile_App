@@ -61,9 +61,7 @@ function PastorSignUpScreen({navigation}) {
             <Image source={require('../images/logo_placeholder.png')} />
           </View>
           <View>
-            <Text style={{fontSize: 24, textAlign: 'center'}}>
-              INFO{'\n'}HERE
-            </Text>
+            <Text style={styles.infoHereText}>INFO HERE</Text>
           </View>
           <View>
             <View style={{justifyContent: 'center', flexDirection: 'row'}}>
@@ -191,6 +189,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
+  },
+  infoHereText: {
     fontSize: 35,
     fontWeight: '400',
     color: "white",

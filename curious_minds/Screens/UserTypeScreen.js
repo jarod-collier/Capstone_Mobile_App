@@ -19,12 +19,11 @@ function UserTypeScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        {/* <Button title="Back" style={{}}/>  TODO: ADD BACK BUTTON*/}
         <View style={styles.logo}>
           <Image source={require('../images/logo_placeholder.png')} />
         </View>
         <View>
-          <Text style={{fontSize: 48, textAlign: 'center'}}>I AM</Text>
+          <Text style={styles.iAmText}>INFO HERE</Text>
         </View>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
@@ -69,6 +68,12 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
+  },
+  iAmText: {
     fontSize: 35,
     fontWeight: '400',
     color: "white",
