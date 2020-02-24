@@ -23,7 +23,7 @@ this.handleCode = text => {
 
 function PastorSecCodeScreen({navigation}) {
   return (
-    
+
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
        resetScrollToCoords={{x: 0, y: 0}}
@@ -35,7 +35,7 @@ function PastorSecCodeScreen({navigation}) {
             <Image source={require('../images/logo_placeholder.png')} />
           </View>
           <View>
-            <Text style={{fontSize: 48, textAlign: 'center'}}>Pastors{"\n"}Security Code</Text>
+            <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code</Text>
           </View>
           <View style = {{alignItems: 'center'}}>
             <TextInput
@@ -53,7 +53,7 @@ function PastorSecCodeScreen({navigation}) {
           </View>
         </KeyboardAwareScrollView>
     </SafeAreaView>
-    
+
   );
 }
 
@@ -92,6 +92,12 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   customBtnText: {
+    fontSize: 35,
+    fontWeight: '400',
+    color: "white",
+    textAlign: "center"
+  },
+  securityCodeText: {
     fontSize: 35,
     fontWeight: '400',
     color: "white",
