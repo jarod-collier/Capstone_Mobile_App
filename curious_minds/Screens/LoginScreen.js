@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
-import firebase from 'react-native-firebase';
+import firebase from 'firebase';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,7 +21,6 @@ import {
 this.state = {
   Username: '',
   Password: '',
-  isAuthenticated: false,
 };
 
 this.handleUsername = text => {
@@ -31,20 +31,48 @@ this.handlePassword = text => {
   this.state.Password = text;
 };
 
-this.checkUserInitials = () => {
+this.checkCredentials = () => {
   //if no credentials, send to sign up screen.
   if (this.state.Username == null || this.state.Password == null) {
     console.log("no username or password");
-    firebase.auth().signInAnonymously()
-      .then(() => {
-        this.setState({
-          isAuthenticated: true,
-        });
-      });
+    return false;
   }
-  console.log("Is auth:" + this.state.isAuthenticated);
-  console.log(this.state.Username);
-  console.log(this.state.Password);
+  if (!this.state.Username.contains("@")){
+    console.log("Improper username format");
+    return false;
+  }
+  else {
+    console.log(this.state.Username);
+    console.log(this.state.Password);
+    firebase.auth().createUserWithEmailAndPassword(this.state.Username, this.state.Password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode + errorMessage);
+      // ...
+    });
+  }
+};
+
+this.logInUser = () => {
+  if(this.checkCredentials()){
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+  }
+  else {
+    firebase.auth().signInAnonymously().catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode + errorMessage);
+      // ...
+    });
+  }
+
 };
 
 function LoginScreen({navigation}) {
@@ -71,7 +99,7 @@ function LoginScreen({navigation}) {
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> navigation.navigate('User Type')}>
+                onPress={()=> this.logInUser() }> 
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>
@@ -91,7 +119,7 @@ function LoginScreen({navigation}) {
             <TouchableOpacity
               style={styles.Buttons}
               // onPress={() => navigation.navigate('User Type')}>
-              onPress={() => navigation.navigate('New Post')}>
+              onPress={() => navigation.navigate('User Type')}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
