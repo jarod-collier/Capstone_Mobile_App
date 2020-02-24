@@ -118,16 +118,14 @@ function LoginScreen({navigation}) {
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> this.logInUser() }> 
-                //onPress={()=> navigation.navigate('New Post')}>
-
+                onPress={()=> this.logInUser() }>
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> navigation.navigate('User Type')}>
+                onPress={() => navigation.navigate('New Post')}>
                 <Text style={styles.customBtnText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
@@ -139,8 +137,7 @@ function LoginScreen({navigation}) {
             </Text>
             <TouchableOpacity
               style={styles.Buttons}
-              // onPress={() => navigation.navigate('User Type')}>
-              onPress={() => navigation.navigate('New Post')}>
+              onPress={()=> navigation.navigate('User Type')}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
