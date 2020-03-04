@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 25,
     width: 250,
-    marginTop: 15,
+    marginVertical: 15,
   },
   customBtnText: {
     fontSize: 35,

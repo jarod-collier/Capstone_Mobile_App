@@ -13,6 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { db } from '../FireDatabase/config';
 
 
 
@@ -34,13 +35,22 @@ this.handleDescription = text => {
     this.state.Description = text;
 };
 
-const handleOptionAnon = Boolean=> {
+const handleOptionAnon = Boolean => {
     this.state.Anon = Boolean;
-    console.log(""+this.state.Anon);
 };
 
 this.handleOptionPastorOnly = Boolean => {
     this.state.pastorOnly = Boolean;
+};
+
+function createPost(){
+
+  db.ref('/posts').push({
+    question: "" + this.state.Question,
+    desc: "" + this.state.Description,
+    Anon: this.state.Anon,
+    PastorOnly: this.state.pastorOnly
+  });
 };
 
 function NewPostScreen({navigation}) {
@@ -105,14 +115,14 @@ function NewPostScreen({navigation}) {
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={Anon}
-              onPress={()=> {this.handleOptionAnon(!Anon); setAnon(!Anon)}} 
+              onPress={()=> {handleOptionAnon(!Anon); setAnon(!Anon)}} 
             />
             <Text style={{marginTop: 15, fontSize: 18}}>post anonymous</Text>
           </View>
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={pastorOnly}
-              onPress={() => {this.handleOptionPastorOnly(!pastorOnly); setPastorOnly(!pastorOnly)}}
+              onPress={() => {handleOptionPastorOnly(!pastorOnly); setPastorOnly(!pastorOnly)}}
             /> 
             <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
           </View>
@@ -122,7 +132,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-            // onPress={() => }
+             onPress={() => createPost()}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>

@@ -60,13 +60,13 @@ function UserSignUpScreen({navigation}) {
             <View style={{justifyContent: 'center', flexDirection: 'row'}}>
               <TextInput
                 style={styles.namesInput}
-                placeholder="FirstName"
+                placeholder="  FirstName"
                 placeholderTextColor="white"
                 onChangeText={this.handleFirstName}
               />
               <TextInput
                 style={styles.namesInput}
-                placeholder="LastName"
+                placeholder="  LastName"
                 placeholderTextColor="white"
                 onChangeText={this.handleLastName}
               />
@@ -74,20 +74,20 @@ function UserSignUpScreen({navigation}) {
             <View style={{flexDirection: 'column'}}>
               <TextInput
                 style={styles.inputBox}
-                placeholder="Username"
+                placeholder="  Username"
                 placeholderTextColor="white"
                 onChangeText={this.handleUsername}
               />
               <TextInput
                 style={styles.inputBox}
-                placeholder="Password"
+                placeholder="  Password"
                 secureTextEntry={true}
                 placeholderTextColor="white"
                 onChangeText={this.handlePassword}
               />
               <TextInput
                 style={styles.inputBox}
-                placeholder="Email"
+                placeholder="  Email"
                 placeholderTextColor="white"
                 onChangeText={this.handleEmail}
               />
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 150,
     height: 40,
-    textAlign: 'center',
+    textAlign: 'left',
     marginTop: 10,
     margin: 10,
   },
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 320,
     height: 40,
-    textAlign: 'center',
+    // textAlign: 'center',
     marginTop: 10,
     margin: 10,
   },
