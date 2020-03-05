@@ -25,8 +25,6 @@ this.state = {
     pastorOnly: false,
   };
 
-  
-
 this.handleQuestion = text => {
     this.state.Question = text;
 };
@@ -50,12 +48,18 @@ function createPost(){
     desc: "" + this.state.Description,
     Anon: this.state.Anon,
     PastorOnly: this.state.pastorOnly
-  });
+  }).catch((error)=>{
+    Alert.alert('error ', error)
+  })
+
+  Alert.alert('Post added successfully');
 };
 
 function NewPostScreen({navigation}) {
   const [Anon, setAnon] = useState(false);
   const [pastorOnly, setPastorOnly] = useState(false);
+  handleOptionAnon(Anon);
+  handleOptionPastorOnly(pastorOnly);
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -132,7 +136,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-             onPress={() => createPost()}
+             onPress={() => {createPost(); navigation.navigate('Main Feed')}}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>

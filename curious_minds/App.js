@@ -20,6 +20,7 @@ import PastorSecCodeScreen from './Screens/PastorSecCodeScreen';
 import UserSignUpScreen from './Screens/UserSignUpScreen';
 import PastorSignUpScreen from './Screens/PastorSignUpScreen';
 import NewPostScreen from './Screens/NewPostScreen';
+import MainFeedScreen from './Screens/MainFeedScreen';
 
 const Stack = createStackNavigator();
 Icon.loadFont();
@@ -33,6 +34,7 @@ function App() {
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
+        <Stack.Screen name="Main Feed" component={MainFeedScreen} />
         <Stack.Screen name="New Post" component={NewPostScreen} />
       </Stack.Navigator>
     </NavigationContainer>
