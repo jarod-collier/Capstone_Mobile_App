@@ -23,7 +23,6 @@ this.handleCode = text => {
 
 function PastorSecCodeScreen({navigation}) {
   return (
-
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
        resetScrollToCoords={{x: 0, y: 0}}
