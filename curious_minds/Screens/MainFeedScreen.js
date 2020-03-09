@@ -1,30 +1,39 @@
 import 'react-native-gesture-handler';
 import React, {Component, useState} from 'react';
 import {Card} from 'react-native-shadow-cards';
-// import {Icon} from 'react-native-vector-icons';
+import {Button} from 'react-native-vector-icons/FontAwesome';
+import {AnimatedEllipsis} from 'react-native-animated-ellipsis';
+import { db } from '../FireDatabase/config';
 
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
+//   TouchableOpacity,
   ScrollView,
-  Image,
-  Button,
+//   Image,
+//   Button,
   Alert,
   LayoutAnimation,
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { db } from '../FireDatabase/config';
 
 this.state = {
-    postValue: 0,
     posts: [],
-    display: []
+    display: [],
+    isLoading: true,
 };
 
+// this.setLoadingStatus = Boolean => {
+//     this.state.isLoading = Boolean;
+// }
+
+// const getLoadingStatus = ()=> {
+//     return this.state.isLoading;
+// }
+
 function readFromDB(){
+    // this.setLoadingStatus(false);
     db.ref('/posts/').on('value', function(snapshot){
         let postItems = [];
         snapshot.forEach((child) => {
@@ -50,27 +59,66 @@ function loadPostCards(){
                         <Text style={{marginTop: 3}}>{postData.desc}</Text>
                         {/* //This needs to be fixed */}
                         <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
-                        <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>DATE HERE</Text>
-                        <Icon name='chat_bubble_outline' type='material'/>
+                        <View style={{flexDirection:'row', alignItems: 'stretch'}}>
+                                <Button 
+                                    style={{backgroundColor: 'white'}}
+                                    color='black'
+                                    name='comment' 
+                                    onPress={()=> Alert.alert('Comment')} />
+                                <Button 
+                                    style={{backgroundColor: 'white'}}
+                                    color='black'
+                                    name='language' 
+                                    onPress={()=> Alert.alert('Translate')} />
+                                <Button 
+                                    style={{backgroundColor: 'white'}}
+                                    color='black'
+                                    name='thumbs-up' 
+                                    onPress={()=> Alert.alert('Like')} />
+                                <Button 
+                                    style={{backgroundColor: 'white'}}
+                                    color='black'
+                                    name='exclamation-triangle' 
+                                    onPress={()=> Alert.alert('Report')} />
+                            <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
+                        </View>
+                        
+
                 </Card>
             </View>
         )
-    })
+    });
+    // this.setLoadingStatus(true);
 }
 
 function MainFeedScreen({navigation}) {
+    // const [isLoading, setLoading]= useState(true);
     readFromDB();
-    // console.log(this.state.display);
-    LayoutAnimation.easeInEaseOut();
-  return (
-    <SafeAreaView style={{flex: 1}}>
-        <ScrollView>
-            <View style={styles.container}>
-                {this.state.display}
-            </View>
-        </ScrollView>
-    </SafeAreaView>
-  );
+    // LayoutAnimation.easeInEaseOut();
+    // console.log("I'm here");
+    // if(isLoading){
+    //     console.log("I'm here2");
+    //       return(
+    //         <View>
+    //             <Text>
+    //                 Loading
+    //                 {/* <AnimatedEllipsis /> */}
+    //             </Text>
+    //         </View>
+    //       );
+          
+    // }
+    // else{
+        return ( 
+            <SafeAreaView style={{flex: 1}}>
+                <ScrollView>
+                    <View style={styles.container}>
+                        {this.state.display}
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+          );
+    // }
 }
 
 const styles = StyleSheet.create({
