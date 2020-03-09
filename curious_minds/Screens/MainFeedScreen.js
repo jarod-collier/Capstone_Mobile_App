@@ -46,7 +46,7 @@ function readFromDB(){
         })
         this.state.posts = postItems.reverse();
     });
-    
+
     loadPostCards();
 }
 
@@ -60,29 +60,29 @@ function loadPostCards(){
                         {/* //This needs to be fixed */}
                         <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
                         <View style={{flexDirection:'row', alignItems: 'stretch'}}>
-                                <Button 
+                                <Button
                                     style={{backgroundColor: 'white'}}
                                     color='black'
-                                    name='comment' 
+                                    name='comment'
                                     onPress={()=> Alert.alert('Comment')} />
-                                <Button 
+                                <Button
                                     style={{backgroundColor: 'white'}}
                                     color='black'
-                                    name='language' 
+                                    name='language'
                                     onPress={()=> Alert.alert('Translate')} />
-                                <Button 
+                                <Button
                                     style={{backgroundColor: 'white'}}
                                     color='black'
-                                    name='thumbs-up' 
+                                    name='thumbs-up'
                                     onPress={()=> Alert.alert('Like')} />
-                                <Button 
+                                <Button
                                     style={{backgroundColor: 'white'}}
                                     color='black'
-                                    name='exclamation-triangle' 
+                                    name='exclamation-triangle'
                                     onPress={()=> Alert.alert('Report')} />
                             <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
                         </View>
-                        
+
 
                 </Card>
             </View>
@@ -106,10 +106,10 @@ function MainFeedScreen({navigation}) {
     //             </Text>
     //         </View>
     //       );
-          
+
     // }
     // else{
-        return ( 
+        return (
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView>
                     <View style={styles.container}>

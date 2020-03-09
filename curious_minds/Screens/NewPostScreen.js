@@ -105,7 +105,7 @@ function NewPostScreen({navigation}) {
               fontSize: 24,
             }}>
               Attachment:
-          </Text>      
+          </Text>
         </View>
         <View>
           <Text style={
@@ -115,11 +115,11 @@ function NewPostScreen({navigation}) {
               fontSize: 24,
             }}>
               Options:
-          </Text> 
+          </Text>
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={Anon}
-              onPress={()=> {handleOptionAnon(!Anon); setAnon(!Anon)}} 
+              onPress={()=> {handleOptionAnon(!Anon); setAnon(!Anon)}}
             />
             <Text style={{marginTop: 15, fontSize: 18}}>post anonymous</Text>
           </View>
@@ -127,11 +127,11 @@ function NewPostScreen({navigation}) {
             <CheckBox
               checked={pastorOnly}
               onPress={() => {handleOptionPastorOnly(!pastorOnly); setPastorOnly(!pastorOnly)}}
-            /> 
+            />
             <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
           </View>
         </View>
-        <View 
+        <View
         // style={styles.footer}
         >
           <TouchableOpacity
