@@ -16,7 +16,11 @@ import UserTypeScreen from './Screens/UserTypeScreen';
 import PastorSecCodeScreen from './Screens/PastorSecCodeScreen';
 import UserSignUpScreen from './Screens/UserSignUpScreen';
 import PastorSignUpScreen from './Screens/PastorSignUpScreen';
+import MainFeedScreen from './Screens/MainFeedScreen';
 import NewPostScreen from './Screens/NewPostScreen';
+import EventScreen from './Screens/EventScreen';
+import ProfileScreen from './Screens/ProfileScreen';
+
 
 const styles = StyleSheet.create({
   tabIcons: {
@@ -68,11 +72,30 @@ export default function App() {
           inactiveTintColor: 'black',
         }}
       >
-        <Tab.Screen name="Main" component={LoginScreen} />
-        <Tab.Screen name="Post" component={UserTypeScreen} />
+        <Tab.Screen name="Main" component={MainFeedScreen} />
+        <Tab.Screen name="Post" component={NewPostScreen} />
         <Tab.Screen name="Events" component={PastorSecCodeScreen} />
-        <Tab.Screen name="Profile" component={NewPostScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
+
+// const Stack = createStackNavigator();
+//
+// function App() {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator>
+//         <Stack.Screen name="Login" component={LoginScreen} />
+//         <Stack.Screen name="User Type" component={UserTypeScreen} />
+//         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
+//         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
+//         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
+//         <Stack.Screen name="New Post" component={NewPostScreen} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// }
+//
+// export default App;
