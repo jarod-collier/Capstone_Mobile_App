@@ -118,8 +118,7 @@ function LoginScreen({navigation}) {
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                // onPress={()=> this.logInUser() }>
-                onPress={() => navigation.navigate('Main Feed')}>
+                onPress={()=> this.logInUser() }>
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>

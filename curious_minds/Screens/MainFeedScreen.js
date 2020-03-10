@@ -18,11 +18,12 @@ import {
   LayoutAnimation,
 } from 'react-native';
 
-this.state = {
-    posts: [],
-    display: [],
-    isLoading: true,
+var state = {
+  posts: [],
+  display: [],
+  isLoading: true,
 };
+
 
 // this.setLoadingStatus = Boolean => {
 //     this.state.isLoading = Boolean;
@@ -34,7 +35,7 @@ this.state = {
 
 function readFromDB(){
     // this.setLoadingStatus(false);
-    db.ref('/posts/').on('value', function(snapshot){
+    db.ref('/posts/').once('value', function(snapshot){
         let postItems = [];
         snapshot.forEach((child) => {
             postItems.push({
@@ -44,14 +45,14 @@ function readFromDB(){
                 pastorOnly: child.val().PastorOnly
             });
         })
-        this.state.posts = postItems.reverse();
+        state.posts = postItems.reverse();
     });
-
+    console.log("outside post items", state.posts);
     loadPostCards();
 }
 
 function loadPostCards(){
-    this.state.display = this.state.posts.map(postData => {
+    state.display = state.posts.map(postData => {
         return(
             <View key={postData.question}>
                 <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
@@ -93,6 +94,7 @@ function loadPostCards(){
 
 function MainFeedScreen({navigation}) {
     // const [isLoading, setLoading]= useState(true);
+    console.log("inside main feed screen");
     readFromDB();
     // LayoutAnimation.easeInEaseOut();
     // console.log("I'm here");
@@ -113,7 +115,7 @@ function MainFeedScreen({navigation}) {
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView>
                     <View style={styles.container}>
-                        {this.state.display}
+                        {state.display}
                     </View>
                 </ScrollView>
             </SafeAreaView>
