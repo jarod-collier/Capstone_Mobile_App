@@ -13,7 +13,7 @@ import {
   Image,
 } from 'react-native';
 
-state = {
+var state = {
   FirstName: '',
   LastName: '',
   Username: '',
@@ -23,29 +23,29 @@ state = {
   seminary: '',
   addintionalInfo: '',
 };
-handleFirstName = text => {
-  this.state.FirstName = text;
+var handleFirstName = text => {
+  state.FirstName = text;
 };
-handleLastName = text => {
-  this.state.LastName = text;
+var handleLastName = text => {
+  state.LastName = text;
 };
-handleUsername = text => {
-  this.state.Username = text;
+var handleUsername = text => {
+  state.Username = text;
 };
-handlePassword = text => {
-  this.state.Password = text;
+var handlePassword = text => {
+  state.Password = text;
 };
-handleEmail = text => {
-  this.state.Email = text;
+var handleEmail = text => {
+  state.Email = text;
 };
-handlePreach = text => {
-  this.state.preach = text;
+var handlePreach = text => {
+  state.preach = text;
 };
-handleSeminary = text => {
-  this.state.seminary = text;
+var handleSeminary = text => {
+  state.seminary = text;
 };
-handleAdditionalInfo = text => {
-  this.state.addintionalInfo = text;
+var handleAdditionalInfo = text => {
+  state.addintionalInfo = text;
 };
 
 function PastorSignUpScreen({navigation}) {
@@ -69,13 +69,13 @@ function PastorSignUpScreen({navigation}) {
                 style={styles.namesInput}
                 placeholder="  FirstName"
                 placeholderTextColor="white"
-                onChangeText={this.handleFirstName}
+                onChangeText={handleFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
                 placeholderTextColor="white"
-                onChangeText={this.handleLastName}
+                onChangeText={handleLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
@@ -83,32 +83,32 @@ function PastorSignUpScreen({navigation}) {
                 style={styles.inputBox}
                 placeholder="  Username"
                 placeholderTextColor="white"
-                onChangeText={this.handleUsername}
+                onChangeText={handleUsername}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Password"
                 secureTextEntry={true}
                 placeholderTextColor="white"
-                onChangeText={this.handlePassword}
+                onChangeText={handlePassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
                 placeholderTextColor="white"
-                onChangeText={this.handleEmail}
+                onChangeText={handleEmail}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Church preaching at"
                 placeholderTextColor="white"
-                onChangeText={this.handlePreach}
+                onChangeText={handlePreach}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Where did you attend Seminary?"
                 placeholderTextColor="white"
-                onChangeText={this.handleSeminary}
+                onChangeText={handleSeminary}
               />
               <TextInput
                 style={styles.multiline}
@@ -116,7 +116,7 @@ function PastorSignUpScreen({navigation}) {
                 placeholderTextColor="white"
                 multiline={true}
                 numberOfLines={10}
-                onChangeText={this.handleAdditionalInfo}
+                onChangeText={handleAdditionalInfo}
               />
             </View>
           </View>

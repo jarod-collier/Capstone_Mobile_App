@@ -14,7 +14,7 @@ import {
   Image,
 } from 'react-native';
 
-this.state = {
+var state = {
   FirstName: '',
   LastName: '',
   Username: '',
@@ -25,20 +25,20 @@ this.state = {
 // looks like if you refresh the whole thing then it works fine. Once you try to update
 // this specific page while editing it then it gets wonky
 
-this.handleFirstName = text => {
-  this.state.FirstName = text;
+var handleFirstName = text => {
+  state.FirstName = text;
 };
-this.handleLastName = text => {
-  this.state.LastName = text;
+var handleLastName = text => {
+  state.LastName = text;
 };
-this.handleUsername = text => {
-  this.state.Username = text;
+var handleUsername = text => {
+  state.Username = text;
 };
-this.handlePassword = text => {
-  this.state.Password = text;
+var handlePassword = text => {
+  state.Password = text;
 };
-this.handleEmail = text => {
-  this.state.Email = text;
+var handleEmail = text => {
+  state.Email = text;
 };
 
 function UserSignUpScreen({navigation}) {
@@ -62,13 +62,13 @@ function UserSignUpScreen({navigation}) {
                 style={styles.namesInput}
                 placeholder="  FirstName"
                 placeholderTextColor="white"
-                onChangeText={this.handleFirstName}
+                onChangeText={handleFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
                 placeholderTextColor="white"
-                onChangeText={this.handleLastName}
+                onChangeText={handleLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
@@ -76,20 +76,20 @@ function UserSignUpScreen({navigation}) {
                 style={styles.inputBox}
                 placeholder="  Username"
                 placeholderTextColor="white"
-                onChangeText={this.handleUsername}
+                onChangeText={handleUsername}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Password"
                 secureTextEntry={true}
                 placeholderTextColor="white"
-                onChangeText={this.handlePassword}
+                onChangeText={handlePassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
                 placeholderTextColor="white"
-                onChangeText={this.handleEmail}
+                onChangeText={handleEmail}
               />
             </View>
           </View>

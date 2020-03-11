@@ -94,7 +94,6 @@ function loadPostCards(){
 
 function MainFeedScreen({navigation}) {
     // const [isLoading, setLoading]= useState(true);
-    console.log("inside main feed screen");
     readFromDB();
     // LayoutAnimation.easeInEaseOut();
     // console.log("I'm here");
@@ -116,6 +115,9 @@ function MainFeedScreen({navigation}) {
                 <ScrollView>
                     <View style={styles.container}>
                         {state.display}
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                      <Text>Main Feed!</Text>
                     </View>
                 </ScrollView>
             </SafeAreaView>

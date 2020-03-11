@@ -24,64 +24,62 @@ import EventScreen from './Screens/EventScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 
 
-// const styles = StyleSheet.create({
-//   tabIcons: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//   },
-// });
-//
-// const Tab = createBottomTabNavigator();
-//
-// type Props = {};
-// export default function App() {
-//   return (
-//     <NavigationContainer>
-//       <Tab.Navigator
-//         screenOptions={({ route }) => ({
-//           tabBarIcon: () => {
-//             if (route.name === 'Main') {
-//               return (
-//                 <View style={styles.tabIcons}>
-//                   <Icon name="home" size={30} color="black" />
-//                 </View>
-//               );
-//             } else if (route.name === 'Post') {
-//               return (
-//                 <View style={styles.tabIcons}>
-//                   <Icon name="plus" size={30} color="black" />
-//                 </View>
-//               );
-//             } else if (route.name === 'Events') {
-//               return (
-//                 <View style={styles.tabIcons}>
-//                   <Icon name="calendar" size={30} color="black" />
-//                 </View>
-//               );
-//             } else if (route.name === 'Profile') {
-//               return (
-//                 <View style={styles.tabIcons}>
-//                   <Icon name="user" size={30} color="black" />
-//                 </View>
-//               );
-//             }
-//           },
-//         })}
-//         tabBarOptions={{
-//           activeTintColor: 'dodgerblue',
-//           inactiveTintColor: 'black',
-//         }}
-//       >
-//         <Tab.Screen name="Main" component={MainFeedScreen} />
-//         <Tab.Screen name="Post" component={NewPostScreen} />
-//         <Tab.Screen name="Events" component={PastorSecCodeScreen} />
-//         <Tab.Screen name="Profile" component={ProfileScreen} />
-//       </Tab.Navigator>
-//     </NavigationContainer>
-//   );
-// }
+const styles = StyleSheet.create({
+  tabIcons: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+});
+
+const Tab = createBottomTabNavigator();
+
+type Props = {};
+function Main() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: () => {
+          if (route.name === 'Main') {
+            return (
+              <View style={styles.tabIcons}>
+                <Icon name="home" size={30} color="black" />
+              </View>
+            );
+          } else if (route.name === 'Post') {
+            return (
+              <View style={styles.tabIcons}>
+                <Icon name="plus" size={30} color="black" />
+              </View>
+            );
+          } else if (route.name === 'Events') {
+            return (
+              <View style={styles.tabIcons}>
+                <Icon name="calendar" size={30} color="black" />
+              </View>
+            );
+          } else if (route.name === 'Profile') {
+            return (
+              <View style={styles.tabIcons}>
+                <Icon name="user" size={30} color="black" />
+              </View>
+            );
+          }
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'dodgerblue',
+        inactiveTintColor: 'black',
+      }}
+    >
+      <Tab.Screen name="Main" component={MainFeedScreen} />
+      <Tab.Screen name="Post" component={NewPostScreen} />
+      <Tab.Screen name="Events" component={PastorSecCodeScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
 
 const Stack = createStackNavigator();
 
@@ -94,11 +92,11 @@ function App() {
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
-        <Stack.Screen name="Main Feed" component={MainFeedScreen} />
-        <Stack.Screen name="New Post" component={NewPostScreen} />
+        <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
 
 export default App;

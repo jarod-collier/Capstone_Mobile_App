@@ -18,27 +18,27 @@ import {
 } from 'react-native';
 
 
-this.state = {
+var state = {
   Username: '',
   Password: '',
 };
 
-this.handleUsername = text => {
-  this.state.Username = text;
+var handleUsername = text => {
+  state.Username = text;
 };
 
-this.handlePassword = text => {
-  this.state.Password = text;
+var handlePassword = text => {
+  state.Password = text;
 };
 
-this.checkCredentials = () => {
+var checkCredentials = () => {
   //if no credentials, send to sign up screen.
-  if (this.state.Username == null || this.state.Password == null) {
+  if (state.Username == null || state.Password == null) {
     console.log("no username or password");
     return false;
   }
   //TODO: make this a regexp check for email?
-  else if (!this.state.Username.includes("@") || !this.state.Username.includes(".com") ){
+  else if (!state.Username.includes("@") || !state.Username.includes(".com") ){
     console.log("Improper username format");
     return false;
   }
@@ -47,9 +47,9 @@ this.checkCredentials = () => {
   }
 };
 
-this.logInUser = () => {
-  if(this.checkCredentials()){
-    firebase.auth().signInWithEmailAndPassword(this.state.Username, this.state.Password).catch(function(error) {
+var logInUser = () => {
+  if(checkCredentials()){
+    firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -106,26 +106,27 @@ function LoginScreen({navigation}) {
               style={styles.inputBox}
               placeholder="Enter your Username"
               placeholderTextColor="white"
-              onChangeText={this.handleUsername}
+              onChangeText={handleUsername}
             />
             <TextInput
               style={styles.inputBox}
               placeholder="Password"
               placeholderTextColor="white"
               secureTextEntry={true}
-              onChangeText={this.handlePassword}
+              onChangeText={handlePassword}
             />
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> this.logInUser() }>
+                // onPress={()=> this.logInUser() }>
+                onPress={()=> navigation.navigate('Main')}>
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={() => navigation.navigate('New Post')}>
+                onPress={() => navigation.navigate('Main')}>
                 <Text style={styles.customBtnText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>

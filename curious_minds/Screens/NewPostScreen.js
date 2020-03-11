@@ -136,7 +136,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-             onPress={() => {createPost(); navigation.navigate('Main Feed')}}
+             onPress={() => {createPost(); navigation.navigate('Main')}}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>

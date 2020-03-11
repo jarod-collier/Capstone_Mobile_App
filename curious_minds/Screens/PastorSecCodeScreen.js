@@ -14,11 +14,11 @@ import {
   Image,
 } from 'react-native';
 
-this.state = {
+var state = {
   Code: '',
 };
-this.handleCode = text => {
-  this.state.Code = text;
+var handleCode = text => {
+  state.Code = text;
 };
 
 function PastorSecCodeScreen({navigation}) {
@@ -42,7 +42,7 @@ function PastorSecCodeScreen({navigation}) {
               placeholder="Enter Code Here"
               //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
               placeholderTextColor="white"
-              onChangeText={this.handleCode}
+              onChangeText={handleCode}
             />
             <TouchableOpacity
               style={styles.Buttons}
