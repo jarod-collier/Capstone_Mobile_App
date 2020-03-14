@@ -8,6 +8,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  LayoutAnimation,
   Image,
   Button,
   Alert,
@@ -60,6 +61,7 @@ function NewPostScreen({navigation}) {
   const [pastorOnly, setPastorOnly] = useState(false);
   handleOptionAnon(Anon);
   handleOptionPastorOnly(pastorOnly);
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>

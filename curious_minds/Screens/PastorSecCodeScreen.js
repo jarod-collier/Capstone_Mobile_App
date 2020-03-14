@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   View,
+  LayoutAnimation,
   Text,
   TextInput,
   Button,
@@ -22,6 +23,7 @@ var handleCode = text => {
 };
 
 function PastorSecCodeScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView

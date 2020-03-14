@@ -10,10 +10,8 @@ import {
   StyleSheet,
   View,
   Text,
-//   TouchableOpacity,
+  ActivityIndicator,
   ScrollView,
-//   Image,
-//   Button,
   Alert,
   LayoutAnimation,
 } from 'react-native';
@@ -40,8 +38,6 @@ async function readFromDB(){
         })
         state.posts = postItems.reverse();
     });
-    // await delay(1000);
-    // console.log("outside post items", state.posts);
     await loadPostCards();
 }
 
@@ -89,15 +85,12 @@ async function loadPostCards(){
 function MainFeedScreen({navigation}) {
     const [isLoading, setLoading]= useState(true);
     readFromDB();
-    // delay(1000);
-    LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     if(isLoading){
           return(
             setTimeout(()=> setLoading(state.Loading), 1000),
-            <View>
-                <Text>
-                    Loading
-                </Text>
+            <View style={{flex:1, backgroundColor: '#696969', justifyContent: 'center'}}>
+              <ActivityIndicator size="large" color="000ff" />
             </View>
           );
 

@@ -10,6 +10,7 @@ import {
   Text,
   TextInput,
   Button,
+  LayoutAnimation,
   TouchableOpacity,
   Image,
 } from 'react-native';
@@ -42,6 +43,7 @@ var handleEmail = text => {
 };
 
 function UserSignUpScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView

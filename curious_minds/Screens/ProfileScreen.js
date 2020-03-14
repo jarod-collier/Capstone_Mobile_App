@@ -8,12 +8,14 @@ import {
   View,
   Text,
   TextInput,
+  LayoutAnimation,
   Button,
   TouchableOpacity,
   Image,
 } from 'react-native';
 
 function ProfileScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
      <Text>Profile Screen!</Text>

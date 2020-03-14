@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
   Text,
+  LayoutAnimation,
   TextInput,
   Button,
   TouchableOpacity,
@@ -49,6 +50,7 @@ var handleAdditionalInfo = text => {
 };
 
 function PastorSignUpScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>

@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
   Text,
+  LayoutAnimation,
   TextInput,
   Button,
   TouchableOpacity,
@@ -15,6 +16,7 @@ import {
 
 
 function EventScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
      <Text>Events!</Text>

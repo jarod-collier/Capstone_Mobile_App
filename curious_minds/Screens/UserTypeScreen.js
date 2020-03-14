@@ -10,12 +10,14 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  LayoutAnimation,
   Button,
   Alert,
   Platform,
 } from 'react-native';
 
 function UserTypeScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>

@@ -12,6 +12,7 @@ import {
   Text,
   TextInput,
   Button,
+  LayoutAnimation,
   TouchableOpacity,
   Image,
   Platform
@@ -95,6 +96,7 @@ var logInUser = () => {
 };
 
 function LoginScreen({navigation}) {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   return (
     <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
