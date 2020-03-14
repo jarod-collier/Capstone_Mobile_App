@@ -85,8 +85,9 @@ async function loadPostCards(){
 function MainFeedScreen({navigation}) {
     const [isLoading, setLoading]= useState(true);
     readFromDB();
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    
     if(isLoading){
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
           return(
             setTimeout(()=> setLoading(state.Loading), 1000),
             <View style={{flex:1, backgroundColor: '#696969', justifyContent: 'center'}}>
@@ -96,6 +97,7 @@ function MainFeedScreen({navigation}) {
 
     }
     else{
+      LayoutAnimation.easeInEaseOut();
         return (
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView>
