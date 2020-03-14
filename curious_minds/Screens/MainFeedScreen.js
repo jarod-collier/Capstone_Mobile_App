@@ -21,21 +21,14 @@ import {
 var state = {
   posts: [],
   display: [],
-  isLoading: true,
+  Loading: true,
 };
 
+const delay = ms => new Promise(res=>setTimeout(res,ms));
 
-// this.setLoadingStatus = Boolean => {
-//     this.state.isLoading = Boolean;
-// }
-
-// const getLoadingStatus = ()=> {
-//     return this.state.isLoading;
-// }
-
-function readFromDB(){
-    // this.setLoadingStatus(false);
-    db.ref('/posts/').once('value', function(snapshot){
+async function readFromDB(){
+    state.Loading = true;
+    await db.ref('/posts/').once('value', function(snapshot){
         let postItems = [];
         snapshot.forEach((child) => {
             postItems.push({
@@ -47,11 +40,12 @@ function readFromDB(){
         })
         state.posts = postItems.reverse();
     });
-    console.log("outside post items", state.posts);
-    loadPostCards();
+    // await delay(1000);
+    // console.log("outside post items", state.posts);
+    await loadPostCards();
 }
 
-function loadPostCards(){
+async function loadPostCards(){
     state.display = state.posts.map(postData => {
         return(
             <View key={postData.question}>
@@ -89,40 +83,37 @@ function loadPostCards(){
             </View>
         )
     });
-    // this.setLoadingStatus(true);
+    state.Loading = false;
 }
 
 function MainFeedScreen({navigation}) {
-    // const [isLoading, setLoading]= useState(true);
+    const [isLoading, setLoading]= useState(true);
     readFromDB();
-    // LayoutAnimation.easeInEaseOut();
-    // console.log("I'm here");
-    // if(isLoading){
-    //     console.log("I'm here2");
-    //       return(
-    //         <View>
-    //             <Text>
-    //                 Loading
-    //                 {/* <AnimatedEllipsis /> */}
-    //             </Text>
-    //         </View>
-    //       );
+    // delay(1000);
+    LayoutAnimation.easeInEaseOut();
+    if(isLoading){
+          return(
+            setTimeout(()=> setLoading(state.Loading), 1000),
+            <View>
+                <Text>
+                    Loading
+                </Text>
+            </View>
+          );
 
-    // }
-    // else{
+    }
+    else{
         return (
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView>
                     <View style={styles.container}>
                         {state.display}
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text>Main Feed!</Text>
-                    </View>
                 </ScrollView>
             </SafeAreaView>
           );
     // }
+}
 }
 
 const styles = StyleSheet.create({

@@ -99,7 +99,7 @@ function LoginScreen({navigation}) {
     <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
+            <Image source={require('../images/CM_logo02.png')}/>
           </View>
           <View>
             <TextInput
@@ -156,7 +156,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    margin: 100,
+    marginTop: 50,
+    marginBottom: 30,
   },
   inputBox: {
     borderRadius: 15,
