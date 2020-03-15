@@ -1,8 +1,7 @@
 import 'react-native-gesture-handler';
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useCallback, useRef} from 'react';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
-import {AnimatedEllipsis} from 'react-native-animated-ellipsis';
 import { db } from '../FireDatabase/config';
 
 import {
@@ -11,7 +10,9 @@ import {
   View,
   Text,
   ActivityIndicator,
+  Modal,
   ScrollView,
+  RefreshControl,
   Alert,
   LayoutAnimation,
 } from 'react-native';
@@ -84,31 +85,36 @@ async function loadPostCards(){
 
 function MainFeedScreen({navigation}) {
     const [isLoading, setLoading]= useState(true);
+    const onRefresh = useCallback(() => {
+      setLoading(true);
+      delay(2000).then(()=> setLoading(false))}, [isLoading]
+    );
     readFromDB();
-    
-    if(isLoading){
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-          return(
-            setTimeout(()=> setLoading(state.Loading), 1000),
-            <View style={{flex:1, backgroundColor: '#696969', justifyContent: 'center'}}>
-              <ActivityIndicator size="large" color="000ff" />
-            </View>
-          );
-
-    }
-    else{
-      LayoutAnimation.easeInEaseOut();
-        return (
-            <SafeAreaView style={{flex: 1}}>
-                <ScrollView>
-                    <View style={styles.container}>
-                        {state.display}
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
-          );
-    // }
-}
+    LayoutAnimation.easeInEaseOut();
+    return (
+      setTimeout(()=> setLoading(state.Loading), 500),
+      <SafeAreaView style={{flex: 1}}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          <View style={styles.container}>
+            {state.display}
+          </View>
+          {/* <Modal
+           transparent={true}
+           animationType={'none'}
+           visible={isLoading}
+          >
+            <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
+          </Modal> */}
+        </ScrollView>
+      </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -118,6 +124,16 @@ const styles = StyleSheet.create({
   },
   logo: {
     margin: 100,
+  },
+  overlay: {
+    // flex:1, 
+    justifyContent: 'center', 
+    alignSelf: 'stretch',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    // opacity: 0.1,
+    // backgroundColor: '#696969',
   },
   inputBox: {
     alignItems:'stretch',

@@ -96,7 +96,7 @@ var logInUser = () => {
 };
 
 function LoginScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
   return (
     <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
