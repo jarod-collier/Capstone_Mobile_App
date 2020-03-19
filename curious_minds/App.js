@@ -75,7 +75,7 @@ function Main() {
     >
       <Tab.Screen name="Main" component={MainFeedScreen} />
       <Tab.Screen name="Post" component={NewPostScreen} />
-      <Tab.Screen name="Events" component={PastorSecCodeScreen} />
+      <Tab.Screen name="Events" component={EventScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

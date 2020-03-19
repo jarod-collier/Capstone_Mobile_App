@@ -107,8 +107,7 @@ function MainFeedScreen({navigation}) {
                 </ScrollView>
             </SafeAreaView>
           );
-    // }
-}
+    }
 }
 
 const styles = StyleSheet.create({

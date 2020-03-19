@@ -1,6 +1,8 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import firebase from 'firebase';
+import { db } from '../FireDatabase/config';
 
 import {
   SafeAreaView,
@@ -13,6 +15,7 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 
 var state = {
@@ -40,6 +43,25 @@ var handlePassword = text => {
 };
 var handleEmail = text => {
   state.Email = text;
+};
+
+function handleSignUp(navigation){
+
+  var UserId;
+  firebase.auth()
+  .createUserWithEmailAndPassword(state.Email, state.Password)
+  .then(data => UserId = data.user.uid)
+  .then(() => db.ref('/userInfo').push({
+    First: "" + state.FirstName,
+    Last: "" + state.LastName,
+    Username: "" + state.Username,
+    uid: UserId,
+    userType: "user"
+  }).catch((error)=>{
+    Alert.alert('error ', error)
+  }))
+  .then(() => navigation.navigate('Main'))
+  .catch(error => Alert.alert(error.message));
 };
 
 function UserSignUpScreen({navigation}) {
@@ -98,7 +120,7 @@ function UserSignUpScreen({navigation}) {
           <View>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => navigation.navigate('Login')}>
+              onPress={() => handleSignUp(navigation)}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>

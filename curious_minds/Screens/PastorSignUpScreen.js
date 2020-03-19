@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import firebase from 'firebase';
+import { db } from '../FireDatabase/config';
 
 import {
   SafeAreaView,
@@ -9,6 +11,7 @@ import {
   Text,
   LayoutAnimation,
   TextInput,
+  Alert,
   Button,
   TouchableOpacity,
   Image,
@@ -47,6 +50,29 @@ var handleSeminary = text => {
 };
 var handleAdditionalInfo = text => {
   state.addintionalInfo = text;
+};
+
+function handleSignUp(navigation){
+
+  var UserId;
+  firebase.auth()
+  .createUserWithEmailAndPassword(state.Email, state.Password)
+  .then(data => UserId = data.user.uid)
+  .then(() => db.ref('/userInfo').push({
+    First: "" + state.FirstName,
+    Last: "" + state.LastName,
+    Username: "" + state.Username,
+    Preach: "" + state.preach,
+    Seminary: "" + state.seminary,
+    AddintionalInfo: "" + state.AddintionalInfo,
+    pastorCode: "" + (Math.random().toString(16).substring(2, 6) + Math.random().toString(16).substring(2, 6)),
+    uid: UserId,
+    userType: "pastor"
+  }).catch((error)=>{
+    Alert.alert('error ', error)
+  }))
+  .then(() => navigation.navigate('Main'))
+  .catch(error => Alert.alert(error.message));
 };
 
 function PastorSignUpScreen({navigation}) {
@@ -125,7 +151,7 @@ function PastorSignUpScreen({navigation}) {
           <View>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => navigation.navigate('Login')}>
+              onPress={() => handleSignUp(navigation)}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
