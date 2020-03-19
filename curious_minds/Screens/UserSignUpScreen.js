@@ -1,6 +1,8 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { db } from '../FireDatabase/config';
+import firebase from 'firebase';
 
 import {
   SafeAreaView,
@@ -41,6 +43,52 @@ var handlePassword = text => {
 var handleEmail = text => {
   state.Email = text;
 };
+
+this.signUpUser = () => {
+  firebase.auth().createUserWithEmailAndPassword(state.Email, state.Password).then((user) => {
+  }).catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    if (errorMessage == "email-already-in-use") 
+      console.log("User with this email already exists. Please sign in.");
+      //navigate to sign in page
+    else
+      console.log("Sign up error" + errorMessage);
+      console.log(state.Email + " / " + state.Password);
+  })
+}
+
+this.addUserToDB = () => {
+  
+  var userData = this.signUpUser();
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      /*these are just the main things you can get from user.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
+      */
+      global.user = user;
+      db.ref("/users").child(global.user.uid).set({
+        fname: state.FirstName,
+        lname: state.LastName,
+        username: state.Username, 
+        password: state.Password,
+        email: state.Email
+      }).then( (data) => {
+        //console.log(data);
+      });
+    } else {
+      console.log("no user found");
+    }
+  });
+  
+}
 
 function UserSignUpScreen({navigation}) {
   LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
@@ -98,7 +146,7 @@ function UserSignUpScreen({navigation}) {
           <View>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => navigation.navigate('Login')}>
+              onPress={() => this.addUserToDB()}>
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
