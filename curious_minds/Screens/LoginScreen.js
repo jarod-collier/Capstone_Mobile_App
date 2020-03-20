@@ -32,7 +32,7 @@ var handlePassword = text => {
   state.Password = text;
 };
 
-var logInUser = () => {
+var logInUser = (navigation) => {
     global.user = null;
     firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
       // Handle Errors here.
@@ -58,6 +58,7 @@ var logInUser = () => {
       global.user = user;
 
       //navigate to new post screen
+      navigation.navigate('Main');
       // ...
     } else {
       console.log("no user found");
@@ -69,6 +70,7 @@ var logInUser = () => {
 };
 
 function LoginScreen({navigation}) {
+  firebase.auth().signOut();
   LayoutAnimation.easeInEaseOut();
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -93,8 +95,8 @@ function LoginScreen({navigation}) {
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                // onPress={()=> this.logInUser() }>
-                onPress={()=> navigation.navigate('Main')}>
+                onPress={()=> logInUser(navigation) }>
+                {/* // onPress={()=> navigation.navigate('Main')}> */}
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>

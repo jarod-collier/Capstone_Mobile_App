@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useCallback, useState} from 'react';
 import 'react-native-gesture-handler';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
@@ -15,47 +15,79 @@ import {
   ActivityIndicator,
   ScrollView,
   Alert,
+  RefreshControl,
   LayoutAnimation,
 } from 'react-native';
 
 var state = {
   events: [],
   display: [],
+  canAdd: false,
   Loading: true,
 };
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
-function canAddEvent (){
+async function canAddEvent (){
   let uid = firebase.auth().currentUser.uid;
-  let canAdd = false;
+  // console.log("uid: " + uid);
+  let userCan = false;
   let userType = "";
-  db.ref('userInfo').once('value', function(snapshot){
-    snapshot.some((child) => {
-      if(uid === child.val().uid){
-        userType = child.val.userType;
-        return userType === userType;
+  await db.ref('userInfo').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.val().uid === uid){
+        userType = child.val().userType;
+        userCan = true;
       }
-    })
+    });
   });
-
+  // console.log(userType);
+  state.canAdd = userCan;
+  state.Loading = false;
   if(userType === "pastor") return true;
   else return false;
 }
 
 function EventScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  const [isLoading, setLoading]= useState(true);
+  const [addButton, setAddButton]= useState(false);
+  const onRefresh = useCallback(() => {
+    setLoading(true);
+    delay(2000).then(()=> setLoading(false))}, [isLoading]
+  );
+  canAddEvent();
+  LayoutAnimation.easeInEaseOut();
   return (
-   <View style={styles.container}>
-     if(canAddEvent()){
-      <TouchableOpacity
-        style={styles.Buttons}
-        // onPress={() => }
+    setTimeout(()=> setLoading(state.Loading), 500),
+    setTimeout(()=> setAddButton(state.canAdd), 500),
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={onRefresh}
+          />
+        }
       >
-      <Text style={styles.customBtnText}>Add Event</Text>
-      </TouchableOpacity>
-    }x
-   </View>
+      <View style={styles.container}>
+        { addButton && 
+          <TouchableOpacity
+            style={styles.Buttons}
+            // onPress={() => }
+          >
+          <Text style={styles.customBtnText}>Add Event</Text>
+          </TouchableOpacity>
+        }
+        </View>
+        {/* <Modal
+          transparent={true}
+          animationType={'none'}
+          visible={isLoading}
+        >
+          <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
+        </Modal> */}
+      </ScrollView>
+    </SafeAreaView>
  );
 }
 const styles = StyleSheet.create({

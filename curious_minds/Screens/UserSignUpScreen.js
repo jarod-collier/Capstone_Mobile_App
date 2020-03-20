@@ -1,13 +1,8 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-<<<<<<< HEAD
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
-=======
-import { db } from '../FireDatabase/config';
-import firebase from 'firebase';
->>>>>>> ef68077341688750bc522d61a743f35dfb341f89
 
 import {
   SafeAreaView,
