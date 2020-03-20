@@ -32,48 +32,18 @@ var handlePassword = text => {
   state.Password = text;
 };
 
-var checkCredentials = () => {
-  //if no credentials, send to sign up screen.
-  if (state.Username == null || state.Password == null) {
-    console.log("no username or password");
-    return false;
-  }
-  //TODO: make this a regexp check for email?
-  else if (!state.Username.includes("@") || !state.Username.includes(".com") ){
-    console.log("Improper username format");
-    return false;
-  }
-  else {
-    return true;
-  }
-};
-
 var logInUser = () => {
-  if(checkCredentials()){
+    global.user = null;
     firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorCode + errorMessage);
       if (errorCode == "auth/user-not-found"){//user doesn't exist
-        //navigation.navigate('User Type');  //Don't know why this doesn't work.
         console.log("No user found.  Please sign in.")
       }
-
-      // ...
     });
-  }
-  else {
-    firebase.auth().signInAnonymously().catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode + errorMessage);
-      //navigation.navigate('New Post'); //Don't know why this doesn't work.
-
-      // ...
-    });
-  }
+  
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -85,6 +55,9 @@ var logInUser = () => {
       var isAnonymous = user.isAnonymous;
       var uid = user.uid;
       var providerData = user.providerData;
+      global.user = user;
+
+      //navigate to new post screen
       // ...
     } else {
       console.log("no user found");

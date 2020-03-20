@@ -74,8 +74,6 @@ async function loadPostCards(){
                                     onPress={()=> Alert.alert('Report')} />
                             <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
                         </View>
-
-
                 </Card>
             </View>
         )
