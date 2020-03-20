@@ -125,11 +125,7 @@ function UserSignUpScreen({navigation}) {
           <View>
             <TouchableOpacity
               style={styles.Buttons}
-<<<<<<< HEAD
               onPress={() => handleSignUp(navigation)}>
-=======
-              onPress={() => this.addUserToDB()}>
->>>>>>> ef68077341688750bc522d61a743f35dfb341f89
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
