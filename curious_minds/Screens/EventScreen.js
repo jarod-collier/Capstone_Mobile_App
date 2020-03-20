@@ -31,10 +31,10 @@ function canAddEvent (){
   let canAdd = false;
   let userType = "";
   db.ref('userInfo').once('value', function(snapshot){
-    snapshot.forEach((child) => {
+    snapshot.some((child) => {
       if(uid === child.val().uid){
         userType = child.val.userType;
-        break;
+        return userType === userType;
       }
     })
   });
