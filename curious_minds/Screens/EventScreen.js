@@ -2,9 +2,9 @@ import React, {Component, useCallback, useState} from 'react';
 import 'react-native-gesture-handler';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
-import {AnimatedEllipsis} from 'react-native-animated-ellipsis';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
   SafeAreaView,
@@ -18,6 +18,7 @@ import {
   RefreshControl,
   LayoutAnimation,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 var state = {
   events: [],
@@ -41,11 +42,44 @@ async function canAddEvent (){
       }
     });
   });
-  // console.log(userType);
   state.canAdd = userCan;
   state.Loading = false;
   if(userType === "pastor") return true;
   else return false;
+}
+
+async function readFromDB(){
+  state.Loading = true;
+  await db.ref('/events/').once('value', function(snapshot){
+      let postItems = [];
+      snapshot.forEach((child) => {
+          postItems.push({
+              title: child.val().title,
+              desc: child.val().desc,
+              date: child.val().date,
+              time: child.val().time,
+              location: child.val().location,
+          });
+      })
+      state.events = postItems.reverse();
+  });
+  await loadEventCards();
+}
+
+async function loadEventCards(){
+  state.display = state.events.map(eventData => {
+      return(
+          <View key={eventData.title}>
+              <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
+                      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{eventData.title}</Text>
+                      <Text style={{marginTop: 3}}>{eventData.desc}</Text>
+                      <Text>Date: {eventData.date}</Text>
+                      <Text>Time: {eventData.time}</Text>
+              </Card>
+          </View>
+      )
+  });
+  state.Loading = false;
 }
 
 function EventScreen({navigation}) {
@@ -56,6 +90,7 @@ function EventScreen({navigation}) {
     delay(2000).then(()=> setLoading(false))}, [isLoading]
   );
   canAddEvent();
+  readFromDB();
   LayoutAnimation.easeInEaseOut();
   return (
     setTimeout(()=> setLoading(state.Loading), 500),
@@ -73,12 +108,21 @@ function EventScreen({navigation}) {
         { addButton && 
           <TouchableOpacity
             style={styles.Buttons}
-            // onPress={() => }
+            onPress={() => navigation.navigate('Add Event')}
           >
-          <Text style={styles.customBtnText}>Add Event</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={styles.customBtnText}>Add Event</Text>
+              <Button 
+                style={{backgroundColor: 'green'}}
+                name="calendar" 
+                color="white" />
+            </View>
           </TouchableOpacity>
         }
         </View>
+        <View style={styles.container}>
+            {state.display}
+          </View>
         {/* <Modal
           transparent={true}
           animationType={'none'}

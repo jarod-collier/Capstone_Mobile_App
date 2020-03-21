@@ -22,6 +22,7 @@ import MainFeedScreen from './Screens/MainFeedScreen';
 import NewPostScreen from './Screens/NewPostScreen';
 import EventScreen from './Screens/EventScreen';
 import ProfileScreen from './Screens/ProfileScreen';
+import NewEventScreen from './Screens/NewEventScreen';
 
 
 const styles = StyleSheet.create({
@@ -92,6 +93,7 @@ function App() {
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
+        <Stack.Screen name="Add Event" component={NewEventScreen} />
         <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     </NavigationContainer>

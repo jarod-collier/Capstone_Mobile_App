@@ -17,7 +17,7 @@ import {
   Image,
 } from 'react-native';
 
-var state = {
+state = {
   FirstName: '',
   LastName: '',
   Username: '',
@@ -27,28 +27,28 @@ var state = {
   seminary: '',
   addintionalInfo: '',
 };
-var handleFirstName = text => {
+const handleFirstName = text => {
   state.FirstName = text;
 };
-var handleLastName = text => {
+const handleLastName = text => {
   state.LastName = text;
 };
-var handleUsername = text => {
+const handleUsername = text => {
   state.Username = text;
 };
-var handlePassword = text => {
+const handlePassword = text => {
   state.Password = text;
 };
-var handleEmail = text => {
+const handleEmail = text => {
   state.Email = text;
 };
-var handlePreach = text => {
+const handlePreach = text => {
   state.preach = text;
 };
-var handleSeminary = text => {
+const handleSeminary = text => {
   state.seminary = text;
 };
-var handleAdditionalInfo = text => {
+const handleAdditionalInfo = text => {
   state.addintionalInfo = text;
 };
 
@@ -64,7 +64,7 @@ function handleSignUp(navigation){
     Username: "" + state.Username,
     Preach: "" + state.preach,
     Seminary: "" + state.seminary,
-    AddintionalInfo: "" + state.AddintionalInfo,
+    AddintionalInfo: "" + state.addintionalInfo,
     pastorCode: "" + (Math.random().toString(16).substring(2, 6) + Math.random().toString(16).substring(2, 6)),
     uid: UserId,
     userType: "pastor"
@@ -76,14 +76,14 @@ function handleSignUp(navigation){
 };
 
 function PastorSignUpScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
         <KeyboardAwareScrollView
          resetScrollToCoords={{x: 0, y: 0}}
          contentContainerStyle={styles.container}
-         scrollEnabled={false}
+         scrollEnabled={true}
         >
           <View style={styles.logo}>
             <Image source={require('../images/logo_placeholder.png')} />
@@ -148,7 +148,7 @@ function PastorSignUpScreen({navigation}) {
               />
             </View>
           </View>
-          <View>
+          <View style={{marginBottom: 30}}> 
             <TouchableOpacity
               style={styles.Buttons}
               onPress={() => handleSignUp(navigation)}>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: '400',
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
   },
   infoHereText: {
     fontSize: 35,

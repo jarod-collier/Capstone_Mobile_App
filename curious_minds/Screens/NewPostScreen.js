@@ -18,7 +18,7 @@ import { db } from '../FireDatabase/config';
 
 
 
-this.state = {
+state = {
     checked: {},
     Question: '',
     Description: '',
@@ -26,11 +26,11 @@ this.state = {
     pastorOnly: false,
   };
 
-this.handleQuestion = text => {
+const handleQuestion = text => {
     this.state.Question = text;
 };
 
-this.handleDescription = text => {
+const handleDescription = text => {
     this.state.Description = text;
 };
 
@@ -38,7 +38,7 @@ const handleOptionAnon = Boolean => {
     this.state.Anon = Boolean;
 };
 
-this.handleOptionPastorOnly = Boolean => {
+const handleOptionPastorOnly = Boolean => {
     this.state.pastorOnly = Boolean;
 };
 
@@ -78,7 +78,7 @@ function NewPostScreen({navigation}) {
             style={styles.inputBox}
             placeholder="Type your question here"
             placeholderTextColor="white"
-            onChangeText={this.handleQuestion}
+            onChangeText={handleQuestion}
           />
         </View>
         <View>
@@ -96,7 +96,7 @@ function NewPostScreen({navigation}) {
             placeholderTextColor="white"
             multiline={true}
             numberOfLines={10}
-            onChangeText={this.handleDescription}
+            onChangeText={handleDescription}
           />
         </View>
         <View>
