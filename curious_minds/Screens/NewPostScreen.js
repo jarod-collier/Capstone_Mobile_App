@@ -133,8 +133,7 @@ function NewPostScreen({navigation}) {
             <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
           </View>
         </View>
-        <View
-        // style={styles.footer}
+        <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}
         >
           <TouchableOpacity
             style={styles.Buttons}
@@ -175,10 +174,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    borderColor: 'white',
+    borderColor: 'green',
     borderRadius: 15,
     height: 40,
+    width: 350,
     marginHorizontal: 15,
+    marginBottom: 15,
   },
   multiline: {
     borderRadius: 15,
