@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, useCallback, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Button} from 'react-native-vector-icons/FontAwesome';
+import firebase from 'firebase';
+import { db } from '../FireDatabase/config';
 
 import {
   SafeAreaView,
@@ -15,9 +17,51 @@ import {
   Image,
 } from 'react-native';
 
+var state= {
+  username: '',
+  email: '',
+  aboutMe: '',
+  fName: '',
+  lName: '',
+  Loading: true,
+  pastorUser: false,
+  preach: '',
+  seminary: '',
+  pastorCode: '',
+};
+
+const delay = ms => new Promise(res=>setTimeout(res,ms));
+
+async function getUserInfo(){
+  state.Loading = true;
+  let uid = firebase.auth().currentUser.uid;
+  
+  await db.ref('/userInfo/').once('value', function(snapshot){
+      snapshot.forEach((child) => {
+          if(child.val().uid === uid){
+            state.fName = child.val().First;
+            state.lName = child.val().Last;
+            state.email = firebase.auth().currentUser.email;
+            state.username = child.val().Username;
+            if(child.val().userType === 'pastor'){
+              state.pastorUser = true;
+              state.preach = child.val().Preach;
+              state.seminary = child.val().Seminary;
+              state.pastorCode = child.val().pastorCode;
+            }
+          }
+      })
+  });
+  console.log('done with DB');
+  state.Loading = false;
+}
+
 function ProfileScreen({navigation}) {
+  const [isLoading, setLoading]= useState(true);
+  getUserInfo();
   LayoutAnimation.easeInEaseOut();
-  return (
+  return(
+    setTimeout(()=> setLoading(state.Loading), 500),
    <View style={styles.container}>
      <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
        {/* image view */}
@@ -29,7 +73,7 @@ function ProfileScreen({navigation}) {
             <Button
               style={{backgroundColor: '#A59F9F'}}
               color='white'
-              name='camera'
+              name='user'
               size={35}
                />
           </TouchableOpacity>
@@ -38,7 +82,7 @@ function ProfileScreen({navigation}) {
         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
           {/*name line */}        
           <View>
-            <Text style={{fontSize: 34, fontWeight: 'bold', marginLeft: 10, marginBottom: 20, marginTop: 20}}>First Last</Text>
+  <Text style={{fontSize: 34, fontWeight: 'bold', marginLeft: 10, marginBottom: 20, marginTop: 20}}>{state.fName} {state.lName}</Text>
           </View>
           {/*posts line */}        
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
@@ -70,17 +114,17 @@ function ProfileScreen({navigation}) {
        <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,}}>Here is about me</Text>
        {/*username line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username:</Text>
-        <Text style={{fontSize: 18, marginTop: 20}}>    Username:</Text>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
+        <Text style={{fontSize: 18, marginTop: 20}}>    {state.username}</Text>
        </View>
        {/*email line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Email:</Text>
-        <Text style={{fontSize: 18, marginTop: 20}}>              Username:</Text>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Email</Text>
+        <Text style={{fontSize: 18, marginTop: 20}}>              {state.email}</Text>
        </View>
        {/*password line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Password:</Text>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Password</Text>
         <TouchableOpacity
             style={styles.Buttons}
             onPress={() => Alert.alert('reset password')}
@@ -90,6 +134,28 @@ function ProfileScreen({navigation}) {
           </View>
         </TouchableOpacity>
        </View>
+       { state.pastorUser &&
+          <View>
+            {/* Preach line */}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Preach</Text>
+              <Text style={{fontSize: 18, marginTop: 20}}>           {state.preach}</Text>
+            </View>
+            {/* seminary line */}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Seminary</Text>
+              <Text style={{fontSize: 18, marginTop: 20}}>         {state.seminary}</Text>
+            </View>
+            {/* pastor code line */}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Pastor code</Text>
+              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>         {state.pastorCode}</Text>
+            </View>
+
+          </View>
+          
+       }
+       {/** delete button */}
        <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
        <TouchableOpacity
             style={styles.Delete}
