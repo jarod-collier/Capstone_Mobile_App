@@ -68,16 +68,16 @@ async function readFromDB(){
 
 async function loadEventCards(){
   state.display = state.events.map(eventData => {
-      return(
-          <View key={eventData.title}>
-              <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
-                      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{eventData.title}</Text>
-                      <Text style={{marginTop: 3}}>{eventData.desc}</Text>
-                      <Text>Date: {eventData.date}</Text>
-                      <Text>Time: {eventData.time}</Text>
-              </Card>
-          </View>
-      )
+    return(
+      <View key={eventData.title}>
+          <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{eventData.title}</Text>
+            <Text style={{marginTop: 3}}>{eventData.desc}</Text>
+            <Text>Date: {eventData.date}</Text>
+            <Text>Time: {eventData.time}</Text>
+          </Card>
+      </View>
+    )
   });
   state.Loading = false;
 }
@@ -105,16 +105,16 @@ function EventScreen({navigation}) {
         }
       >
       <View style={styles.container}>
-        { addButton && 
+        { addButton &&
           <TouchableOpacity
             style={styles.Buttons}
             onPress={() => navigation.navigate('Add Event')}
           >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={styles.customBtnText}>Add Event</Text>
-              <Button 
+              <Button
                 style={{backgroundColor: 'green'}}
-                name="calendar" 
+                name="calendar"
                 color="white" />
             </View>
           </TouchableOpacity>

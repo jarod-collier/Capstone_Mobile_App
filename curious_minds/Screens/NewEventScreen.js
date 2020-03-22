@@ -20,7 +20,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
-this.state = {
+var state = {
     Name: '',
     Description: '',
     location: '',
@@ -91,15 +91,15 @@ function NewEventScreen({navigation}) {
   };
 
   LayoutAnimation.easeInEaseOut();
-  return ( 
+  return (
     <SafeAreaView style={{flex: 1}}>
-            <KeyboardAwareScrollView 
+            <KeyboardAwareScrollView
             resetScrollToCoords={{x: 0, y: 0}}
             contentContainerStyle={styles.container}
             scrollEnabled={true}>
                 <View style={styles.container}>
                     <View>
-                        <Text style={{   
+                        <Text style={{
                             marginTop: 40,
                             marginLeft: 15,
                             fontSize: 24,
@@ -157,7 +157,7 @@ function NewEventScreen({navigation}) {
                         </TouchableOpacity>
                     </View>
                     {showDate &&
-                    
+
                         <DateTimePicker
                             value={date}
                             mode={'date'}

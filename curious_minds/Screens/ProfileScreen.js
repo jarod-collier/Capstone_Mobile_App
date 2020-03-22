@@ -35,7 +35,7 @@ const delay = ms => new Promise(res=>setTimeout(res,ms));
 async function getUserInfo(){
   state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
-  
+
   await db.ref('/userInfo/').once('value', function(snapshot){
       snapshot.forEach((child) => {
           if(child.val().uid === uid){
@@ -65,7 +65,7 @@ function ProfileScreen({navigation}) {
    <View style={styles.container}>
      <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
        {/* image view */}
-        <View style={{justifyContent: 'center'}}>   
+        <View style={{justifyContent: 'center'}}>
           <TouchableOpacity
             style={styles.image}
             onPress={()=> Alert.alert('Add')}
@@ -80,17 +80,17 @@ function ProfileScreen({navigation}) {
           </View>
           {/* text view */}
         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-          {/*name line */}        
+          {/*name line */}
           <View>
   <Text style={{fontSize: 34, fontWeight: 'bold', marginLeft: 10, marginBottom: 20, marginTop: 20}}>{state.fName} {state.lName}</Text>
           </View>
-          {/*posts line */}        
+          {/*posts line */}
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Text style={{fontSize: 18, marginLeft: 10}}> Posts{'\n'}written</Text>
             <Text style={{fontSize: 18, marginLeft: 10}}>      Posts{'\n'}commented{'\n'}        on</Text>
             <Text style={{fontSize: 18, marginLeft: 10}}>{'\n'}Score</Text>
           </View>
-          {/*numbers line */}        
+          {/*numbers line */}
           <View style={{flexDirection: 'row'}}>
             <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> 0</Text>
             <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
@@ -153,7 +153,7 @@ function ProfileScreen({navigation}) {
             </View>
 
           </View>
-          
+
        }
        {/** delete button */}
        <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
@@ -163,9 +163,9 @@ function ProfileScreen({navigation}) {
           >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={styles.customBtnText}>Delete Account</Text>
-              <Button 
+              <Button
                 style={{backgroundColor: 'red'}}
-                name="trash" 
+                name="trash"
                 color="black" />
             </View>
           </TouchableOpacity>

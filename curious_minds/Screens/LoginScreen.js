@@ -43,7 +43,7 @@ var logInUser = (navigation) => {
         console.log("No user found.  Please sign in.")
       }
     });
-  
+
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -74,52 +74,52 @@ function LoginScreen({navigation}) {
   LayoutAnimation.easeInEaseOut();
   return (
     <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={require('../images/CM_logo02.png')}/>
-          </View>
+      <View style={styles.container}>
+        <View style={styles.logo}>
+          <Image source={require('../images/CM_logo02.png')}/>
+        </View>
+        <View>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Enter your Username"
+            placeholderTextColor="white"
+            onChangeText={handleUsername}
+          />
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Password"
+            placeholderTextColor="white"
+            secureTextEntry={true}
+            onChangeText={handlePassword}
+          />
           <View>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Enter your Username"
-              placeholderTextColor="white"
-              onChangeText={handleUsername}
-            />
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Password"
-              placeholderTextColor="white"
-              secureTextEntry={true}
-              onChangeText={handlePassword}
-            />
-            <View>
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={()=> logInUser(navigation) }>
-                {/* // onPress={()=> navigation.navigate('Main')}> */}
-                <Text style={styles.customBtnText}>Log In</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={() => navigation.navigate('Main')}>
-                <Text style={styles.customBtnText}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View>
-            <Text
-              style={styles.customBtnText}>
-              Don't have an account yet?
-            </Text>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={()=> navigation.navigate('User Type')}>
-              <Text style={styles.customBtnText}>Sign Up</Text>
+              onPress={()=> logInUser(navigation) }>
+              {/* // onPress={()=> navigation.navigate('Main')}> */}
+              <Text style={styles.customBtnText}>Log In</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => navigation.navigate('Main')}>
+              <Text style={styles.customBtnText}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
         </View>
+        <View>
+          <Text
+            style={styles.customBtnText}>
+            Don't have an account yet?
+          </Text>
+          <TouchableOpacity
+            style={styles.Buttons}
+            onPress={()=> navigation.navigate('User Type')}>
+            <Text style={styles.customBtnText}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }

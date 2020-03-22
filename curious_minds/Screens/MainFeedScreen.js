@@ -26,59 +26,59 @@ var state = {
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
 async function readFromDB(){
-    state.Loading = true;
-    await db.ref('/posts/').once('value', function(snapshot){
-        let postItems = [];
-        snapshot.forEach((child) => {
-            postItems.push({
-                question: child.val().question,
-                desc: child.val().desc,
-                anon: child.val().Anon,
-                pastorOnly: child.val().PastorOnly
-            });
-        })
-        state.posts = postItems.reverse();
-    });
-    await loadPostCards();
+  state.Loading = true;
+  await db.ref('/posts/').once('value', function(snapshot){
+    let postItems = [];
+    snapshot.forEach((child) => {
+      postItems.push({
+        question: child.val().question,
+        desc: child.val().desc,
+        anon: child.val().Anon,
+        pastorOnly: child.val().PastorOnly
+      });
+    })
+    state.posts = postItems.reverse();
+  });
+  await loadPostCards();
 }
 
 async function loadPostCards(){
-    state.display = state.posts.map(postData => {
-        return(
-            <View key={postData.question}>
-                <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
-                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
-                        <Text style={{marginTop: 3}}>{postData.desc}</Text>
-                        {/* //This needs to be fixed */}
-                        <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
-                        <View style={{flexDirection:'row', alignItems: 'stretch'}}>
-                                <Button
-                                    style={{backgroundColor: 'white'}}
-                                    color='black'
-                                    name='comment'
-                                    onPress={()=> Alert.alert('Comment')} />
-                                <Button
-                                    style={{backgroundColor: 'white'}}
-                                    color='black'
-                                    name='language'
-                                    onPress={()=> Alert.alert('Translate')} />
-                                <Button
-                                    style={{backgroundColor: 'white'}}
-                                    color='black'
-                                    name='thumbs-up'
-                                    onPress={()=> Alert.alert('Like')} />
-                                <Button
-                                    style={{backgroundColor: 'white'}}
-                                    color='black'
-                                    name='exclamation-triangle'
-                                    onPress={()=> Alert.alert('Report')} />
-                            <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
-                        </View>
-                </Card>
-            </View>
-        )
-    });
-    state.Loading = false;
+  state.display = state.posts.map(postData => {
+    return(
+      <View key={postData.question}>
+        <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
+            <Text style={{marginTop: 3}}>{postData.desc}</Text>
+            {/* //This needs to be fixed */}
+            <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
+            <View style={{flexDirection:'row', alignItems: 'stretch'}}>
+              <Button
+                style={{backgroundColor: 'white'}}
+                color='black'
+                name='comment'
+                onPress={()=> Alert.alert('Comment')} />
+              <Button
+                style={{backgroundColor: 'white'}}
+                color='black'
+                name='language'
+                onPress={()=> Alert.alert('Translate')} />
+              <Button
+                style={{backgroundColor: 'white'}}
+                color='black'
+                name='thumbs-up'
+                onPress={()=> Alert.alert('Like')} />
+              <Button
+                style={{backgroundColor: 'white'}}
+                color='black'
+                name='exclamation-triangle'
+                onPress={()=> Alert.alert('Report')} />
+              <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
+          </View>
+        </Card>
+      </View>
+    )
+  });
+  state.Loading = false;
 }
 
 function MainFeedScreen({navigation}) {
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     margin: 100,
   },
   overlay: {
-    // flex:1, 
-    justifyContent: 'center', 
+    // flex:1,
+    justifyContent: 'center',
     alignSelf: 'stretch',
     position: 'absolute',
     top: 0,
