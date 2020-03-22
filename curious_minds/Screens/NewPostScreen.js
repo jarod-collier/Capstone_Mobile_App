@@ -15,10 +15,9 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { db } from '../FireDatabase/config';
+import { useFocusEffect } from '@react-navigation/native';
 
-
-
-state = {
+var state = {
     checked: {},
     Question: '',
     Description: '',
@@ -27,28 +26,27 @@ state = {
   };
 
 const handleQuestion = text => {
-    this.state.Question = text;
+    state.Question = text;
 };
 
 const handleDescription = text => {
-    this.state.Description = text;
+    state.Description = text;
 };
 
 const handleOptionAnon = Boolean => {
-    this.state.Anon = Boolean;
+    state.Anon = Boolean;
 };
 
 const handleOptionPastorOnly = Boolean => {
-    this.state.pastorOnly = Boolean;
+    state.pastorOnly = Boolean;
 };
 
 function createPost(){
-
   db.ref('/posts').push({
-    question: "" + this.state.Question,
-    desc: "" + this.state.Description,
-    Anon: this.state.Anon,
-    PastorOnly: this.state.pastorOnly
+    question: "" + state.Question,
+    desc: "" + state.Description,
+    Anon: state.Anon,
+    PastorOnly: state.pastorOnly
   }).catch((error)=>{
     Alert.alert('error ', error)
   })
@@ -56,12 +54,27 @@ function createPost(){
   Alert.alert('Post added successfully');
 };
 
+var clearQuestion = React.createRef();
+var clearDescription = React.createRef();
+
 function NewPostScreen({navigation}) {
   const [Anon, setAnon] = useState(false);
   const [pastorOnly, setPastorOnly] = useState(false);
   handleOptionAnon(Anon);
   handleOptionPastorOnly(pastorOnly);
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearQuestion.current.clear();
+        clearDescription.current.clear();
+        setPastorOnly(false);
+        setAnon(false);
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -79,6 +92,7 @@ function NewPostScreen({navigation}) {
             placeholder="Type your question here"
             placeholderTextColor="white"
             onChangeText={handleQuestion}
+            ref={clearQuestion}
           />
         </View>
         <View>
@@ -97,6 +111,7 @@ function NewPostScreen({navigation}) {
             multiline={true}
             numberOfLines={10}
             onChangeText={handleDescription}
+            ref={clearDescription}
           />
         </View>
         <View>

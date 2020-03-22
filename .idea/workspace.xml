@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a61574dd-9cac-4809-865b-7b2692d0d05e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/curious_minds/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/curious_minds/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/curious_minds/Screens/MainFeedScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/curious_minds/Screens/MainFeedScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/curious_minds/Screens/NewPostScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/curious_minds/Screens/NewPostScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +24,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/curious_minds/Screens/UserTypeScreen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+            <state relative-caret-position="527">
+              <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -46,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/curious_minds/Screens/PastorSecCodeScreen.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
-              <caret line="54" selection-start-line="54" selection-end-line="54" />
+              <caret line="56" selection-start-line="56" selection-end-line="56" />
             </state>
           </provider>
         </entry>
@@ -84,7 +82,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -107,7 +105,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -174,8 +172,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/curious_minds/Screens/UserTypeScreen.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+        <state relative-caret-position="527">
+          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -188,7 +186,7 @@
     <entry file="file://$PROJECT_DIR$/curious_minds/Screens/PastorSecCodeScreen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
-          <caret line="54" selection-start-line="54" selection-end-line="54" />
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
         </state>
       </provider>
     </entry>
