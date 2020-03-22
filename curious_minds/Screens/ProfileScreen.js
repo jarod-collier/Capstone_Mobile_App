@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Button} from 'react-native-vector-icons/FontAwesome';
 
 import {
   SafeAreaView,
@@ -9,18 +10,180 @@ import {
   Text,
   TextInput,
   LayoutAnimation,
-  Button,
   TouchableOpacity,
+  Alert,
   Image,
 } from 'react-native';
 
 function ProfileScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
   return (
-   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-     <Text>Profile Screen!</Text>
+   <View style={styles.container}>
+     <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
+       {/* image view */}
+        <View style={{justifyContent: 'center'}}>   
+          <TouchableOpacity
+            style={styles.image}
+            onPress={()=> Alert.alert('Add')}
+          >
+            <Button
+              style={{backgroundColor: '#A59F9F'}}
+              color='white'
+              name='camera'
+              size={35}
+               />
+          </TouchableOpacity>
+          </View>
+          {/* text view */}
+        <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+          {/*name line */}        
+          <View>
+            <Text style={{fontSize: 34, fontWeight: 'bold', marginLeft: 10, marginBottom: 20, marginTop: 20}}>First Last</Text>
+          </View>
+          {/*posts line */}        
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <Text style={{fontSize: 18, marginLeft: 10}}> Posts{'\n'}written</Text>
+            <Text style={{fontSize: 18, marginLeft: 10}}>      Posts{'\n'}commented{'\n'}        on</Text>
+            <Text style={{fontSize: 18, marginLeft: 10}}>{'\n'}Score</Text>
+          </View>
+          {/*numbers line */}        
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> 0</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
+          </View>
+        </View>
+     </View>
+     <View style={{flex:4}}>
+       {/*about me section*/}
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>About me</Text>
+        <TouchableOpacity
+            style={styles.Buttons}
+            onPress={() => Alert.alert('Edit About me')}
+        >
+          <View>
+            <Text style={styles.customBtnText}>Edit</Text>
+          </View>
+        </TouchableOpacity>
+       </View>
+       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,}}>Here is about me</Text>
+       {/*username line*/}
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username:</Text>
+        <Text style={{fontSize: 18, marginTop: 20}}>    Username:</Text>
+       </View>
+       {/*email line*/}
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Email:</Text>
+        <Text style={{fontSize: 18, marginTop: 20}}>              Username:</Text>
+       </View>
+       {/*password line*/}
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Password:</Text>
+        <TouchableOpacity
+            style={styles.Buttons}
+            onPress={() => Alert.alert('reset password')}
+        >
+          <View>
+            <Text style={styles.customBtnText}>Reset password</Text>
+          </View>
+        </TouchableOpacity>
+       </View>
+       <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
+       <TouchableOpacity
+            style={styles.Delete}
+            onPress={() => Alert.alert('delete account')}
+          >
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={styles.customBtnText}>Delete Account</Text>
+              <Button 
+                style={{backgroundColor: 'red'}}
+                name="trash" 
+                color="black" />
+            </View>
+          </TouchableOpacity>
+       </View>
+     </View>
    </View>
  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#696969',
+  },
+  logo: {
+    margin: 100,
+  },
+  image: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A59F9F',
+    width: 125,
+    height: 125,
+    borderRadius: 65,
+    margin: 15,
+  },
+  inputBox: {
+    alignItems:'stretch',
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 1,
+    textAlign: 'left',
+    padding: 10,
+    margin: 15,
+  },
+  Delete: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: {height: 3, width: 3}, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 4, // Android
+    borderWidth: 1,
+    backgroundColor: 'red',
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    borderColor: 'red',
+    borderRadius: 10,
+    width: 250,
+    marginVertical: 15,
+  },
+  Buttons: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: {height: 2, width: 2}, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 4, // Android
+    borderWidth: 1,
+    backgroundColor: '#B2ACAC',
+    justifyContent: 'center',
+    borderColor: '#B2ACAC',
+    borderRadius: 10,
+    height: 25,
+    marginTop: 20,
+    marginHorizontal: 20,
+  },
+  multiline: {
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 1,
+    alignItems: 'stretch',
+    height: 150,
+    textAlign: 'left',
+    margin: 15,
+  },
+  customBtnText: {
+    // fontSize: 20,
+    // fontWeight: '400',
+    color: "black",
+    textAlign: "center",
+    marginHorizontal: 7
+  },
+  footer: {
+    bottom: 0,
+  },
+});
 
 export default ProfileScreen;

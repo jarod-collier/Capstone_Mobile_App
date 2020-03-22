@@ -93,8 +93,8 @@ function EventScreen({navigation}) {
   readFromDB();
   LayoutAnimation.easeInEaseOut();
   return (
-    setTimeout(()=> setLoading(state.Loading), 500),
-    setTimeout(()=> setAddButton(state.canAdd), 500),
+    setTimeout(()=> setLoading(state.Loading), 700),
+    setTimeout(()=> setAddButton(state.canAdd), 700),
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
         refreshControl={
