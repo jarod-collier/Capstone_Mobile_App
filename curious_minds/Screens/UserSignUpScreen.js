@@ -60,7 +60,10 @@ function handleSignUp(navigation){
   }).catch((error)=>{
     Alert.alert('error ', error)
   }))
-  .then(() => navigation.navigate('Main'))
+  .then(() => navigation.reset({
+    index: 0,
+    routes: [{ name: 'Main'}],
+  }))
   .catch(error => Alert.alert(error.message));
 };
 

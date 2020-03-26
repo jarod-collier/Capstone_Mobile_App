@@ -58,7 +58,10 @@ var logInUser = (navigation) => {
       global.user = user;
 
       //navigate to new post screen
-      navigation.navigate('Main');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main'}],
+      });
       // ...
     } else {
       console.log("no user found");
