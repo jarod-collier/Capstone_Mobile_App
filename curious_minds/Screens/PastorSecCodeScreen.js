@@ -30,10 +30,7 @@ async function readFromDB(){
   await db.ref('/userInfo/').once('value', function(snapshot){
     snapshot.forEach((child) => {
       if(child.val().userType === 'pastor'){
-        console.log(child.val().pastorCode);
-        console.log(state.Code);
         if(child.val().pastorCode === state.Code){
-          console.log('found it');
           found = true;
         }
       }
@@ -43,10 +40,7 @@ async function readFromDB(){
 }
 
 async function validateCode(navigation){
-  console.log('b4 DB');
   var valid = await readFromDB();
-  console.log('after DB');
-  console.log(valid);
   if(valid){
     navigation.navigate('Pastor SignUp');
   }else{
