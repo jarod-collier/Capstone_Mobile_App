@@ -71,7 +71,10 @@ function handleSignUp(navigation){
   }).catch((error)=>{
     Alert.alert('error ', error)
   }))
-  .then(() => navigation.navigate('Main'))
+  .then(() => navigation.reset({
+    index: 0,
+    routes: [{ name: 'Main'}],
+  }))
   .catch(error => Alert.alert(error.message));
 };
 
@@ -148,7 +151,7 @@ function PastorSignUpScreen({navigation}) {
               />
             </View>
           </View>
-          <View style={{marginBottom: 30}}> 
+          <View style={{marginBottom: 30}}>
             <TouchableOpacity
               style={styles.Buttons}
               onPress={() => handleSignUp(navigation)}>
