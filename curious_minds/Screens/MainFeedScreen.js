@@ -46,6 +46,9 @@ async function loadPostCards(){
   state.display = state.posts.map(postData => {
     return(
       <View key={postData.question}>
+        <Button
+        style={{backgroundColor: '#696969'}}
+        onPress = {()=> Alert.alert('clicked on card')}> 
         <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
@@ -75,6 +78,7 @@ async function loadPostCards(){
               <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
           </View>
         </Card>
+        </Button>
       </View>
     )
   });
