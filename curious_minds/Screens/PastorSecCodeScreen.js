@@ -1,6 +1,8 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { db } from '../FireDatabase/config';
+import firebase from 'firebase';
 
 import {
   SafeAreaView,
@@ -13,17 +15,47 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 
 var state = {
-  Code: '',
+  Code: "",
 };
-var handleCode = text => {
+const handleCode = text => {
   state.Code = text;
 };
 
+async function readFromDB(){
+  var found = false;
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.val().userType === 'pastor'){
+        console.log(child.val().pastorCode);
+        console.log(state.Code);
+        if(child.val().pastorCode === state.Code){
+          console.log('found it');
+          found = true;
+        }
+      }
+    })
+  });
+  return found;
+}
+
+async function validateCode(navigation){
+  console.log('b4 DB');
+  var valid = await readFromDB();
+  console.log('after DB');
+  console.log(valid);
+  if(valid){
+    navigation.navigate('Pastor SignUp');
+  }else{
+    Alert.alert('Not a valid security code.\nPlease try again.');
+  }
+}
+
 function PastorSecCodeScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
@@ -33,7 +65,7 @@ function PastorSecCodeScreen({navigation}) {
        extraHeight={100}
        >
           <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
+            <Image source={require('../images/CM_logo02.png')} />
           </View>
           <View>
             <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code</Text>
@@ -42,13 +74,12 @@ function PastorSecCodeScreen({navigation}) {
             <TextInput
               style={styles.inputBox}
               placeholder="Enter Code Here"
-              //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
               placeholderTextColor="white"
               onChangeText={handleCode}
             />
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => navigation.navigate('Pastor SignUp')}>
+              onPress={() => validateCode(navigation)}>
               <Text style={styles.customBtnText}>Confirm</Text>
             </TouchableOpacity>
           </View>
