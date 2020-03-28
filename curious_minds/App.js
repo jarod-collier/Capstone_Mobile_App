@@ -7,7 +7,7 @@
 // import 'react-native-gesture-handler';
 // import React, { Component } from 'react';
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import { Image, Text, View, StyleSheet } from 'react-native';
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
 
 const Tab = createBottomTabNavigator();
 
-type Props = {};
 function Main() {
   return (
     <Tab.Navigator
@@ -74,27 +73,93 @@ function Main() {
         inactiveTintColor: 'black',
       }}
     >
-      <Tab.Screen name="Main" component={MainFeedScreen} />
-      <Tab.Screen name="Post" component={NewPostScreen} />
-      <Tab.Screen name="Events" component={EventScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Main"
+        component={MainFeedScreen}
+        options={{
+          tabBarLabel: 'Home',
+        }} />
+      <Tab.Screen
+        name="Post"
+        component={NewPostScreen}
+        options={{
+          tabBarLabel: 'Post',
+        }}
+      />
+      <Tab.Screen
+        name="Events"
+        component={EventScreen}
+        options={{
+          tabBarLabel: 'Events',
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: 'Profile',
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
+function getHeaderTitle(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : route.params?.screen || 'Home'
+
+  switch (routeName) {
+    case 'Home':
+      return 'Home'
+    case 'Profile':
+      return 'Profile'
+    case 'Events':
+      return 'Events'
+    case 'Post':
+      return 'Post'
+  }
+}
 const Stack = createStackNavigator();
+const MyTheme = {
+  dark: false,
+  colors: {
+    primary: 'rgb(255, 255, 255)',
+    background: '#696969',
+    card: 'rgb(255, 255, 255)',
+    text: 'dodgerblue',
+    border: 'rgb(199, 199, 204)',
+  },
+};
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: 'dodgerblue',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }}
+      >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="User Type" component={UserTypeScreen} />
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
         <Stack.Screen name="Add Event" component={NewEventScreen} />
-        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={({ route }) => ({
+            headerTitle: getHeaderTitle(route)
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
