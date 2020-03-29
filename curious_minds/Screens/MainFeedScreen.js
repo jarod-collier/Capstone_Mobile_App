@@ -55,7 +55,7 @@ async function loadPostCards(navigation){
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
             {/* //This needs to be fixed */}
-            <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
+            <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon} on DATE HERE</Text>
             <View style={{flexDirection:'row', alignItems: 'stretch'}}>
               <Button
                 style={{backgroundColor: 'white'}}
@@ -77,7 +77,6 @@ async function loadPostCards(navigation){
                 color='black'
                 name='exclamation-triangle'
                 onPress={()=> Alert.alert('Report')} />
-              <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
           </View>
         </Card>
         </Button>
