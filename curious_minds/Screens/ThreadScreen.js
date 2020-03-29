@@ -72,9 +72,11 @@ async function readFromDB(postID){
 }
 
 async function loadCommentCards(commentItems){
+    var cardId = 0;
     state.comments = commentItems.map(commentData => {
+        cardId++;
       return(
-        <View>
+        <View key={cardId}>
           <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{commentData.comment}</Text>
               {/* //This needs to be fixed */}
