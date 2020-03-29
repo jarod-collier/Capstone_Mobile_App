@@ -30,6 +30,7 @@ var state = {
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
 async function canAddEvent (){
+  state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
   // console.log("uid: " + uid);
   let userCan = false;
@@ -43,13 +44,13 @@ async function canAddEvent (){
     });
   });
   state.canAdd = userCan;
-  state.Loading = false;
+  // state.Loading = false;
   if(userType === "pastor") return true;
   else return false;
 }
 
 async function readFromDB(){
-  state.Loading = true;
+  
   await db.ref('/events/').once('value', function(snapshot){
       let postItems = [];
       snapshot.forEach((child) => {
@@ -93,8 +94,7 @@ function EventScreen({navigation}) {
   readFromDB();
   LayoutAnimation.easeInEaseOut();
   return (
-    setTimeout(()=> setLoading(state.Loading), 700),
-    setTimeout(()=> setAddButton(state.canAdd), 700),
+    setTimeout(()=> {setLoading(state.Loading), setAddButton(state.canAdd)}, 500),
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
         refreshControl={

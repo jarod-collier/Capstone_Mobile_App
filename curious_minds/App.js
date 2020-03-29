@@ -23,6 +23,7 @@ import NewPostScreen from './Screens/NewPostScreen';
 import EventScreen from './Screens/EventScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import NewEventScreen from './Screens/NewEventScreen';
+import ThreadScreen from './Screens/ThreadScreen';
 
 
 const styles = StyleSheet.create({
@@ -90,6 +91,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="User Type" component={UserTypeScreen} />
+        <Stack.Screen name="Thread" component={ThreadScreen} />
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />

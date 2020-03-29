@@ -16,6 +16,7 @@ import {
   Alert,
   LayoutAnimation,
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 var state = {
   posts: [],
@@ -25,12 +26,13 @@ var state = {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
-async function readFromDB(){
+async function readFromDB(navigation){
   state.Loading = true;
   await db.ref('/posts/').once('value', function(snapshot){
     let postItems = [];
     snapshot.forEach((child) => {
       postItems.push({
+        key: child.key,
         question: child.val().question,
         desc: child.val().desc,
         anon: child.val().Anon,
@@ -39,17 +41,17 @@ async function readFromDB(){
     })
     state.posts = postItems.reverse();
   });
-  await loadPostCards();
+  await loadPostCards(navigation);
 }
 
-async function loadPostCards(){
+async function loadPostCards(navigation){
   state.display = state.posts.map(postData => {
     return(
-      <View key={postData.question}>
+      <View key={postData.key}>
         <Button
         style={{backgroundColor: '#696969'}}
-        onPress = {()=> Alert.alert('clicked on card')}> 
-        <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
+        onPress = {()=> navigation.navigate('Thread', postData.key)}> 
+        <Card style={{ padding: 15, alignSelf: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
             {/* //This needs to be fixed */}
@@ -91,7 +93,7 @@ function MainFeedScreen({navigation}) {
       setLoading(true);
       delay(2000).then(()=> setLoading(false))}, [isLoading]
     );
-    readFromDB();
+    readFromDB(navigation);
     LayoutAnimation.easeInEaseOut();
     return (
       setTimeout(()=> setLoading(state.Loading), 500),
