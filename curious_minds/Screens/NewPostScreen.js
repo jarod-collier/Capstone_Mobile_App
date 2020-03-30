@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React, {Component, useState} from 'react';
 import {CheckBox} from 'react-native-elements';
+import firebase from 'firebase';
 
 import {
   SafeAreaView,
@@ -23,6 +24,7 @@ var state = {
     Description: '',
     Anon: false,
     pastorOnly: false,
+    username: '',
   };
 
 const handleQuestion = text => {
@@ -33,16 +35,27 @@ const handleDescription = text => {
     state.Description = text;
 };
 
-const handleOptionAnon = Boolean => {
+var handleOptionAnon = Boolean => {
     state.Anon = Boolean;
 };
 
-const handleOptionPastorOnly = Boolean => {
+var handleOptionPastorOnly = Boolean => {
     state.pastorOnly = Boolean;
 };
 
-function createPost(){
+async function createPost(){
+  let uid = firebase.auth().currentUser.uid;
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          state.username = child.val().Username;
+        }
+    })
+  });
+
   db.ref('/posts').push({
+    username: "" + state.username,
+    date: "" + new Date().toLocaleDateString(),
     question: "" + state.Question,
     desc: "" + state.Description,
     Anon: state.Anon,
@@ -72,6 +85,8 @@ function NewPostScreen({navigation}) {
         clearDescription.current.clear();
         setPastorOnly(false);
         setAnon(false);
+        // pastorOnly = false;
+        // Anon = false;
       };
     }, [])
   );
@@ -152,7 +167,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-             onPress={() => {createPost(); navigation.navigate('Main')}}
+             onPress={async () => {await createPost(); navigation.navigate('Main')}}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>

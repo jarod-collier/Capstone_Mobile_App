@@ -24,7 +24,9 @@ var state = {
   display: [],
   comments: [],
   Loading: true,
-  comment: ''
+  comment: '',
+  PastorOnly: false,
+  userCanComment: true,
 };
 
 const handleComment = text => {
@@ -33,16 +35,49 @@ const handleComment = text => {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
-function addComment(postID){
+async function addComment(postID){
     state.Loading = true;
+    var username;
+    let uid = firebase.auth().currentUser.uid;
+    await db.ref('/userInfo/').once('value', function(snapshot){
+      snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          username = child.val().Username;
+        }
+    })
+    });
+
+
     db.ref('/posts/' + postID).push({
-        comment: state.comment
+        comment: state.comment,
+        username: username,
+        date: "" + new Date().toLocaleDateString(),
       }).catch((error)=>{
         Alert.alert('error ', error)
       })
     
       Alert.alert('comment added successfully');
       state.Loading = false;
+}
+
+async function canComment(){
+  let uid = firebase.auth().currentUser.uid;
+  let userCan = true;
+  if(state.PastorOnly){
+    await db.ref('/userInfo/').once('value', function(snapshot){
+      snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          if(child.val().userType != "pastor"){
+            userCan = false;
+          }
+        }
+      });
+    });
+  } 
+  // console.log('user can' + userCan);
+  state.userCanComment = userCan;
+  // state.Loading = false;
+  // return userCan;
 }
 
 async function readFromDB(postID){
@@ -52,21 +87,27 @@ async function readFromDB(postID){
   await db.ref('/posts/' + postID).once('value', function(snapshot){
     snapshot.forEach((child) => {
         if(child.hasChildren()){
-            // console.log(child);
-            commentItems.push({comment: child.val().comment});
+            commentItems.push({
+              comment: child.val().comment, 
+              date: child.val().date,
+              username: child.val().username,
+            });
         }
-        });
-        // console.log(commentItems);
-      
+    });
  
       postItems.push({
         key: postID,
         question: snapshot.val().question,
+        username: snapshot.val().username,
+        date: snapshot.val().date,
         desc: snapshot.val().desc,
         anon: snapshot.val().Anon,
         pastorOnly: snapshot.val().PastorOnly
       })
+      state.PastorOnly = snapshot.val().PastorOnly;
+      // console.log(state.pastorOnly);
   });
+  await canComment();
   await loadCommentCards(commentItems);
   await loadPostCards(postItems);
 }
@@ -79,15 +120,16 @@ async function loadCommentCards(commentItems){
         <View key={cardId}>
           <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{commentData.comment}</Text>
-              {/* //This needs to be fixed */}
-              <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: </Text>
+              <View style={{flexDirection: 'row',alignSelf: 'flex-end', opacity: 0.5}}>
+                <Text>By: {commentData.username} </Text>
+                <Text>on {commentData.date}</Text>
+              </View>
               <View style={{flexDirection:'row', alignItems: 'stretch'}}>
                 <Button
                   style={{backgroundColor: 'white'}}
                   color='black'
                   name='exclamation-triangle'
                   onPress={()=> Alert.alert('Report')} />
-                <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
             </View>
           </Card>
         </View>
@@ -102,8 +144,10 @@ async function loadPostCards(postItems){
           <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
               <Text style={{marginTop: 3}}>{postData.desc}</Text>
-              {/* //This needs to be fixed */}
-              <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
+              <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
+              { !postData.anon && <Text>Posted by: {postData.username} </Text>}
+              <Text> on {postData.date}</Text>
+            </View>
               <View style={{flexDirection:'row', alignItems: 'stretch'}}>
                 <Button
                   style={{backgroundColor: 'white'}}
@@ -125,7 +169,6 @@ async function loadPostCards(postItems){
                   color='black'
                   name='exclamation-triangle'
                   onPress={()=> Alert.alert('Report')} />
-                <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
             </View>
           </Card>
         </View>
@@ -146,7 +189,7 @@ function ThreadScreen({route, navigation}) {
   return (
     setTimeout(()=> setLoading(state.Loading), 500),
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView
+      <KeyboardAwareScrollView
       style={{flexGrow: 1}}
         refreshControl={
           <RefreshControl
@@ -158,6 +201,7 @@ function ThreadScreen({route, navigation}) {
         <View style={styles.container}>
             {state.display}
             {state.comments}
+            {state.userCanComment && <View>
             <Text style={
             {
               marginTop: 20,
@@ -180,9 +224,10 @@ function ThreadScreen({route, navigation}) {
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>
+          </View>}
         </View>
         
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
  );
 }

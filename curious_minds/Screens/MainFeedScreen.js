@@ -3,6 +3,7 @@ import React, {Component, useState, useCallback, useRef} from 'react';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
+import firebase from 'firebase';
 
 import {
   SafeAreaView,
@@ -33,6 +34,8 @@ async function readFromDB(navigation){
     snapshot.forEach((child) => {
       postItems.push({
         key: child.key,
+        username: child.val().username,
+        date: child.val().date,
         question: child.val().question,
         desc: child.val().desc,
         anon: child.val().Anon,
@@ -54,8 +57,10 @@ async function loadPostCards(navigation){
         <Card style={{ padding: 15, alignSelf: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
-            {/* //This needs to be fixed */}
-            <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon} on DATE HERE</Text>
+            <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
+              { !postData.anon && <Text>Posted by: {postData.username} </Text>}
+              <Text>on {postData.date}</Text>
+            </View>
             <View style={{flexDirection:'row', alignItems: 'stretch'}}>
               <Button
                 style={{backgroundColor: 'white'}}

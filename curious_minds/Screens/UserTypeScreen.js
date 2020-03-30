@@ -22,7 +22,7 @@ function UserTypeScreen({navigation}) {
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.logo}>
-          <Image source={require('../images/logo_placeholder.png')} />
+          <Image source={require('../images/CM_logo02.png')} />
         </View>
         <View>
           <Text style={styles.iAmText}>INFO HERE</Text>

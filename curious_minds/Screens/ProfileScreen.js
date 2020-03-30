@@ -52,7 +52,6 @@ async function getUserInfo(){
           }
       })
   });
-  console.log('done with DB');
   state.Loading = false;
 }
 

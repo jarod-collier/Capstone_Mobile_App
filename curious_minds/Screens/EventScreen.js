@@ -30,27 +30,20 @@ var state = {
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
 async function canAddEvent (){
-  state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
-  // console.log("uid: " + uid);
-  let userCan = false;
-  let userType = "";
-  await db.ref('userInfo').once('value', function(snapshot){
+  await db.ref('/userInfo/').once('value', function(snapshot){
     snapshot.forEach((child) => {
       if(child.val().uid === uid){
-        userType = child.val().userType;
-        userCan = true;
+        if(child.val().userType === "pastor"){
+          state.canAdd = true; 
+        }
       }
     });
   });
-  state.canAdd = userCan;
-  // state.Loading = false;
-  if(userType === "pastor") return true;
-  else return false;
 }
 
 async function readFromDB(){
-  
+  state.Loading = true;
   await db.ref('/events/').once('value', function(snapshot){
       let postItems = [];
       snapshot.forEach((child) => {
@@ -64,6 +57,7 @@ async function readFromDB(){
       })
       state.events = postItems.reverse();
   });
+  await canAddEvent();
   await loadEventCards();
 }
 
@@ -85,16 +79,14 @@ async function loadEventCards(){
 
 function EventScreen({navigation}) {
   const [isLoading, setLoading]= useState(true);
-  const [addButton, setAddButton]= useState(false);
   const onRefresh = useCallback(() => {
     setLoading(true);
     delay(2000).then(()=> setLoading(false))}, [isLoading]
   );
-  canAddEvent();
   readFromDB();
   LayoutAnimation.easeInEaseOut();
   return (
-    setTimeout(()=> {setLoading(state.Loading), setAddButton(state.canAdd)}, 500),
+    setTimeout(()=> setLoading(state.Loading), 500),
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
         refreshControl={
@@ -105,7 +97,7 @@ function EventScreen({navigation}) {
         }
       >
       <View style={styles.container}>
-        { addButton &&
+        { state.canAdd &&
           <TouchableOpacity
             style={styles.Buttons}
             onPress={() => navigation.navigate('Add Event')}
@@ -134,6 +126,7 @@ function EventScreen({navigation}) {
     </SafeAreaView>
  );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
