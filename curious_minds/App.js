@@ -24,6 +24,7 @@ import EventScreen from './Screens/EventScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import NewEventScreen from './Screens/NewEventScreen';
 import ThreadScreen from './Screens/ThreadScreen';
+import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
 
 
 const styles = StyleSheet.create({
@@ -155,6 +156,7 @@ function App() {
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
         <Stack.Screen name="Add Event" component={NewEventScreen} />
+        <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
         <Stack.Screen
           name="Main"
           component={Main}

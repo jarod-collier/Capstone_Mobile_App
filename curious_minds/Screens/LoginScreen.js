@@ -106,7 +106,7 @@ function LoginScreen({navigation}) {
           <View>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => navigation.navigate('Main')}>
+              onPress={() => navigation.navigate('Forgot Password')}>
               <Text style={styles.customBtnText}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
