@@ -45,30 +45,49 @@ var handleEmail = text => {
   state.Email = text;
 };
 
-function handleSignUp(navigation){
+async function checkUsername(){
+  let usernames = [];
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+        usernames.push(
+            child.val().Username
+        );
+    })
+});
+  if(usernames.includes(state.Username)){
+    Alert.alert('username is already in use\nPlease try a different username');
+    return false;
+  }else{
+    return true;
+  }
+}
 
-  var UserId;
-  firebase.auth()
-  .createUserWithEmailAndPassword(state.Email, state.Password)
-  .then(data => UserId = data.user.uid)
-  .then(() => db.ref('/userInfo').push({
-    First: "" + state.FirstName,
-    Last: "" + state.LastName,
-    Username: "" + state.Username,
-    uid: UserId,
-    userType: "user"
-  }).catch((error)=>{
-    Alert.alert('error ', error)
-  }))
-  .then(() => navigation.reset({
-    index: 0,
-    routes: [{ name: 'Main'}],
-  }))
-  .catch(error => Alert.alert(error.message));
+async function handleSignUp(navigation){
+  const valid = await checkUsername();
+  if(valid){
+    var UserId;
+    firebase.auth()
+    .createUserWithEmailAndPassword(state.Email, state.Password)
+    .then(data => UserId = data.user.uid)
+    .then(() => db.ref('/userInfo').push({
+      First: "" + state.FirstName,
+      Last: "" + state.LastName,
+      Username: "" + state.Username,
+      uid: UserId,
+      userType: "user"
+    }).catch((error)=>{
+      Alert.alert('error ', error)
+    }))
+    .then(() => navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main'}],
+    }))
+    .catch(error => Alert.alert(error.message));
+  }
 };
 
 function UserSignUpScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
@@ -78,7 +97,7 @@ function UserSignUpScreen({navigation}) {
          extraHeight={100}
         >
           <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
+            <Image source={require('../images/CM_logo02.png')} />
           </View>
           <View>
             <Text style={styles.infoHereText}>INFO HERE</Text>
@@ -109,12 +128,14 @@ function UserSignUpScreen({navigation}) {
                 style={styles.inputBox}
                 placeholder="  Password"
                 secureTextEntry={true}
+                autoCapitalize='none'
                 placeholderTextColor="white"
                 onChangeText={handlePassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
+                keyboardType='email-address'
                 placeholderTextColor="white"
                 onChangeText={handleEmail}
               />
