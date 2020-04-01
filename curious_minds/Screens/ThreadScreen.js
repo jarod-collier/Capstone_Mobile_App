@@ -4,6 +4,8 @@ import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
+import { useFocusEffect } from '@react-navigation/native';
+import renderIf from 'render-if'
 
 import {
   SafeAreaView,
@@ -55,7 +57,7 @@ async function addComment(postID){
       }).catch((error)=>{
         Alert.alert('error ', error)
       })
-    
+
       Alert.alert('comment added successfully');
       state.Loading = false;
 }
@@ -73,7 +75,7 @@ async function canComment(){
         }
       });
     });
-  } 
+  }
   // console.log('user can' + userCan);
   state.userCanComment = userCan;
   // state.Loading = false;
@@ -88,13 +90,13 @@ async function readFromDB(postID){
     snapshot.forEach((child) => {
         if(child.hasChildren()){
             commentItems.push({
-              comment: child.val().comment, 
+              comment: child.val().comment,
               date: child.val().date,
               username: child.val().username,
             });
         }
     });
- 
+
       postItems.push({
         key: postID,
         question: snapshot.val().question,
@@ -138,59 +140,73 @@ async function loadCommentCards(commentItems){
   }
 
 async function loadPostCards(postItems){
-    state.display = postItems.map(postData => {
-      return(
-        <View key={postData.key}>
-          <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
-              <Text style={{marginTop: 3}}>{postData.desc}</Text>
-              <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
-              { !postData.anon && <Text>Posted by: {postData.username} </Text>}
-              <Text> on {postData.date}</Text>
-            </View>
-              <View style={{flexDirection:'row', alignItems: 'stretch'}}>
-                <Button
-                  style={{backgroundColor: 'white'}}
-                  color='black'
-                  name='comment'
-                  onPress={()=> Alert.alert('Comment')} />
-                <Button
-                  style={{backgroundColor: 'white'}}
-                  color='black'
-                  name='language'
-                  onPress={()=> Alert.alert('Translate')} />
-                <Button
-                  style={{backgroundColor: 'white'}}
-                  color='black'
-                  name='thumbs-up'
-                  onPress={()=> Alert.alert('Like')} />
-                <Button
-                  style={{backgroundColor: 'white'}}
-                  color='black'
-                  name='exclamation-triangle'
-                  onPress={()=> Alert.alert('Report')} />
-            </View>
-          </Card>
-        </View>
-      )
-    });
-    state.Loading = false;
-  }
+  state.display = postItems.map(postData => {
+    return(
+      <View key={postData.key}>
+        <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
+          <Text style={{marginTop: 3}}>{postData.desc}</Text>
+          <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
+            { !postData.anon && <Text>Posted by: {postData.username} </Text>}
+            <Text> on {postData.date}</Text>
+          </View>
+          <View style={{flexDirection:'row', alignItems: 'stretch'}}>
+            <Button
+              style={{backgroundColor: 'white'}}
+              color='black'
+              name='comment'
+              onPress={()=> Alert.alert('Comment')} />
+            <Button
+              style={{backgroundColor: 'white'}}
+              color='black'
+              name='language'
+              onPress={()=> Alert.alert('Translate')} />
+            <Button
+              style={{backgroundColor: 'white'}}
+              color='black'
+              name='thumbs-up'
+              onPress={()=> Alert.alert('Like')} />
+            <Button
+              style={{backgroundColor: 'white'}}
+              color='black'
+              name='exclamation-triangle'
+              onPress={()=> Alert.alert('Report')} />
+          </View>
+        </Card>
+      </View>
+    )
+  });
+  state.Loading = false;
+}
 
+var focused = false;
 function ThreadScreen({route, navigation}) {
-    postID = route.params;
+  var postID = route.params;
   const [isLoading, setLoading]= useState(true);
   const onRefresh = useCallback(() => {
     setLoading(true);
     delay(2000).then(()=> setLoading(false))}, [isLoading]
   );
-  readFromDB(postID);
-  LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      readFromDB(postID);
+      LayoutAnimation.easeInEaseOut();
+      focused = true;
+      // Do something when the screen is focused
+      return () => {
+        // Alert.alert("we are unfocused");
+        focused = false;
+        // Do something when the screen is unfocused
+      };
+    }, [])
+  );
+
   return (
     setTimeout(()=> setLoading(state.Loading), 500),
     <SafeAreaView style={{flex: 1}}>
+      {renderIf(focused)(
       <KeyboardAwareScrollView
-      style={{flexGrow: 1}}
+        style={{flexGrow: 1}}
         refreshControl={
           <RefreshControl
             refreshing={isLoading}
@@ -199,37 +215,37 @@ function ThreadScreen({route, navigation}) {
         }
       >
         <View style={styles.container}>
-            {state.display}
-            {state.comments}
-            {state.userCanComment && <View>
-            <Text style={
-            {
-              marginTop: 20,
-              marginLeft: 18,
-              fontSize: 24,
-            }}>
-              Add comment:
+          {state.display}
+          {state.comments}
+          {state.userCanComment && <View>
+          <Text style={{marginTop: 20, marginLeft: 18, fontSize: 24,}}>
+            Add comment:
           </Text>
-        <TextInput
+
+          <TextInput
             style={styles.multiline}
             multiline = {true}
             numberOfLines={10}
             placeholder="  Enter Comment Here"
             placeholderTextColor="black"
             onChangeText={handleComment}
-            />
-        <TouchableOpacity
+          />
+          <TouchableOpacity
             style={styles.Buttons}
-             onPress={() => {addComment(postID), onRefresh}}
-            >
+            onPress={() => {addComment(postID), onRefresh}}
+          >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>
-          </View>}
-        </View>
-        
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+        </View>}
+      </View>
+    </KeyboardAwareScrollView>
+  )}
+  </SafeAreaView>
  );
+}
+
+function addMyStuff(){
+
 }
 const styles = StyleSheet.create({
   container: {
