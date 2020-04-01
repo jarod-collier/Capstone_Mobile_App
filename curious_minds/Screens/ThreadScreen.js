@@ -26,6 +26,7 @@ var state = {
   Loading: true,
   comment: '',
   PastorOnly: false,
+  posterUser: '',
   userCanComment: true,
 };
 
@@ -63,11 +64,14 @@ async function addComment(postID){
 async function canComment(){
   let uid = firebase.auth().currentUser.uid;
   let userCan = true;
+
+
+
   if(state.PastorOnly){
     await db.ref('/userInfo/').once('value', function(snapshot){
       snapshot.forEach((child) => {
         if(child.val().uid === uid){
-          if(child.val().userType != "pastor"){
+          if(child.val().userType != "pastor" && child.val().Username != state.posterUser){
             userCan = false;
           }
         }
@@ -105,6 +109,7 @@ async function readFromDB(postID){
         pastorOnly: snapshot.val().PastorOnly
       })
       state.PastorOnly = snapshot.val().PastorOnly;
+      state.posterUser = snapshot.val().username;
       // console.log(state.pastorOnly);
   });
   await canComment();
