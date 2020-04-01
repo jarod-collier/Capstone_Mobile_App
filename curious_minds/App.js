@@ -12,6 +12,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import { Image, Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Button} from 'react-native-vector-icons/FontAwesome';
 
 import LoginScreen from './Screens/LoginScreen';
 import UserTypeScreen from './Screens/UserTypeScreen';
@@ -76,7 +77,7 @@ function Main() {
     >
       <Tab.Screen
         name="Main"
-        component={MainFeedScreen}
+        component={Nested_Main}
         options={{
           tabBarLabel: 'Home',
         }} />
@@ -99,10 +100,44 @@ function Main() {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
+          headerShown: true,
         }}
       />
     </Tab.Navigator>
   );
+}
+const Nested_Stack = createStackNavigator();
+function Nested_Main(){
+  return (
+    <Nested_Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'dodgerblue',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerTitleAlign: 'center',
+      }}
+    >
+      <Nested_Stack.Screen
+        name="nested_main"
+        component={MainFeedScreen}
+        options={({ route }) => ({
+          headerShown: false
+        })}
+      />
+      <Nested_Stack.Screen
+        name="Thread"
+        component={ThreadScreen}
+        options={({ route }) => ({
+          headerTitle: "Thread",
+          // headerShown: false
+        })}
+      />
+    </Nested_Stack.Navigator>
+  )
 }
 
 function getHeaderTitle(route) {
@@ -112,13 +147,15 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Home'
+      return 'Insert Pic'
     case 'Profile':
       return 'Profile'
     case 'Events':
       return 'Events'
     case 'Post':
       return 'Post'
+    case 'Main':
+      return "Insert Pic"
   }
 }
 const Stack = createStackNavigator();
@@ -158,8 +195,16 @@ function App() {
         <Stack.Screen
           name="Main"
           component={Main}
-          options={({ route }) => ({
-            headerTitle: getHeaderTitle(route)
+          options={({ navigation, route }) => ({
+            headerTitle: getHeaderTitle(route),
+            // headerShown: false,
+            headerRight: () => (
+            <Button
+              onPress={() => navigation.goBack()}
+              title="Info"
+              color="white"
+            />
+          ),
           })}
         />
       </Stack.Navigator>
