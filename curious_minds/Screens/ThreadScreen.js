@@ -38,28 +38,29 @@ const handleComment = text => {
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
 async function addComment(postID){
-    state.Loading = true;
-    var username;
-    let uid = firebase.auth().currentUser.uid;
-    await db.ref('/userInfo/').once('value', function(snapshot){
-      snapshot.forEach((child) => {
-        if(child.val().uid === uid){
-          username = child.val().Username;
-        }
+  state.Loading = true;
+  var username;
+  let uid = firebase.auth().currentUser.uid;
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.val().uid === uid){
+        username = child.val().Username;
+      }
     })
-    });
+  });
 
 
-    db.ref('/posts/' + postID).push({
-        comment: state.comment,
-        username: username,
-        date: "" + new Date().toLocaleDateString(),
-      }).catch((error)=>{
-        Alert.alert('error ', error)
-      })
+  db.ref('/posts/' + postID).push({
+    comment: state.comment,
+    username: username,
+    date: "" + new Date().toLocaleDateString(),
+  }).catch((error)=>{
+    Alert.alert('error ', error)
+  })
 
-      Alert.alert('comment added successfully');
-      state.Loading = false;
+  Alert.alert('comment added successfully');
+  state.Loading = false;
+  clearComment.current.clear();
 }
 
 async function canComment(){
@@ -76,10 +77,7 @@ async function canComment(){
       });
     });
   }
-  // console.log('user can' + userCan);
   state.userCanComment = userCan;
-  // state.Loading = false;
-  // return userCan;
 }
 
 async function readFromDB(postID){
@@ -107,7 +105,6 @@ async function readFromDB(postID){
         pastorOnly: snapshot.val().PastorOnly
       })
       state.PastorOnly = snapshot.val().PastorOnly;
-      // console.log(state.pastorOnly);
   });
   await canComment();
   await loadCommentCards(commentItems);
@@ -115,57 +112,18 @@ async function readFromDB(postID){
 }
 
 async function loadCommentCards(commentItems){
-    var cardId = 0;
-    state.comments = commentItems.map(commentData => {
-        cardId++;
-      return(
-        <View key={cardId}>
-          <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{commentData.comment}</Text>
-              <View style={{flexDirection: 'row',alignSelf: 'flex-end', opacity: 0.5}}>
-                <Text>By: {commentData.username} </Text>
-                <Text>on {commentData.date}</Text>
-              </View>
-              <View style={{flexDirection:'row', alignItems: 'stretch'}}>
-                <Button
-                  style={{backgroundColor: 'white'}}
-                  color='black'
-                  name='exclamation-triangle'
-                  onPress={()=> Alert.alert('Report')} />
-            </View>
-          </Card>
-        </View>
-      )
-    });
-  }
-
-async function loadPostCards(postItems){
-  state.display = postItems.map(postData => {
+  var cardId = 0;
+  state.comments = commentItems.map(commentData => {
+    cardId++;
     return(
-      <View key={postData.key}>
+      <View key={cardId}>
         <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
-          <Text style={{marginTop: 3}}>{postData.desc}</Text>
-          <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
-            { !postData.anon && <Text>Posted by: {postData.username} </Text>}
-            <Text> on {postData.date}</Text>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>{commentData.comment}</Text>
+          <View style={{flexDirection: 'row',alignSelf: 'flex-end', opacity: 0.5}}>
+            <Text>By: {commentData.username} </Text>
+            <Text>on {commentData.date}</Text>
           </View>
           <View style={{flexDirection:'row', alignItems: 'stretch'}}>
-            <Button
-              style={{backgroundColor: 'white'}}
-              color='black'
-              name='comment'
-              onPress={()=> Alert.alert('Comment')} />
-            <Button
-              style={{backgroundColor: 'white'}}
-              color='black'
-              name='language'
-              onPress={()=> Alert.alert('Translate')} />
-            <Button
-              style={{backgroundColor: 'white'}}
-              color='black'
-              name='thumbs-up'
-              onPress={()=> Alert.alert('Like')} />
             <Button
               style={{backgroundColor: 'white'}}
               color='black'
@@ -176,10 +134,50 @@ async function loadPostCards(postItems){
       </View>
     )
   });
+}
+
+async function loadPostCards(postItems){
+  state.display = postItems.map(postData => {
+  return(
+    <View key={postData.key}>
+      <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
+        <Text style={{marginTop: 3}}>{postData.desc}</Text>
+        <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
+          { !postData.anon && <Text>Posted by: {postData.username} </Text>}
+          <Text> on {postData.date}</Text>
+        </View>
+        <View style={{flexDirection:'row', alignItems: 'stretch'}}>
+          <Button
+            style={{backgroundColor: 'white'}}
+            color='black'
+            name='comment'
+            onPress={()=> Alert.alert('Comment')} />
+          <Button
+            style={{backgroundColor: 'white'}}
+            color='black'
+            name='language'
+            onPress={()=> Alert.alert('Translate')} />
+          <Button
+            style={{backgroundColor: 'white'}}
+            color='black'
+            name='thumbs-up'
+            onPress={()=> Alert.alert('Like')} />
+          <Button
+            style={{backgroundColor: 'white'}}
+            color='black'
+            name='exclamation-triangle'
+            onPress={()=> Alert.alert('Report')} />
+        </View>
+      </Card>
+    </View>
+  )});
   state.Loading = false;
 }
 
 var focused = false;
+var clearComment = React.createRef();
+
 function ThreadScreen({route, navigation}) {
   var postID = route.params;
   const [isLoading, setLoading]= useState(true);
@@ -187,24 +185,22 @@ function ThreadScreen({route, navigation}) {
     setLoading(true);
     delay(2000).then(()=> setLoading(false))}, [isLoading]
   );
+  readFromDB(postID);
+  LayoutAnimation.easeInEaseOut();
   useFocusEffect(
     React.useCallback(() => {
-      readFromDB(postID);
-      LayoutAnimation.easeInEaseOut();
       focused = true;
       // Do something when the screen is focused
       return () => {
-        // Alert.alert("we are unfocused");
         focused = false;
         // Do something when the screen is unfocused
       };
     }, [])
   );
-
   return (
     setTimeout(()=> setLoading(state.Loading), 500),
     <SafeAreaView style={{flex: 1}}>
-      {renderIf(focused)(
+    {renderIf(focused)(
       <KeyboardAwareScrollView
         style={{flexGrow: 1}}
         refreshControl={
@@ -229,6 +225,7 @@ function ThreadScreen({route, navigation}) {
             placeholder="  Enter Comment Here"
             placeholderTextColor="black"
             onChangeText={handleComment}
+            ref={clearComment}
           />
           <TouchableOpacity
             style={styles.Buttons}
@@ -238,15 +235,13 @@ function ThreadScreen({route, navigation}) {
           </TouchableOpacity>
         </View>}
       </View>
+
     </KeyboardAwareScrollView>
-  )}
+    )}
   </SafeAreaView>
  );
 }
 
-function addMyStuff(){
-
-}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
