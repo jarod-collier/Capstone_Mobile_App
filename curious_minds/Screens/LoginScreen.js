@@ -84,7 +84,8 @@ function LoginScreen({navigation}) {
         <View>
           <TextInput
             style={styles.inputBox}
-            placeholder="Enter your Username"
+            placeholder="Enter your Email"
+            keyboardType='email-address'
             placeholderTextColor="white"
             onChangeText={handleUsername}
           />

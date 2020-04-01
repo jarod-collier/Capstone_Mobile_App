@@ -122,7 +122,7 @@ function Nested_Main(){
       }}
     >
       <Nested_Stack.Screen
-        name="nested_main"
+        name="Main Feed"
         component={MainFeedScreen}
         options={({ route }) => ({
           headerShown: false
@@ -147,7 +147,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Insert Pic'
+      return  <Image source={require('./images/CM_logo02_header.png')}/>
     case 'Profile':
       return 'Profile'
     case 'Events':
@@ -155,7 +155,7 @@ function getHeaderTitle(route) {
     case 'Post':
       return 'Post'
     case 'Main':
-      return "Insert Pic"
+      return <Image source={require('./images/CM_logo02_header.png')}/>
   }
 }
 const Stack = createStackNavigator();
