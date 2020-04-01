@@ -28,6 +28,7 @@ var state = {
   Loading: true,
   comment: '',
   PastorOnly: false,
+  posterUser: '',
   userCanComment: true,
 };
 
@@ -70,7 +71,7 @@ async function canComment(){
     await db.ref('/userInfo/').once('value', function(snapshot){
       snapshot.forEach((child) => {
         if(child.val().uid === uid){
-          if(child.val().userType != "pastor"){
+          if(child.val().userType != "pastor" && child.val().Username != state.posterUser){
             userCan = false;
           }
         }
@@ -105,6 +106,7 @@ async function readFromDB(postID){
         pastorOnly: snapshot.val().PastorOnly
       })
       state.PastorOnly = snapshot.val().PastorOnly;
+      state.posterUser = snapshot.val().username;
   });
   await canComment();
   await loadCommentCards(commentItems);

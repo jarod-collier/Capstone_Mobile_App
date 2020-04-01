@@ -32,6 +32,46 @@ var state= {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
+async function delUser(navigation){
+  Alert.alert(
+    'Delete Account',
+    'Are you sure you want to delete your account?',
+    [
+      {text: 'Cancel', onPress: () => {}},
+      {text: 'DELETE', onPress: async () => {
+        var node;
+        let uid = firebase.auth().currentUser.uid;
+        await db.ref('/userInfo/').once('value', function(snapshot){
+          snapshot.forEach((child) => {
+            if(child.val().uid === uid){
+              node = child.key;
+            }
+          })
+        });
+        await db.ref('/userInfo/').child(node).remove();
+        delay(500);
+
+        var user = firebase.auth().currentUser;
+        user.delete().then(() => navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login'}],
+        }))
+        .catch(error => Alert.alert(error.message));
+      }, style: {color: 'red'}}
+    ],
+    {cancelable: true}
+  )
+}
+
+function signOut(navigation){
+  firebase.auth().signOut()
+  .then(() => delay(500), navigation.reset({
+    index: 0,
+    routes: [{ name: 'Login'}],
+  }))
+  .catch(error => Alert.alert(error.message));
+}
+
 async function getUserInfo(){
   state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
@@ -115,6 +155,13 @@ function ProfileScreen({navigation}) {
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
         <Text style={{fontSize: 18, marginTop: 20}}>    {state.username}</Text>
+        <Button
+          style={{backgroundColor: 'red'}}
+          color='white'
+          name='sign-out'
+          onPress={() => signOut(navigation)}
+          // size={35}
+          />
        </View>
        {/*email line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -158,7 +205,7 @@ function ProfileScreen({navigation}) {
        <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
        <TouchableOpacity
             style={styles.Delete}
-            onPress={() => Alert.alert('delete account')}
+            onPress={() => delUser(navigation)}
           >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={styles.customBtnText}>Delete Account</Text>
