@@ -33,6 +33,8 @@ var handlePassword = text => {
 };
 
 var logInUser = (navigation) => {
+  console.log(state.Username);
+  console.log(state.Password);
     global.user = null;
     firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
       // Handle Errors here.
