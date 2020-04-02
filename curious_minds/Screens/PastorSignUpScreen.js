@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -97,8 +98,33 @@ async function handleSignUp(navigation){
   }
 };
 
+var clearFirstName = React.createRef();
+var clearLastName = React.createRef();
+var clearUsername = React.createRef();
+var clearPassword = React.createRef();
+var clearEmail = React.createRef();
+var clearPreach = React.createRef();
+var clearSeminary = React.createRef();
+var clearAdditionalInfo = React.createRef();
+
 function PastorSignUpScreen({navigation}) {
   LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearFirstName.current.clear();
+        clearLastName.current.clear();
+        clearUsername.current.clear();
+        clearPassword.current.clear();
+        clearEmail.current.clear();
+        clearPreach.current.clear();
+        clearSeminary.current.clear();
+        clearAdditionalInfo.current.clear();
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -120,12 +146,14 @@ function PastorSignUpScreen({navigation}) {
                 placeholder="  FirstName"
                 placeholderTextColor="white"
                 onChangeText={handleFirstName}
+                ref={clearFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
                 placeholderTextColor="white"
                 onChangeText={handleLastName}
+                ref={clearLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
@@ -134,6 +162,7 @@ function PastorSignUpScreen({navigation}) {
                 placeholder="  Username"
                 placeholderTextColor="white"
                 onChangeText={handleUsername}
+                ref={clearUsername}
               />
               <TextInput
                 style={styles.inputBox}
@@ -141,24 +170,28 @@ function PastorSignUpScreen({navigation}) {
                 secureTextEntry={true}
                 placeholderTextColor="white"
                 onChangeText={handlePassword}
+                ref={clearPassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
                 placeholderTextColor="white"
                 onChangeText={handleEmail}
+                ref={clearEmail}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Church preaching at"
                 placeholderTextColor="white"
                 onChangeText={handlePreach}
+                ref={clearPreach}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Where did you attend Seminary?"
                 placeholderTextColor="white"
                 onChangeText={handleSeminary}
+                ref={clearSeminary}
               />
               <TextInput
                 style={styles.multiline}
@@ -167,6 +200,7 @@ function PastorSignUpScreen({navigation}) {
                 multiline={true}
                 numberOfLines={10}
                 onChangeText={handleAdditionalInfo}
+                ref={clearAdditionalInfo}
               />
             </View>
           </View>

@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -48,8 +49,19 @@ async function validateCode(navigation){
   }
 }
 
+var clearCode = React.createRef();
+
 function PastorSecCodeScreen({navigation}) {
   LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearCode.current.clear();
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
@@ -70,6 +82,7 @@ function PastorSecCodeScreen({navigation}) {
               placeholder="Enter Code Here"
               placeholderTextColor="white"
               onChangeText={handleCode}
+              ref={clearCode}
             />
             <TouchableOpacity
               style={styles.Buttons}

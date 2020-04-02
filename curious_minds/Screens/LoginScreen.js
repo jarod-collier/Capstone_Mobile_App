@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
 import firebase from 'firebase';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -72,9 +73,22 @@ var logInUser = (navigation) => {
 
 };
 
+var clearUsername = React.createRef();
+var clearPassword = React.createRef();
+
 function LoginScreen({navigation}) {
   firebase.auth().signOut();
   LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearUsername.current.clear();
+        clearPassword.current.clear();
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -88,6 +102,7 @@ function LoginScreen({navigation}) {
             keyboardType='email-address'
             placeholderTextColor="white"
             onChangeText={handleUsername}
+            ref={clearUsername}
           />
           <TextInput
             style={styles.inputBox}
@@ -95,6 +110,7 @@ function LoginScreen({navigation}) {
             placeholderTextColor="white"
             secureTextEntry={true}
             onChangeText={handlePassword}
+            ref={clearPassword}
           />
           <View>
             <TouchableOpacity

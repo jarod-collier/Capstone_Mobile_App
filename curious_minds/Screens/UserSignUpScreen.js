@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -86,8 +87,27 @@ async function handleSignUp(navigation){
   }
 };
 
+var clearFirstName = React.createRef();
+var clearLastName = React.createRef();
+var clearUsername = React.createRef();
+var clearPassword = React.createRef();
+var clearEmail = React.createRef();
+
 function UserSignUpScreen({navigation}) {
   LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearFirstName.current.clear();
+        clearLastName.current.clear();
+        clearUsername.current.clear();
+        clearPassword.current.clear();
+        clearEmail.current.clear();
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
@@ -109,12 +129,14 @@ function UserSignUpScreen({navigation}) {
                 placeholder="  FirstName"
                 placeholderTextColor="white"
                 onChangeText={handleFirstName}
+                ref={clearFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
                 placeholderTextColor="white"
                 onChangeText={handleLastName}
+                ref={clearLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
@@ -123,6 +145,7 @@ function UserSignUpScreen({navigation}) {
                 placeholder="  Username"
                 placeholderTextColor="white"
                 onChangeText={handleUsername}
+                ref={clearUsername}
               />
               <TextInput
                 style={styles.inputBox}
@@ -131,6 +154,7 @@ function UserSignUpScreen({navigation}) {
                 autoCapitalize='none'
                 placeholderTextColor="white"
                 onChangeText={handlePassword}
+                ref={clearPassword}
               />
               <TextInput
                 style={styles.inputBox}
@@ -138,6 +162,7 @@ function UserSignUpScreen({navigation}) {
                 keyboardType='email-address'
                 placeholderTextColor="white"
                 onChangeText={handleEmail}
+                ref={clearEmail}
               />
             </View>
           </View>
