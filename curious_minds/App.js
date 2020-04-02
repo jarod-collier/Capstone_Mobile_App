@@ -147,7 +147,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return  <Image source={require('./images/CM_logo02_header.png')}/>
+      return  'Curious Minds'
     case 'Profile':
       return 'Profile'
     case 'Events':
@@ -155,7 +155,7 @@ function getHeaderTitle(route) {
     case 'Post':
       return 'Post'
     case 'Main':
-      return <Image source={require('./images/CM_logo02_header.png')}/>
+      return 'Curious Minds'
   }
 }
 const Stack = createStackNavigator();
@@ -196,7 +196,8 @@ function App() {
           name="Main"
           component={Main}
           options={({ navigation, route }) => ({
-            headerTitle: getHeaderTitle(route),
+            // headerTitle: getHeaderTitle(route),
+            headerTitle: <Image source={require('./images/CM_logo02_header.png')}/>,
             // headerShown: false,
             headerRight: () => (
             <Button
