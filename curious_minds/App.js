@@ -132,6 +132,13 @@ function Nested_Main(){
           headerTitle: "Thread",
         })}
       />
+      <Nested_Stack.Screen
+        name="Add Event"
+        component={NewEventScreen}
+        options={({ route }) => ({
+          headerTitle: "Add Event",
+        })}
+      />
     </Nested_Stack.Navigator>
   )
 }
@@ -177,7 +184,6 @@ function App() {
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
-        <Stack.Screen name="Add Event" component={NewEventScreen} />
         <Stack.Screen
           name="Main"
           component={Main}
