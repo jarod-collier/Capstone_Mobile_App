@@ -124,7 +124,7 @@ function NewEventScreen({navigation}) {
             <TextInput
               style={styles.inputBox}
               placeholder="Type event title here"
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               onChangeText={handleName}
               ref={clearName}
             />
@@ -136,7 +136,7 @@ function NewEventScreen({navigation}) {
             <TextInput
               style={styles.multiline}
               placeholder="Type event description here"
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               multiline={true}
               numberOfLines={10}
               onChangeText={handleDescription}
@@ -190,7 +190,7 @@ function NewEventScreen({navigation}) {
             <TextInput
               style={styles.inputBox}
               placeholder="Type event location here"
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               onChangeText={handleLocation}
               ref={clearLocation}
             />
@@ -212,15 +212,16 @@ function NewEventScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,
   },
   inputBox: {
     alignItems:'stretch',
+    backgroundColor: 'white',
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
     borderWidth: 1,
     textAlign: 'left',
     padding: 10,
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    borderColor: 'white',
+    // borderColor: 'black',
     borderRadius: 15,
     height: 40,
     marginHorizontal: 15,
@@ -244,7 +245,8 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     alignItems: 'stretch',
     height: 150,
@@ -257,12 +259,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
     // alignSelf: 'stretch',
     alignItems: 'center',
-    borderColor: 'white',
+    // borderColor: 'black',
     borderRadius: 8,
     // height: 30,
     width: 90,
@@ -272,7 +274,7 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   footer: {

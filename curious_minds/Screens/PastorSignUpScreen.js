@@ -144,14 +144,14 @@ function PastorSignUpScreen({navigation}) {
               <TextInput
                 style={styles.namesInput}
                 placeholder="  FirstName"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleFirstName}
                 ref={clearFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleLastName}
                 ref={clearLastName}
               />
@@ -160,7 +160,7 @@ function PastorSignUpScreen({navigation}) {
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Username"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleUsername}
                 ref={clearUsername}
               />
@@ -168,35 +168,35 @@ function PastorSignUpScreen({navigation}) {
                 style={styles.inputBox}
                 placeholder="  Password"
                 secureTextEntry={true}
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handlePassword}
                 ref={clearPassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleEmail}
                 ref={clearEmail}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Church preaching at"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handlePreach}
                 ref={clearPreach}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Where did you attend Seminary?"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleSeminary}
                 ref={clearSeminary}
               />
               <TextInput
                 style={styles.multiline}
                 placeholder="  Any additional information you would like to share"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 multiline={true}
                 numberOfLines={10}
                 onChangeText={handleAdditionalInfo}
@@ -220,7 +220,7 @@ function PastorSignUpScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
     alignItems: 'center',
   },
   logo: {
@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
   },
   namesInput: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     width: 150,
     height: 40,
@@ -239,7 +240,8 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     width: 320,
     height: 40,
@@ -249,7 +251,8 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     width: 320,
     height: 100,
@@ -263,11 +266,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: 'white',
+    // borderColor: 'white',
     borderRadius: 25,
     width: 250,
     marginVertical: 15,
@@ -275,13 +278,13 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center",
   },
   infoHereText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
 });

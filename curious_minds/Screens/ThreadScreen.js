@@ -247,7 +247,7 @@ function ThreadScreen({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   inputBox: {
     alignItems:'stretch',
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
     borderWidth: 1,
     textAlign: 'center',
     // padding: 10,
@@ -267,11 +267,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'green',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    borderColor: 'white',
+    // borderColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 30,
     height: 30,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   footer: {

@@ -80,7 +80,7 @@ function PastorSecCodeScreen({navigation}) {
             <TextInput
               style={styles.inputBox}
               placeholder="Enter Code Here"
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               onChangeText={handleCode}
               ref={clearCode}
             />
@@ -99,7 +99,7 @@ function PastorSecCodeScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
     alignItems: 'center',
   },
   logo: {
@@ -120,11 +120,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: 'white',
+    // borderColor: 'white',
     borderRadius: 25,
     width: 150,
     //margin: 10,
@@ -133,13 +133,13 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   securityCodeText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
 });

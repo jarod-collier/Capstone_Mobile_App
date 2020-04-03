@@ -63,15 +63,6 @@ async function delUser(navigation){
   )
 }
 
-function signOut(navigation){
-  firebase.auth().signOut()
-  .then(() => delay(500), navigation.reset({
-    index: 0,
-    routes: [{ name: 'Login'}],
-  }))
-  .catch(error => Alert.alert(error.message));
-}
-
 async function getUserInfo(){
   state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
@@ -155,13 +146,6 @@ function ProfileScreen({navigation}) {
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
         <Text style={{fontSize: 18, marginTop: 20}}>    {state.username}</Text>
-        <Button
-          style={{backgroundColor: 'red'}}
-          color='white'
-          name='sign-out'
-          onPress={() => signOut(navigation)}
-          // size={35}
-          />
        </View>
        {/*email line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -224,7 +208,7 @@ function ProfileScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,

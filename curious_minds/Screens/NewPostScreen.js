@@ -105,7 +105,7 @@ function NewPostScreen({navigation}) {
           <TextInput
             style={styles.inputBox}
             placeholder="Type your question here"
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             onChangeText={handleQuestion}
             ref={clearQuestion}
           />
@@ -122,7 +122,7 @@ function NewPostScreen({navigation}) {
           <TextInput
             style={styles.multiline}
             placeholder="Type your description here"
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             multiline={true}
             numberOfLines={10}
             onChangeText={handleDescription}
@@ -151,6 +151,8 @@ function NewPostScreen({navigation}) {
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={Anon}
+              checkedColor='dodgerblue'
+              uncheckedColor='black'
               onPress={()=> {handleOptionAnon(!Anon); setAnon(!Anon)}}
             />
             <Text style={{marginTop: 15, fontSize: 18}}>post anonymous</Text>
@@ -158,6 +160,8 @@ function NewPostScreen({navigation}) {
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={pastorOnly}
+              checkedColor='dodgerblue'
+              uncheckedColor='black'
               onPress={() => {handleOptionPastorOnly(!pastorOnly); setPastorOnly(!pastorOnly)}}
             />
             <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
@@ -180,7 +184,7 @@ function NewPostScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,
@@ -188,7 +192,8 @@ const styles = StyleSheet.create({
   inputBox: {
     alignItems:'stretch',
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     textAlign: 'left',
     padding: 10,
@@ -213,7 +218,8 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     alignItems: 'stretch',
     height: 150,
@@ -223,7 +229,7 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   footer: {
