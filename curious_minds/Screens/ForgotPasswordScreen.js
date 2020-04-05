@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import { Alert } from 'react-native';
 import React, {Component} from 'react';
 import firebase from 'firebase';
 
@@ -26,11 +27,21 @@ var state = {
 var handleEmail = text => {
     state.Email = text;
 };
-var resetPassword = () => {
-    if (state.Email != null)
+var resetPassword = (navigation) => {
+    if (state.Email != null) {
         firebase.auth().sendPasswordResetEmail(state.Email);
-    else
+        Alert.alert(
+            'Reset Password',
+            'Your password has been reset.\nPlease check your email to finish the process.',
+            [
+              {text: 'OK', onPress: () => navigation.navigate('Login')},
+            ],
+            { cancelable: false }
+          );
+    }
+    else {
         console.log("Please Enter Email.");
+    }
 };
 
 
@@ -52,7 +63,7 @@ function ForgotPasswordScreen({navigation}) {
           />
           <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => resetPassword()}>
+              onPress={() => resetPassword(navigation)}>
               <Text style={styles.customBtnText}>Send Email</Text>
             </TouchableOpacity>
         </View>
