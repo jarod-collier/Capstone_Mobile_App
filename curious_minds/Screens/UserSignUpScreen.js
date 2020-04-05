@@ -56,6 +56,9 @@ function handleSignUp(navigation){
     Last: "" + state.LastName,
     Username: "" + state.Username,
     uid: UserId,
+    postNum: 0,
+    commentNum: 0,
+    score: 0,
     userType: "user"
   }).catch((error)=>{
     Alert.alert('error ', error)

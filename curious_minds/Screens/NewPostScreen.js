@@ -43,6 +43,41 @@ var handleOptionPastorOnly = Boolean => {
     state.pastorOnly = Boolean;
 };
 
+async function updateProfile(){
+  console.log("Update Profile Method");
+  let uid = firebase.auth().currentUser.uid;
+  let numberOfPosts = 0;
+  var userRef;
+
+  console.log("UID: " + uid);
+
+  // Get the current value
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          numberOfPosts = child.val().numPosts;
+          userRef = child;
+          // console.log("Update Profile " + child.val().numPosts);
+        }
+    })
+  });
+
+  numberOfPosts = numberOfPosts + 1;
+  console.log(userRef.key);
+
+  await db.ref('/userInfo').child(userRef.key).once('value',function(snapshot) {
+    console.log(snapshot.val().postNum);
+  });
+
+  //update the value.
+  await db.ref('/userInfo/').child(userRef.key).set({
+    postNum: numberOfPosts,
+  }).then(() => {
+    console.log(numberOfPosts);
+  });
+
+}
+
 async function createPost(){
   let uid = firebase.auth().currentUser.uid;
   await db.ref('/userInfo/').once('value', function(snapshot){
@@ -167,7 +202,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-             onPress={async () => {await createPost(); navigation.navigate('Main')}}
+             onPress={async () => {await createPost(); console.log("Updating"); await updateProfile(); navigation.navigate('Main')}}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>
