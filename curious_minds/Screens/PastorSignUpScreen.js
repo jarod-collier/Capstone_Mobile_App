@@ -67,6 +67,9 @@ function handleSignUp(navigation){
     AddintionalInfo: "" + state.addintionalInfo,
     pastorCode: "" + (Math.random().toString(16).substring(2, 6) + Math.random().toString(16).substring(2, 6)),
     uid: UserId,
+    commentNum: 0, 
+    postNum: 0, 
+    score: 0,
     userType: "pastor"
   }).catch((error)=>{
     Alert.alert('error ', error)

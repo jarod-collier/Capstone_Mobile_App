@@ -35,17 +35,40 @@ const handleComment = text => {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
+async function profileComment(userRef) {
+
+  //get the current value.
+  var commentNumber;
+  await db.ref('/userInfo').child(userRef.key).once('value',function(snapshot) {
+    commentNumber = snapshot.val().commentNum;
+  });
+
+  commentNumber = commentNumber + 1;
+
+  //update the value.
+  await db.ref('/userInfo/').child(userRef.key).set({
+    commentNum: commentNumber,
+  }).then(() => {
+    // console.log(commentNumber);
+  });
+}
+
 async function addComment(postID){
     state.Loading = true;
     var username;
     let uid = firebase.auth().currentUser.uid;
+    var userRef;
+
     await db.ref('/userInfo/').once('value', function(snapshot){
       snapshot.forEach((child) => {
         if(child.val().uid === uid){
           username = child.val().Username;
+          userRef = child;
         }
     })
     });
+
+    await profileComment(userRef);
 
 
     db.ref('/posts/' + postID).push({
