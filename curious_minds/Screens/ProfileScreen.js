@@ -174,12 +174,12 @@ function ProfileScreen({navigation}) {
             {/* seminary line */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Seminary</Text>
-              <Text style={{fontSize: 18, marginTop: 20}}>         {state.seminary}</Text>
+              <Text style={{fontSize: 18, marginTop: 20}}>       {state.seminary}</Text>
             </View>
             {/* pastor code line */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Pastor code</Text>
-              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>         {state.pastorCode}</Text>
+              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>   {state.pastorCode}</Text>
             </View>
 
           </View>

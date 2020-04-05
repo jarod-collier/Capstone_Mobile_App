@@ -68,7 +68,7 @@ function Main() {
         activeBackgroundColor: 'silver',
         inactiveBackgroundColor: 'dodgerblue',
         style: {
-          backgroundColor: "red"
+          backgroundColor: "dodgerblue"
         }
       }}
     >
@@ -116,6 +116,7 @@ function Nested_Main(){
           fontWeight: 'bold',
         },
         headerTitleAlign: 'center',
+        headerStatusBarHeight: 5,
       }}
     >
       <Nested_Stack.Screen
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOffset: {height: 2, width: 2}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
