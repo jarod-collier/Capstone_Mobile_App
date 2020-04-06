@@ -35,7 +35,7 @@ async function canAddEvent (){
     snapshot.forEach((child) => {
       if(child.val().uid === uid){
         if(child.val().userType === "pastor"){
-          state.canAdd = true;
+          state.canAdd = true; 
         }
       }
     });
@@ -130,7 +130,7 @@ function EventScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'silver',
+    backgroundColor: '#696969',
   },
   logo: {
     margin: 100,

@@ -10,11 +10,8 @@ import * as React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import { Image, Text, View, StyleSheet, TouchableOpacity, Alert, } from 'react-native';
+import { Image, Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button} from 'react-native-vector-icons/FontAwesome';
-import firebase from 'firebase';
-import { db } from './FireDatabase/config';
 
 import LoginScreen from './Screens/LoginScreen';
 import UserTypeScreen from './Screens/UserTypeScreen';
@@ -28,6 +25,16 @@ import ProfileScreen from './Screens/ProfileScreen';
 import NewEventScreen from './Screens/NewEventScreen';
 import ThreadScreen from './Screens/ThreadScreen';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
+
+
+const styles = StyleSheet.create({
+  tabIcons: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+});
 
 const Tab = createBottomTabNavigator();
 
@@ -66,16 +73,11 @@ function Main() {
       tabBarOptions={{
         activeTintColor: 'dodgerblue',
         inactiveTintColor: 'black',
-        activeBackgroundColor: 'silver',
-        inactiveBackgroundColor: 'dodgerblue',
-        style: {
-          backgroundColor: "dodgerblue"
-        }
       }}
     >
       <Tab.Screen
         name="Main"
-        component={Nested_Main}
+        component={MainFeedScreen}
         options={{
           tabBarLabel: 'Home',
         }} />
@@ -98,70 +100,37 @@ function Main() {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          headerShown: true,
         }}
       />
     </Tab.Navigator>
   );
 }
-const Nested_Stack = createStackNavigator();
-function Nested_Main(){
-  return (
-    <Nested_Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: 'dodgerblue',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        headerTitleAlign: 'center',
-        headerStatusBarHeight: 5,
-      }}
-    >
-      <Nested_Stack.Screen
-        name="Main Feed"
-        component={MainFeedScreen}
-        options={({ route }) => ({
-          headerShown: false
-        })}
-      />
-      <Nested_Stack.Screen
-        name="Thread"
-        component={ThreadScreen}
-        options={({ route }) => ({
-          headerTitle: "Thread",
-        })}
-      />
-      <Nested_Stack.Screen
-        name="Add Event"
-        component={NewEventScreen}
-        options={({ route }) => ({
-          headerTitle: "Add Event",
-        })}
-      />
-    </Nested_Stack.Navigator>
-  )
-}
-const delay = ms => new Promise(res=>setTimeout(res,ms));
-function signOut(navigation){
-  firebase.auth().signOut()
-  .then(() => delay(500), navigation.reset({
-    index: 0,
-    routes: [{ name: 'Login'}],
-  }))
-  .catch(error => Alert.alert(error.message));
+
+function getHeaderTitle(route) {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : route.params?.screen || 'Home'
+
+  switch (routeName) {
+    case 'Home':
+      return 'Home'
+    case 'Profile':
+      return 'Profile'
+    case 'Events':
+      return 'Events'
+    case 'Post':
+      return 'Post'
+  }
 }
 const Stack = createStackNavigator();
 const MyTheme = {
   dark: false,
   colors: {
-    primary: 'orange',
-    background: 'silver',
-    card: 'green',
+    primary: 'rgb(255, 255, 255)',
+    background: '#696969',
+    card: 'rgb(255, 255, 255)',
     text: 'dodgerblue',
-    // border: 'red',
+    border: 'rgb(199, 199, 204)',
   },
 };
 
@@ -191,15 +160,8 @@ function App() {
         <Stack.Screen
           name="Main"
           component={Main}
-          options={({ navigation, route }) => ({
-            headerTitle: <Image source={require('./images/CM_logo02_header.png')}/>,
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={()=> signOut(navigation)}>
-                <Text style={styles.customBtnText}>Log Out</Text>
-              </TouchableOpacity>
-          ),
+          options={({ route }) => ({
+            headerTitle: getHeaderTitle(route)
           })}
         />
       </Stack.Navigator>
@@ -207,40 +169,5 @@ function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  tabIcons: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: 'dodgerblue',
-  },
-  logoutText: {
-    // fontSize: 20,
-    // fontWeight: '400',
-    color: "black",
-    textAlign: "center",
-    marginHorizontal: 7
-  },
-  Buttons: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 2, width: 2}, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
-    elevation: 4, // Android
-    backgroundColor: 'silver',
-    justifyContent: 'center',
-    borderRadius: 25,
-    width: 100,
-    height: 30,
-    marginVertical: 10,
-    margin: 10
-  },
-  customBtnText: {
-    fontSize: 20,
-    fontWeight: '400',
-    color: "white",
-    textAlign: "center"
-  },
-});
 
 export default App;

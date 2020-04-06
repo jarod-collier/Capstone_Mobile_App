@@ -32,37 +32,6 @@ var state= {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
-async function delUser(navigation){
-  Alert.alert(
-    'Delete Account',
-    'Are you sure you want to delete your account?',
-    [
-      {text: 'Cancel', onPress: () => {}},
-      {text: 'DELETE', onPress: async () => {
-        var node;
-        let uid = firebase.auth().currentUser.uid;
-        await db.ref('/userInfo/').once('value', function(snapshot){
-          snapshot.forEach((child) => {
-            if(child.val().uid === uid){
-              node = child.key;
-            }
-          })
-        });
-        await db.ref('/userInfo/').child(node).remove();
-        delay(500);
-
-        var user = firebase.auth().currentUser;
-        user.delete().then(() => navigation.reset({
-          index: 0,
-          routes: [{ name: 'Login'}],
-        }))
-        .catch(error => Alert.alert(error.message));
-      }, style: {color: 'red'}}
-    ],
-    {cancelable: true}
-  )
-}
-
 async function getUserInfo(){
   state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
@@ -174,12 +143,12 @@ function ProfileScreen({navigation}) {
             {/* seminary line */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Seminary</Text>
-              <Text style={{fontSize: 18, marginTop: 20}}>       {state.seminary}</Text>
+              <Text style={{fontSize: 18, marginTop: 20}}>         {state.seminary}</Text>
             </View>
             {/* pastor code line */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Pastor code</Text>
-              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>   {state.pastorCode}</Text>
+              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>         {state.pastorCode}</Text>
             </View>
 
           </View>
@@ -189,7 +158,7 @@ function ProfileScreen({navigation}) {
        <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
        <TouchableOpacity
             style={styles.Delete}
-            onPress={() => delUser(navigation)}
+            onPress={() => Alert.alert('delete account')}
           >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={styles.customBtnText}>Delete Account</Text>
@@ -208,7 +177,7 @@ function ProfileScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'silver',
+    backgroundColor: '#696969',
   },
   logo: {
     margin: 100,

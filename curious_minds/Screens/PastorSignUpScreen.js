@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
-import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -53,22 +52,7 @@ const handleAdditionalInfo = text => {
   state.addintionalInfo = text;
 };
 
-async function checkUsername(){
-  let usernames = [];
-  await db.ref('/userInfo/').once('value', function(snapshot){
-    snapshot.forEach((child) => {
-        usernames.push(
-            child.val().Username
-        );
-    })
-});
-  if(usernames.includes(state.Username)){
-    Alert.alert('username is already in use\nPlease try a different username');
-    return false;
-  }else{
-    return true;
-  }
-}
+function handleSignUp(navigation){
 
   var UserId;
   firebase.auth()
@@ -97,33 +81,8 @@ async function checkUsername(){
   .catch(error => Alert.alert(error.message));
 };
 
-var clearFirstName = React.createRef();
-var clearLastName = React.createRef();
-var clearUsername = React.createRef();
-var clearPassword = React.createRef();
-var clearEmail = React.createRef();
-var clearPreach = React.createRef();
-var clearSeminary = React.createRef();
-var clearAdditionalInfo = React.createRef();
-
 function PastorSignUpScreen({navigation}) {
   LayoutAnimation.easeInEaseOut();
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      return () => {
-        // Do something when the screen is unfocused
-        clearFirstName.current.clear();
-        clearLastName.current.clear();
-        clearUsername.current.clear();
-        clearPassword.current.clear();
-        clearEmail.current.clear();
-        clearPreach.current.clear();
-        clearSeminary.current.clear();
-        clearAdditionalInfo.current.clear();
-      };
-    }, [])
-  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -133,7 +92,7 @@ function PastorSignUpScreen({navigation}) {
          scrollEnabled={true}
         >
           <View style={styles.logo}>
-            <Image source={require('../images/CM_logo02.png')} />
+            <Image source={require('../images/logo_placeholder.png')} />
           </View>
           <View>
             <Text style={styles.infoHereText}>INFO HERE</Text>
@@ -143,63 +102,55 @@ function PastorSignUpScreen({navigation}) {
               <TextInput
                 style={styles.namesInput}
                 placeholder="  FirstName"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handleFirstName}
-                ref={clearFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handleLastName}
-                ref={clearLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Username"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handleUsername}
-                ref={clearUsername}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Password"
                 secureTextEntry={true}
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handlePassword}
-                ref={clearPassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handleEmail}
-                ref={clearEmail}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Church preaching at"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handlePreach}
-                ref={clearPreach}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Where did you attend Seminary?"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 onChangeText={handleSeminary}
-                ref={clearSeminary}
               />
               <TextInput
                 style={styles.multiline}
                 placeholder="  Any additional information you would like to share"
-                placeholderTextColor="black"
+                placeholderTextColor="white"
                 multiline={true}
                 numberOfLines={10}
                 onChangeText={handleAdditionalInfo}
-                ref={clearAdditionalInfo}
               />
             </View>
           </View>
@@ -219,7 +170,7 @@ function PastorSignUpScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'silver',
+    backgroundColor: '#696969',
     alignItems: 'center',
   },
   logo: {
@@ -228,8 +179,7 @@ const styles = StyleSheet.create({
   },
   namesInput: {
     borderRadius: 15,
-    borderColor: 'black',
-    backgroundColor: 'white',
+    borderColor: 'white',
     borderWidth: 1,
     width: 150,
     height: 40,
@@ -239,8 +189,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     borderRadius: 15,
-    borderColor: 'black',
-    backgroundColor: 'white',
+    borderColor: 'white',
     borderWidth: 1,
     width: 320,
     height: 40,
@@ -250,8 +199,7 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderRadius: 15,
-    borderColor: 'black',
-    backgroundColor: 'white',
+    borderColor: 'white',
     borderWidth: 1,
     width: 320,
     height: 100,
@@ -265,11 +213,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
+    borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    // borderColor: 'white',
+    borderColor: 'white',
     borderRadius: 25,
     width: 250,
     marginVertical: 15,
@@ -277,13 +225,13 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "black",
+    color: "white",
     textAlign: "center",
   },
   infoHereText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "black",
+    color: "white",
     textAlign: "center"
   },
 });

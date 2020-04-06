@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
 import firebase from 'firebase';
-import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -73,22 +72,9 @@ var logInUser = (navigation) => {
 
 };
 
-var clearUsername = React.createRef();
-var clearPassword = React.createRef();
-
 function LoginScreen({navigation}) {
   firebase.auth().signOut();
   LayoutAnimation.easeInEaseOut();
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      return () => {
-        // Do something when the screen is unfocused
-        clearUsername.current.clear();
-        clearPassword.current.clear();
-      };
-    }, [])
-  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -98,19 +84,16 @@ function LoginScreen({navigation}) {
         <View>
           <TextInput
             style={styles.inputBox}
-            placeholder="Enter your Email"
-            keyboardType='email-address'
-            placeholderTextColor="black"
+            placeholder="Enter your Username"
+            placeholderTextColor="white"
             onChangeText={handleUsername}
-            ref={clearUsername}
           />
           <TextInput
             style={styles.inputBox}
             placeholder="Password"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
             secureTextEntry={true}
             onChangeText={handlePassword}
-            ref={clearPassword}
           />
           <View>
             <TouchableOpacity
@@ -147,7 +130,7 @@ function LoginScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'silver',
+    backgroundColor: '#696969',
     alignItems: 'center',
     justifyContent: "space-evenly",
     padding: 10,
@@ -158,8 +141,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     borderRadius: 15,
-    borderColor: 'black',
-    backgroundColor: 'white',
+    borderColor: 'white',
     borderWidth: 1,
     width: 250,
     textAlign: 'center',
@@ -172,10 +154,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
+    borderWidth: 1,
     backgroundColor: 'dodgerblue',
     justifyContent: 'center',
-    // borderColor: 'black',
+    borderColor: 'white',
     borderRadius: 25,
     width: 250,
     height: 30,
@@ -188,7 +170,7 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
-    color: "black",
+    color: "white",
     textAlign: "center"
   },
 });

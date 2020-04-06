@@ -52,8 +52,8 @@ async function loadPostCards(navigation){
     return(
       <View key={postData.key}>
         <Button
-        style={{backgroundColor: 'silver'}}
-        onPress = {()=> navigation.navigate('Thread', postData.key)}>
+        style={{backgroundColor: '#696969'}}
+        onPress = {()=> navigation.navigate('Thread', postData.key)}> 
         <Card style={{ padding: 15, alignSelf: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
@@ -128,7 +128,7 @@ function MainFeedScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'red',
+    backgroundColor: '#696969',
   },
   logo: {
     margin: 100,

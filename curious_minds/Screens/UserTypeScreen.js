@@ -47,7 +47,7 @@ function UserTypeScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'silver',
+    backgroundColor: '#696969',
     alignItems: 'center',
   },
   logo: {
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
+    borderWidth: 1,
     backgroundColor: 'dodgerblue',
     justifyContent: 'center',
-    // borderColor: 'black',
+    borderColor: 'white',
     borderRadius: 25,
     width: 150,
     height: 150,
@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "black",
+    color: "white",
     textAlign: "center"
   },
   iAmText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "black",
+    color: "white",
     textAlign: "center"
   },
 });
