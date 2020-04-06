@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -45,7 +46,22 @@ var handleEmail = text => {
   state.Email = text;
 };
 
-function handleSignUp(navigation){
+async function checkUsername(){
+  let usernames = [];
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+        usernames.push(
+            child.val().Username
+        );
+    })
+});
+  if(usernames.includes(state.Username)){
+    Alert.alert('username is already in use\nPlease try a different username');
+    return false;
+  }else{
+    return true;
+  }
+}
 
   var UserId;
   firebase.auth()
@@ -70,8 +86,27 @@ function handleSignUp(navigation){
   .catch(error => Alert.alert(error.message));
 };
 
+var clearFirstName = React.createRef();
+var clearLastName = React.createRef();
+var clearUsername = React.createRef();
+var clearPassword = React.createRef();
+var clearEmail = React.createRef();
+
 function UserSignUpScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearFirstName.current.clear();
+        clearLastName.current.clear();
+        clearUsername.current.clear();
+        clearPassword.current.clear();
+        clearEmail.current.clear();
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
@@ -81,7 +116,7 @@ function UserSignUpScreen({navigation}) {
          extraHeight={100}
         >
           <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
+            <Image source={require('../images/CM_logo02.png')} />
           </View>
           <View>
             <Text style={styles.infoHereText}>INFO HERE</Text>
@@ -91,35 +126,42 @@ function UserSignUpScreen({navigation}) {
               <TextInput
                 style={styles.namesInput}
                 placeholder="  FirstName"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleFirstName}
+                ref={clearFirstName}
               />
               <TextInput
                 style={styles.namesInput}
                 placeholder="  LastName"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleLastName}
+                ref={clearLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Username"
-                placeholderTextColor="white"
+                placeholderTextColor="black"
                 onChangeText={handleUsername}
+                ref={clearUsername}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Password"
                 secureTextEntry={true}
-                placeholderTextColor="white"
+                autoCapitalize='none'
+                placeholderTextColor="black"
                 onChangeText={handlePassword}
+                ref={clearPassword}
               />
               <TextInput
                 style={styles.inputBox}
                 placeholder="  Email"
-                placeholderTextColor="white"
+                keyboardType='email-address'
+                placeholderTextColor="black"
                 onChangeText={handleEmail}
+                ref={clearEmail}
               />
             </View>
           </View>
@@ -138,7 +180,7 @@ function UserSignUpScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
     alignItems: 'center',
   },
   logo: {
@@ -147,7 +189,8 @@ const styles = StyleSheet.create({
   },
   namesInput: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     width: 150,
     height: 40,
@@ -157,7 +200,8 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     width: 320,
     height: 40,
@@ -171,11 +215,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: 'white',
+    // borderColor: 'white',
     borderRadius: 25,
     width: 250,
     marginTop: 15,
@@ -183,13 +227,13 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   infoHereText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
 });
