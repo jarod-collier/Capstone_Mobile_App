@@ -17,6 +17,7 @@ import {
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { db } from '../FireDatabase/config';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -55,6 +56,10 @@ function createEvent(){
   Alert.alert('Event added successfully');
 };
 
+var clearName = React.createRef();
+var clearDescription = React.createRef();
+var clearLocation = React.createRef();
+
 function NewEventScreen({navigation}) {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -91,137 +96,117 @@ function NewEventScreen({navigation}) {
   };
 
   LayoutAnimation.easeInEaseOut();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearName.current.clear();
+        clearDescription.current.clear();
+        clearLocation.current.clear();
+      };
+    }, [])
+  );
+
   return (
     <SafeAreaView style={{flex: 1}}>
-            <KeyboardAwareScrollView
-            resetScrollToCoords={{x: 0, y: 0}}
-            contentContainerStyle={styles.container}
-            scrollEnabled={true}>
-                <View style={styles.container}>
-                    <View>
-                        <Text style={{
-                            marginTop: 40,
-                            marginLeft: 15,
-                            fontSize: 24,
-                        }}>
-                        Event Title
-                        </Text>
-                        <TextInput
-                            style={styles.inputBox}
-                            placeholder="Type event title here"
-                            placeholderTextColor="white"
-                            onChangeText={handleName}
-                        />
-                    </View>
-                    <View>
-                        <Text style={{
-                            marginTop: 20,
-                            marginLeft: 15,
-                            fontSize: 24,
-                        }}>
-                        Description
-                        </Text>
-                        <TextInput
-                            style={styles.multiline}
-                            placeholder="Type event description here"
-                            placeholderTextColor="white"
-                            multiline={true}
-                            numberOfLines={10}
-                            onChangeText={handleDescription}
-                        />
-                    </View>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{
-                            marginTop: 20,
-                            marginLeft: 15,
-                            fontSize: 24,
-                        }}>
-                        Date:
-                        </Text>
-                        <Text style={{
-                            marginTop: 20,
-                            marginLeft: 15,
-                            fontSize: 20,
-                        }}>
-                            {state.chosenDate}
-                        </Text>
-                        <TouchableOpacity
-                            style={styles.setButtons}
-                            onPress={showDatepicker}
-                        >
-                            <Text style={{
-                                fontSize: 16,
-                            }}>
-                            Set Date
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    {showDate &&
-
-                        <DateTimePicker
-                            value={date}
-                            mode={'date'}
-                            onChange={onChangeDate}
-                        />
-                    }
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{
-                            marginTop: 20,
-                            marginLeft: 15,
-                            fontSize: 24,
-                        }}>
-                        Time:
-                        </Text>
-                        <Text style={{
-                            marginTop: 20,
-                            marginLeft: 15,
-                            fontSize: 20,
-                        }}>
-                            {state.chosenTime}
-                        </Text>
-                        <TouchableOpacity
-                            style={styles.setButtons}
-                            onPress={showTimepicker}
-                        >
-                            <Text style={{
-                                fontSize: 16,
-                            }}>
-                            Set Time
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    {showTime &&
-                        <DateTimePicker
-                            value={time}
-                            mode={'time'}
-                            onChange={onChangeTime}
-                        />
-                    }
-                    <View>
-                        <Text style={{
-                            marginTop: 20,
-                            marginLeft: 15,
-                            fontSize: 24,
-                        }}>
-                        Location:
-                        </Text>
-                        <TextInput
-                            style={styles.inputBox}
-                            placeholder="Type event location here"
-                            placeholderTextColor="white"
-                            onChangeText={handleLocation}
-                        />
-                    </View>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.Buttons}
-                             onPress={() => {createEvent(); navigation.navigate('Events')}}
-                        >
-                            <Text style={styles.customBtnText}>Add Event</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </KeyboardAwareScrollView>
+      <ScrollView>
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{x: 0, y: 0}}
+          contentContainerStyle={styles.container}
+          scrollEnabled={true}
+        >
+          <View style={styles.container}>
+            <View>
+              <Text style={{ marginTop: 40, marginLeft: 15, fontSize: 24, }}>
+              Event Title
+              </Text>
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Type event title here"
+                placeholderTextColor="black"
+                onChangeText={handleName}
+                ref={clearName}
+              />
+            </View>
+            <View>
+              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                Description
+              </Text>
+              <TextInput
+                style={styles.multiline}
+                placeholder="Type event description here"
+                placeholderTextColor="black"
+                multiline={true}
+                numberOfLines={10}
+                onChangeText={handleDescription}
+                ref={clearDescription}
+              />
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                Date:
+              </Text>
+              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
+                {state.chosenDate}
+              </Text>
+              <TouchableOpacity style={styles.setButtons} onPress={showDatepicker} >
+                <Text style={{ fontSize: 16, }}>
+                  Set Date
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {showDate &&
+              <DateTimePicker
+                value={date}
+                mode={'date'}
+                onChange={onChangeDate}
+              />
+            }
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                Time:
+              </Text>
+              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
+                {state.chosenTime}
+              </Text>
+              <TouchableOpacity style={styles.setButtons} onPress={showTimepicker} >
+                <Text style={{ fontSize: 16, }}>
+                  Set Time
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {showTime &&
+              <DateTimePicker
+                value={time}
+                mode={'time'}
+                onChange={onChangeTime}
+              />
+            }
+            <View>
+              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                Location:
+              </Text>
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Type event location here"
+                placeholderTextColor="black"
+                onChangeText={handleLocation}
+                ref={clearLocation}
+              />
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={() => {createEvent(); navigation.navigate('Events')}}
+              >
+                <Text style={styles.customBtnText}>Add Event</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -229,15 +214,16 @@ function NewEventScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,
   },
   inputBox: {
     alignItems:'stretch',
+    backgroundColor: 'white',
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
     borderWidth: 1,
     textAlign: 'left',
     padding: 10,
@@ -253,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    borderColor: 'white',
+    // borderColor: 'black',
     borderRadius: 15,
     height: 40,
     marginHorizontal: 15,
@@ -261,7 +247,8 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     alignItems: 'stretch',
     height: 150,
@@ -274,12 +261,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
     // alignSelf: 'stretch',
     alignItems: 'center',
-    borderColor: 'white',
+    // borderColor: 'black',
     borderRadius: 8,
     // height: 30,
     width: 90,
@@ -289,7 +276,7 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   footer: {
