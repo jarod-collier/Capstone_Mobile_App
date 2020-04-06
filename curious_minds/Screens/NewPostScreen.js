@@ -48,29 +48,23 @@ async function updateProfile(){
   let numberOfPosts = 0;
   var userRef;
 
-  // console.log("UID: " + uid);
-
   // Get the current value
   await db.ref('/userInfo/').once('value', function(snapshot){
     snapshot.forEach((child) => {
         if(child.val().uid === uid){
           numberOfPosts = child.val().postNum;
           userRef = child;
-          // console.log("Update Profile " + child.val().numPosts);
         }
     })
   });
 
   numberOfPosts = numberOfPosts + 1;
-  // console.log(userRef.key);
+  console.log(userRef.key);
 
   //update the value.
-  await db.ref('/userInfo/').child(userRef.key).set({
+  await db.ref('/userInfo/').child(userRef.key).update({
     postNum: numberOfPosts,
-  }).then(() => {
-    // console.log(numberOfPosts);
   });
-
 }
 
 async function createPost(){

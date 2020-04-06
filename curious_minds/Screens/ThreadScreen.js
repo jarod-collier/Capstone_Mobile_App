@@ -49,7 +49,7 @@ async function profileComment(userRef) {
   commentNumber = commentNumber + 1;
 
   //update the value.
-  await db.ref('/userInfo/').child(userRef.key).set({
+  await db.ref('/userInfo/').child(userRef.key).update({
     commentNum: commentNumber,
   }).then(() => {
     // console.log(commentNumber);

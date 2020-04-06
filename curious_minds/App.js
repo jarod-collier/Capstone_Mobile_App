@@ -186,11 +186,7 @@ function App() {
         <Stack.Screen name="Security Code" component={PastorSecCodeScreen} />
         <Stack.Screen name="Pastor SignUp" component={PastorSignUpScreen} />
         <Stack.Screen name="User SignUp" component={UserSignUpScreen} />
-<<<<<<< HEAD
-        <Stack.Screen name="Add Event" component={NewEventScreen} />
         <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen} />
-=======
->>>>>>> fixingMerge
         <Stack.Screen
           name="Main"
           component={Main}

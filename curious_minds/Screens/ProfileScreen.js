@@ -23,6 +23,9 @@ var state= {
   aboutMe: '',
   fName: '',
   lName: '',
+  commentNum: 0,
+  postNum: 0,
+  score: 0,
   Loading: true,
   pastorUser: false,
   preach: '',
@@ -74,6 +77,10 @@ async function getUserInfo(){
             state.lName = child.val().Last;
             state.email = firebase.auth().currentUser.email;
             state.username = child.val().Username;
+            state.commentNum = child.val().commentNum;
+            state.postNum = child.val().postNum;
+            state.score = child.val().score;
+            state.aboutMe = child.val().AddintionalInfo;
             if(child.val().userType === 'pastor'){
               state.pastorUser = true;
               state.preach = child.val().Preach;
@@ -122,9 +129,9 @@ function ProfileScreen({navigation}) {
           </View>
           {/*numbers line */}
           <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> 0</Text>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> {state.postNum}</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {state.commentNum}</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {state.score}</Text>
           </View>
         </View>
      </View>
@@ -141,7 +148,7 @@ function ProfileScreen({navigation}) {
           </View>
         </TouchableOpacity>
        </View>
-       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,}}>Here is about me</Text>
+       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,multiline: true}}>{state.aboutMe}</Text>
        {/*username line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>

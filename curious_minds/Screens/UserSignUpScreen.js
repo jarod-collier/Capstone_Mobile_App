@@ -77,6 +77,7 @@ async function handleSignUp(navigation){
       uid: UserId,
       postNum: 0,
       commentNum: 0,
+      AddintionalInfo: "",
       score: 0,
       userType: "user"
     }).catch((error)=>{

@@ -58,7 +58,7 @@ function ForgotPasswordScreen({navigation}) {
           <TextInput
             style={styles.inputBox}
             placeholder="Enter account email."
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             onChangeText={handleEmail}
           />
           <TouchableOpacity
@@ -75,7 +75,7 @@ function ForgotPasswordScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
     alignItems: 'center',
     justifyContent: "space-evenly",
     padding: 10,
@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     width: 250,
     textAlign: 'center',
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOffset: {height: 3, width: 3}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
