@@ -1,6 +1,9 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { db } from '../FireDatabase/config';
+import firebase from 'firebase';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
@@ -13,17 +16,52 @@ import {
   Button,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 
 var state = {
-  Code: '',
+  Code: "",
 };
-var handleCode = text => {
+const handleCode = text => {
   state.Code = text;
 };
 
+async function readFromDB(){
+  var found = false;
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.val().userType === 'pastor'){
+        if(child.val().pastorCode === state.Code){
+          found = true;
+        }
+      }
+    })
+  });
+  return found;
+}
+
+async function validateCode(navigation){
+  var valid = await readFromDB();
+  if(valid){
+    navigation.navigate('Pastor SignUp');
+  }else{
+    Alert.alert('Not a valid security code.\nPlease try again.');
+  }
+}
+
+var clearCode = React.createRef();
+
 function PastorSecCodeScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  LayoutAnimation.easeInEaseOut();
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        clearCode.current.clear();
+      };
+    }, [])
+  );
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAwareScrollView
@@ -33,7 +71,7 @@ function PastorSecCodeScreen({navigation}) {
        extraHeight={100}
        >
           <View style={styles.logo}>
-            <Image source={require('../images/logo_placeholder.png')} />
+            <Image source={require('../images/CM_logo02.png')} />
           </View>
           <View>
             <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code</Text>
@@ -42,13 +80,13 @@ function PastorSecCodeScreen({navigation}) {
             <TextInput
               style={styles.inputBox}
               placeholder="Enter Code Here"
-              //NEED TO MAKE SURE THE KEYBOARD DOESN'T COVER THE BOX
-              placeholderTextColor="white"
+              placeholderTextColor="black"
               onChangeText={handleCode}
+              ref={clearCode}
             />
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => navigation.navigate('Pastor SignUp')}>
+              onPress={() => validateCode(navigation)}>
               <Text style={styles.customBtnText}>Confirm</Text>
             </TouchableOpacity>
           </View>
@@ -61,7 +99,7 @@ function PastorSecCodeScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
     alignItems: 'center',
   },
   logo: {
@@ -82,11 +120,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderColor: 'white',
+    // borderColor: 'white',
     borderRadius: 25,
     width: 150,
     //margin: 10,
@@ -95,13 +133,13 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   securityCodeText: {
     fontSize: 35,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
 });

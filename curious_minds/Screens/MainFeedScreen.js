@@ -3,6 +3,7 @@ import React, {Component, useState, useCallback, useRef} from 'react';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
+import firebase from 'firebase';
 
 import {
   SafeAreaView,
@@ -16,6 +17,7 @@ import {
   Alert,
   LayoutAnimation,
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 var state = {
   posts: [],
@@ -25,12 +27,15 @@ var state = {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
-async function readFromDB(){
+async function readFromDB(navigation){
   state.Loading = true;
   await db.ref('/posts/').once('value', function(snapshot){
     let postItems = [];
     snapshot.forEach((child) => {
       postItems.push({
+        key: child.key,
+        username: child.val().username,
+        date: child.val().date,
         question: child.val().question,
         desc: child.val().desc,
         anon: child.val().Anon,
@@ -39,18 +44,23 @@ async function readFromDB(){
     })
     state.posts = postItems.reverse();
   });
-  await loadPostCards();
+  await loadPostCards(navigation);
 }
 
-async function loadPostCards(){
+async function loadPostCards(navigation){
   state.display = state.posts.map(postData => {
     return(
-      <View key={postData.question}>
-        <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
+      <View key={postData.key}>
+        <Button
+        style={{backgroundColor: 'silver'}}
+        onPress = {()=> navigation.navigate('Thread', postData.key)}>
+        <Card style={{ padding: 15, alignSelf: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
-            {/* //This needs to be fixed */}
-            <Text style={{alignSelf: 'flex-end', opacity: 0.5}}>Posted by: {postData.Anon}</Text>
+            <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
+              { !postData.anon && <Text>Posted by: {postData.username} </Text>}
+              <Text>on {postData.date}</Text>
+            </View>
             <View style={{flexDirection:'row', alignItems: 'stretch'}}>
               <Button
                 style={{backgroundColor: 'white'}}
@@ -72,9 +82,9 @@ async function loadPostCards(){
                 color='black'
                 name='exclamation-triangle'
                 onPress={()=> Alert.alert('Report')} />
-              <Text style={{alignSelf: 'center', opacity: 0.5}}>DATE HERE</Text>
           </View>
         </Card>
+        </Button>
       </View>
     )
   });
@@ -87,7 +97,7 @@ function MainFeedScreen({navigation}) {
       setLoading(true);
       delay(2000).then(()=> setLoading(false))}, [isLoading]
     );
-    readFromDB();
+    readFromDB(navigation);
     LayoutAnimation.easeInEaseOut();
     return (
       setTimeout(()=> setLoading(state.Loading), 500),
@@ -118,7 +128,7 @@ function MainFeedScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    // backgroundColor: 'red',
   },
   logo: {
     margin: 100,

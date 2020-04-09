@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React, {Component, useState} from 'react';
 import {CheckBox} from 'react-native-elements';
+import firebase from 'firebase';
 
 import {
   SafeAreaView,
@@ -23,6 +24,7 @@ var state = {
     Description: '',
     Anon: false,
     pastorOnly: false,
+    username: '',
   };
 
 const handleQuestion = text => {
@@ -33,16 +35,51 @@ const handleDescription = text => {
     state.Description = text;
 };
 
-const handleOptionAnon = Boolean => {
+var handleOptionAnon = Boolean => {
     state.Anon = Boolean;
 };
 
-const handleOptionPastorOnly = Boolean => {
+var handleOptionPastorOnly = Boolean => {
     state.pastorOnly = Boolean;
 };
 
-function createPost(){
+async function updateProfile(){
+  let uid = firebase.auth().currentUser.uid;
+  let numberOfPosts = 0;
+  var userRef;
+
+  // Get the current value
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          numberOfPosts = child.val().postNum;
+          userRef = child;
+        }
+    })
+  });
+
+  numberOfPosts = numberOfPosts + 1;
+  console.log(userRef.key);
+
+  //update the value.
+  await db.ref('/userInfo/').child(userRef.key).update({
+    postNum: numberOfPosts,
+  });
+}
+
+async function createPost(){
+  let uid = firebase.auth().currentUser.uid;
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          state.username = child.val().Username;
+        }
+    })
+  });
+
   db.ref('/posts').push({
+    username: "" + state.username,
+    date: "" + new Date().toLocaleDateString(),
     question: "" + state.Question,
     desc: "" + state.Description,
     Anon: state.Anon,
@@ -72,6 +109,8 @@ function NewPostScreen({navigation}) {
         clearDescription.current.clear();
         setPastorOnly(false);
         setAnon(false);
+        // pastorOnly = false;
+        // Anon = false;
       };
     }, [])
   );
@@ -90,7 +129,7 @@ function NewPostScreen({navigation}) {
           <TextInput
             style={styles.inputBox}
             placeholder="Type your question here"
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             onChangeText={handleQuestion}
             ref={clearQuestion}
           />
@@ -107,7 +146,7 @@ function NewPostScreen({navigation}) {
           <TextInput
             style={styles.multiline}
             placeholder="Type your description here"
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             multiline={true}
             numberOfLines={10}
             onChangeText={handleDescription}
@@ -136,6 +175,8 @@ function NewPostScreen({navigation}) {
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={Anon}
+              checkedColor='dodgerblue'
+              uncheckedColor='black'
               onPress={()=> {handleOptionAnon(!Anon); setAnon(!Anon)}}
             />
             <Text style={{marginTop: 15, fontSize: 18}}>post anonymous</Text>
@@ -143,6 +184,8 @@ function NewPostScreen({navigation}) {
           <View style={{ flexDirection: 'row'}}>
             <CheckBox
               checked={pastorOnly}
+              checkedColor='dodgerblue'
+              uncheckedColor='black'
               onPress={() => {handleOptionPastorOnly(!pastorOnly); setPastorOnly(!pastorOnly)}}
             />
             <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
@@ -152,7 +195,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-             onPress={() => {createPost(); navigation.navigate('Main')}}
+             onPress={async () => {await createPost(); console.log("Updating"); await updateProfile(); navigation.navigate('Main')}}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>
@@ -165,7 +208,7 @@ function NewPostScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,
@@ -173,7 +216,8 @@ const styles = StyleSheet.create({
   inputBox: {
     alignItems:'stretch',
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     textAlign: 'left',
     padding: 10,
@@ -198,7 +242,8 @@ const styles = StyleSheet.create({
   },
   multiline: {
     borderRadius: 15,
-    borderColor: 'white',
+    borderColor: 'black',
+    backgroundColor: 'white',
     borderWidth: 1,
     alignItems: 'stretch',
     height: 150,
@@ -208,7 +253,7 @@ const styles = StyleSheet.create({
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
-    color: "white",
+    color: "black",
     textAlign: "center"
   },
   footer: {

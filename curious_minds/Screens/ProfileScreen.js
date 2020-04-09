@@ -23,6 +23,9 @@ var state= {
   aboutMe: '',
   fName: '',
   lName: '',
+  commentNum: 0,
+  postNum: 0,
+  score: 0,
   Loading: true,
   pastorUser: false,
   preach: '',
@@ -31,6 +34,37 @@ var state= {
 };
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
+
+async function delUser(navigation){
+  Alert.alert(
+    'Delete Account',
+    'Are you sure you want to delete your account?',
+    [
+      {text: 'Cancel', onPress: () => {}},
+      {text: 'DELETE', onPress: async () => {
+        var node;
+        let uid = firebase.auth().currentUser.uid;
+        await db.ref('/userInfo/').once('value', function(snapshot){
+          snapshot.forEach((child) => {
+            if(child.val().uid === uid){
+              node = child.key;
+            }
+          })
+        });
+        await db.ref('/userInfo/').child(node).remove();
+        delay(500);
+
+        var user = firebase.auth().currentUser;
+        user.delete().then(() => navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login'}],
+        }))
+        .catch(error => Alert.alert(error.message));
+      }, style: {color: 'red'}}
+    ],
+    {cancelable: true}
+  )
+}
 
 async function getUserInfo(){
   state.Loading = true;
@@ -43,6 +77,10 @@ async function getUserInfo(){
             state.lName = child.val().Last;
             state.email = firebase.auth().currentUser.email;
             state.username = child.val().Username;
+            state.commentNum = child.val().commentNum;
+            state.postNum = child.val().postNum;
+            state.score = child.val().score;
+            state.aboutMe = child.val().AddintionalInfo;
             if(child.val().userType === 'pastor'){
               state.pastorUser = true;
               state.preach = child.val().Preach;
@@ -52,7 +90,6 @@ async function getUserInfo(){
           }
       })
   });
-  console.log('done with DB');
   state.Loading = false;
 }
 
@@ -92,9 +129,9 @@ function ProfileScreen({navigation}) {
           </View>
           {/*numbers line */}
           <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> 0</Text>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> 0</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> {state.postNum}</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {state.commentNum}</Text>
+            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {state.score}</Text>
           </View>
         </View>
      </View>
@@ -111,7 +148,7 @@ function ProfileScreen({navigation}) {
           </View>
         </TouchableOpacity>
        </View>
-       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,}}>Here is about me</Text>
+       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,multiline: true}}>{state.aboutMe}</Text>
        {/*username line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
@@ -144,12 +181,12 @@ function ProfileScreen({navigation}) {
             {/* seminary line */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Seminary</Text>
-              <Text style={{fontSize: 18, marginTop: 20}}>         {state.seminary}</Text>
+              <Text style={{fontSize: 18, marginTop: 20}}>       {state.seminary}</Text>
             </View>
             {/* pastor code line */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Pastor code</Text>
-              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>         {state.pastorCode}</Text>
+              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>   {state.pastorCode}</Text>
             </View>
 
           </View>
@@ -159,7 +196,7 @@ function ProfileScreen({navigation}) {
        <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
        <TouchableOpacity
             style={styles.Delete}
-            onPress={() => Alert.alert('delete account')}
+            onPress={() => delUser(navigation)}
           >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={styles.customBtnText}>Delete Account</Text>
@@ -178,7 +215,7 @@ function ProfileScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#696969',
+    backgroundColor: 'silver',
   },
   logo: {
     margin: 100,
