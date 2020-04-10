@@ -51,8 +51,6 @@ async function profileComment(userRef) {
   //update the value.
   await db.ref('/userInfo/').child(userRef.key).update({
     commentNum: commentNumber,
-  }).then(() => {
-    // console.log(commentNumber);
   });
 }
 
@@ -125,6 +123,7 @@ async function readFromDB(postID){
         username: snapshot.val().username,
         date: snapshot.val().date,
         desc: snapshot.val().desc,
+        likes: snapshot.val().likes,
         anon: snapshot.val().Anon,
         pastorOnly: snapshot.val().PastorOnly
       })
@@ -188,6 +187,10 @@ async function loadPostCards(postItems){
             color='black'
             name='thumbs-up'
             onPress={()=> Alert.alert('Like')} />
+            {postData.likes > 0 &&
+            <Text
+              style={{marginTop: 9, opacity: .5, marginLeft: -10}}
+            >{postData.likes}</Text>}
           <Button
             style={{backgroundColor: 'white'}}
             color='black'

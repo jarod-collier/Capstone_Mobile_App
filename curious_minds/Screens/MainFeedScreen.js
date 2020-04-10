@@ -17,7 +17,6 @@ import {
   Alert,
   LayoutAnimation,
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 
 var state = {
   posts: [],
@@ -37,6 +36,7 @@ async function readFromDB(navigation){
         username: child.val().username,
         date: child.val().date,
         question: child.val().question,
+        likes: child.val().likes,
         desc: child.val().desc,
         anon: child.val().Anon,
         pastorOnly: child.val().PastorOnly
@@ -77,6 +77,10 @@ async function loadPostCards(navigation){
                 color='black'
                 name='thumbs-up'
                 onPress={()=> Alert.alert('Like')} />
+                {postData.likes > 0 && 
+                <Text
+                  style={{marginTop: 9, opacity: .5, marginLeft: -10}}
+                >{postData.likes}</Text>}
               <Button
                 style={{backgroundColor: 'white'}}
                 color='black'

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {CheckBox} from 'react-native-elements';
 import firebase from 'firebase';
 
@@ -10,8 +10,6 @@ import {
   Text,
   TouchableOpacity,
   LayoutAnimation,
-  Image,
-  Button,
   Alert,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -19,13 +17,13 @@ import { db } from '../FireDatabase/config';
 import { useFocusEffect } from '@react-navigation/native';
 
 var state = {
-    checked: {},
-    Question: '',
-    Description: '',
-    Anon: false,
-    pastorOnly: false,
-    username: '',
-  };
+  checked: {},
+  Question: '',
+  Description: '',
+  Anon: false,
+  pastorOnly: false,
+  username: '',
+};
 
 const handleQuestion = text => {
     state.Question = text;
@@ -59,7 +57,7 @@ async function updateProfile(){
   });
 
   numberOfPosts = numberOfPosts + 1;
-  console.log(userRef.key);
+  // console.log(userRef.key);
 
   //update the value.
   await db.ref('/userInfo/').child(userRef.key).update({
@@ -82,12 +80,12 @@ async function createPost(){
     date: "" + new Date().toLocaleDateString(),
     question: "" + state.Question,
     desc: "" + state.Description,
+    likes: 0,
     Anon: state.Anon,
     PastorOnly: state.pastorOnly
   }).catch((error)=>{
     Alert.alert('error ', error)
   })
-
   Alert.alert('Post added successfully');
 };
 
@@ -109,8 +107,6 @@ function NewPostScreen({navigation}) {
         clearDescription.current.clear();
         setPastorOnly(false);
         setAnon(false);
-        // pastorOnly = false;
-        // Anon = false;
       };
     }, [])
   );
@@ -195,7 +191,7 @@ function NewPostScreen({navigation}) {
         >
           <TouchableOpacity
             style={styles.Buttons}
-             onPress={async () => {await createPost(); console.log("Updating"); await updateProfile(); navigation.navigate('Main')}}
+             onPress={async () => {await createPost(); await updateProfile(); navigation.navigate('Main')}}
             >
             <Text style={styles.customBtnText}>Post</Text>
           </TouchableOpacity>

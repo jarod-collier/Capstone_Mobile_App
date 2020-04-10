@@ -148,7 +148,7 @@ function ProfileScreen({navigation}) {
           </View>
         </TouchableOpacity>
        </View>
-       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20,multiline: true}}>{state.aboutMe}</Text>
+       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20}}>{state.aboutMe}</Text>
        {/*username line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
