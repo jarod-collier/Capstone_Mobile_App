@@ -85,6 +85,31 @@ async function addComment(postID){
   clearComment.current.clear();
 }
 
+async function likePost(key){
+  let uid = firebase.auth().currentUser.uid;
+  let likes = [];
+  let likesCount;
+
+  await db.ref('/posts/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.key === key){
+        likes = child.val().likedBy;
+        likesCount = child.val().likes;
+      }
+    })
+  });
+
+  if(!likes.includes(uid)){
+    likes.push(uid);
+
+    await db.ref('/posts/').child(key).update({
+      likedBy: likes,
+      likes: (likesCount + 1),
+    });
+
+  }
+}
+
 async function canComment(){
   let uid = firebase.auth().currentUser.uid;
   let userCan = true;
@@ -104,11 +129,13 @@ async function canComment(){
 
 async function readFromDB(postID){
   state.Loading = true;
+  let uid = firebase.auth().currentUser.uid;
   let commentItems = [];
   let postItems = [];
   await db.ref('/posts/' + postID).once('value', function(snapshot){
+    var alreadyLikedpost = 'black';
     snapshot.forEach((child) => {
-        if(child.hasChildren()){
+        if((child.key != "likedBy") && child.hasChildren()){
             commentItems.push({
               comment: child.val().comment,
               date: child.val().date,
@@ -117,6 +144,11 @@ async function readFromDB(postID){
         }
     });
 
+    for (var user in snapshot.val().likedBy){
+      if(snapshot.val().likedBy[user] === uid){
+        alreadyLikedpost = 'blue';
+      }
+    }
       postItems.push({
         key: postID,
         question: snapshot.val().question,
@@ -125,7 +157,8 @@ async function readFromDB(postID){
         desc: snapshot.val().desc,
         likes: snapshot.val().likes,
         anon: snapshot.val().Anon,
-        pastorOnly: snapshot.val().PastorOnly
+        pastorOnly: snapshot.val().PastorOnly,
+        likeColor: alreadyLikedpost
       })
       state.PastorOnly = snapshot.val().PastorOnly;
       state.posterUser = snapshot.val().username;
@@ -184,9 +217,9 @@ async function loadPostCards(postItems){
             onPress={()=> Alert.alert('Translate')} />
           <Button
             style={{backgroundColor: 'white'}}
-            color='black'
+            color={postData.likeColor}
             name='thumbs-up'
-            onPress={()=> Alert.alert('Like')} />
+            onPress={()=> likePost(postData.key)} />
             {postData.likes > 0 &&
             <Text
               style={{marginTop: 9, opacity: .5, marginLeft: -10}}

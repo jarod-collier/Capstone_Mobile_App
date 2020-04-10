@@ -13,6 +13,7 @@ import {
   TextInput,
   LayoutAnimation,
   TouchableOpacity,
+  KeyboardAvoidingView,
   Alert,
   Image,
 } from 'react-native';
@@ -66,6 +67,25 @@ async function delUser(navigation){
   )
 }
 
+async function updateAboutMe(text){
+  let uid = firebase.auth().currentUser.uid;
+  let nodeRef;
+  state.aboutMe = text;
+
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.val().uid === uid){
+        nodeRef = child;
+      }
+    })
+  });
+
+  //update value
+  await db.ref('/userInfo/').child(nodeRef.key).update({
+    AddintionalInfo: text,
+  });
+}
+
 async function getUserInfo(){
   state.Loading = true;
   let uid = firebase.auth().currentUser.uid;
@@ -79,7 +99,7 @@ async function getUserInfo(){
             state.username = child.val().Username;
             state.commentNum = child.val().commentNum;
             state.postNum = child.val().postNum;
-            state.score = child.val().score;
+            state.score = (state.postNum * 2) + state.commentNum;
             state.aboutMe = child.val().AddintionalInfo;
             if(child.val().userType === 'pastor'){
               state.pastorUser = true;
@@ -95,7 +115,9 @@ async function getUserInfo(){
 
 function ProfileScreen({navigation}) {
   const [isLoading, setLoading]= useState(true);
+  const [isEditing, setEditing] = useState(false);
   getUserInfo();
+  const [about, setAbout] = useState(state.aboutMe);
   LayoutAnimation.easeInEaseOut();
   return(
     setTimeout(()=> setLoading(state.Loading), 500),
@@ -111,7 +133,7 @@ function ProfileScreen({navigation}) {
               style={{backgroundColor: '#A59F9F'}}
               color='white'
               name='user'
-              size={35}
+              size={50}
                />
           </TouchableOpacity>
           </View>
@@ -141,14 +163,28 @@ function ProfileScreen({navigation}) {
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>About me</Text>
         <TouchableOpacity
             style={styles.Buttons}
-            onPress={() => Alert.alert('Edit About me')}
+            onPress={() => setEditing(!isEditing)}
         >
           <View>
             <Text style={styles.customBtnText}>Edit</Text>
           </View>
         </TouchableOpacity>
        </View>
-       <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20}}>{state.aboutMe}</Text>
+       <View>
+        {isEditing ? 
+        <TextInput 
+          vlaue={state.aboutMe}
+          style={{fontSize: 18, marginTop: 20, marginLeft: 20}}
+          onChangeText={text => setAbout(text)}
+          autoFocus
+          multiline={true}
+          blurOnSubmit={true}
+          returnKeyType='done'
+          onBlur={async() => {setEditing(false), updateAboutMe(about)}}
+        /> :
+        <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20}}>{state.aboutMe}</Text>
+       }
+       </View>
        {/*username line*/}
        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>

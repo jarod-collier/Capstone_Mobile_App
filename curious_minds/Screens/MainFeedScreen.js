@@ -26,11 +26,45 @@ var state = {
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
 
+async function likePost(key){
+  let uid = firebase.auth().currentUser.uid;
+  let likes = [];
+  let likesCount;
+
+  await db.ref('/posts/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.key === key){
+        likes = child.val().likedBy;
+        likesCount = child.val().likes;
+      }
+    })
+  });
+
+  if(!likes.includes(uid)){
+    likes.push(uid);
+
+    await db.ref('/posts/').child(key).update({
+      likedBy: likes,
+      likes: (likesCount + 1),
+    });
+
+  }
+}
+
 async function readFromDB(navigation){
   state.Loading = true;
+  let uid = firebase.auth().currentUser.uid;
+
   await db.ref('/posts/').once('value', function(snapshot){
     let postItems = [];
     snapshot.forEach((child) => {
+      var alreadyLikedpost = 'black';
+      for (var user in child.val().likedBy){
+        if(child.val().likedBy[user] === uid){
+          alreadyLikedpost = 'blue';
+        }
+      }
+
       postItems.push({
         key: child.key,
         username: child.val().username,
@@ -39,7 +73,8 @@ async function readFromDB(navigation){
         likes: child.val().likes,
         desc: child.val().desc,
         anon: child.val().Anon,
-        pastorOnly: child.val().PastorOnly
+        pastorOnly: child.val().PastorOnly,
+        likeColor: alreadyLikedpost
       });
     })
     state.posts = postItems.reverse();
@@ -50,6 +85,7 @@ async function readFromDB(navigation){
 async function loadPostCards(navigation){
   state.display = state.posts.map(postData => {
     return(
+      likeColor = 'black',
       <View key={postData.key}>
         <Button
         style={{backgroundColor: 'silver'}}
@@ -74,9 +110,10 @@ async function loadPostCards(navigation){
                 onPress={()=> Alert.alert('Translate')} />
               <Button
                 style={{backgroundColor: 'white'}}
-                color='black'
+                color= {postData.likeColor}
                 name='thumbs-up'
-                onPress={()=> Alert.alert('Like')} />
+                onPress={() => likePost(postData.key)} 
+                />
                 {postData.likes > 0 && 
                 <Text
                   style={{marginTop: 9, opacity: .5, marginLeft: -10}}
