@@ -28,6 +28,7 @@ import ProfileScreen from './Screens/ProfileScreen';
 import NewEventScreen from './Screens/NewEventScreen';
 import ThreadScreen from './Screens/ThreadScreen';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
+import ResetPasswordScreen from './Screens/ResetPasswordScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -139,6 +140,13 @@ function Nested_Main(){
         component={NewEventScreen}
         options={({ route }) => ({
           headerTitle: "Add Event",
+        })}
+      />
+      <Nested_Stack.Screen
+        name="Reset Password"
+        component={ResetPasswordScreen}
+        options={({ route }) => ({
+          headerTitle: "Reset Password",
         })}
       />
     </Nested_Stack.Navigator>

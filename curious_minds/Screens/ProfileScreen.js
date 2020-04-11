@@ -171,8 +171,8 @@ function ProfileScreen({navigation}) {
         </TouchableOpacity>
        </View>
        <View>
-        {isEditing ? 
-        <TextInput 
+        {isEditing ?
+        <TextInput
           vlaue={state.aboutMe}
           style={{fontSize: 18, marginTop: 20, marginLeft: 20}}
           onChangeText={text => setAbout(text)}
@@ -200,7 +200,7 @@ function ProfileScreen({navigation}) {
         <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Password</Text>
         <TouchableOpacity
             style={styles.Buttons}
-            onPress={() => Alert.alert('reset password')}
+            onPress={() => navigation.navigate('Reset Password')}
         >
           <View>
             <Text style={styles.customBtnText}>Reset password</Text>
