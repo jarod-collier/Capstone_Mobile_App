@@ -58,7 +58,7 @@ var logInUser = (navigation) => {
       var providerData = user.providerData;
       global.user = user;
 
-      //navigate to new post screen
+      //navigate to Main screen
       navigation.reset({
         index: 0,
         routes: [{ name: 'Main'}],
@@ -116,7 +116,6 @@ function LoginScreen({navigation}) {
             <TouchableOpacity
               style={styles.Buttons}
               onPress={()=> logInUser(navigation) }>
-              {/* // onPress={()=> navigation.navigate('Main')}> */}
               <Text style={styles.customBtnText}>Log In</Text>
             </TouchableOpacity>
           </View>
