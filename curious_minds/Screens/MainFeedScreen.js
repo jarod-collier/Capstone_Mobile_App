@@ -227,7 +227,11 @@ function MainFeedScreen({navigation}) {
           }
         >
           <View style={styles.container}>
-            {state.display}
+            {state.display.length > 0 ? 
+              state.display
+              :
+              <Text style={{color: 'black', alignSelf: 'center', opacity: 0.5}}>No posts found. Please make a new post</Text>
+            }
           </View>
           {/* <Modal
            transparent={true}

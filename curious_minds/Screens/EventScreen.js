@@ -187,7 +187,11 @@ function EventScreen({navigation}) {
         }
       </View>
       <View style={styles.container}>
-        {state.display}
+      {(state.display.length > 0) ? 
+        state.display
+        :
+        <Text style={{color: 'black', alignSelf: 'center', opacity: 0.5}}>No events found. Please make a new event</Text>
+      }
       </View>
       </ScrollView>
     </SafeAreaView>

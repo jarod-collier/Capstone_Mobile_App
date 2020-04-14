@@ -174,15 +174,16 @@ function ProfileScreen({navigation}) {
         {isEditing ?
         <TextInput
           vlaue={state.aboutMe}
-          style={{fontSize: 18, marginTop: 20, marginLeft: 20}}
+          style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}
           onChangeText={text => setAbout(text)}
           autoFocus
           multiline={true}
+          maxLength={175}
           blurOnSubmit={true}
           returnKeyType='done'
           onBlur={async() => {setEditing(false), updateAboutMe(about)}}
         /> :
-        <Text style={{fontSize: 18, marginTop: 20, marginLeft: 20}}>{state.aboutMe}</Text>
+        <Text style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}>{state.aboutMe}</Text>
        }
        </View>
        {/*username line*/}
