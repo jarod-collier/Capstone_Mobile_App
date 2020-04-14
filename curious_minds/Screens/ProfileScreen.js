@@ -120,7 +120,7 @@ function ProfileScreen({navigation}) {
   const [about, setAbout] = useState(state.aboutMe);
   LayoutAnimation.easeInEaseOut();
   return(
-    setTimeout(()=> setLoading(state.Loading), 500),
+    setTimeout(()=> setLoading(false), 500),
    <View style={styles.container}>
      <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
        {/* image view */}

@@ -47,7 +47,68 @@ async function likePost(key){
       likedBy: likes,
       likes: (likesCount + 1),
     });
+    Alert.alert('post liked\nPlease refresh the screen');
 
+  }else{
+    Alert.alert('post already liked');
+  }
+}
+
+async function reportPost(key){
+  let uid = firebase.auth().currentUser.uid;
+  let reports = [];
+  let reportCount;
+  let userType;
+  let incAmount = 1;
+
+  
+
+  await db.ref('/userInfo/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.val().uid === uid){
+        userType = child.val().userType;
+      }
+    });
+  });
+
+  if(userType === 'pastor'){
+    incAmount = 5;
+  }
+
+  await db.ref('/posts/').once('value', function(snapshot){
+    snapshot.forEach((child) => {
+      if(child.key === key){
+        reports = child.val().reportedBy;
+        reportCount = child.val().reports;
+      }
+    })
+  });
+
+  if(!reports.includes(uid)){
+    Alert.alert(
+      'Report Post',
+      'Are you sure you want to report this post?',
+      [
+        {text: 'Cancel', onPress: () => {}},
+        {text: 'REPORT', onPress: async () => {
+          if((reportCount + incAmount) >= 5){
+            await db.ref('/posts/').child(key).remove().then(function(){
+              Alert.alert('Report count exceeded the limit\nThis post will be deleted now\nPlease refresh the screen');
+            })
+          }else{
+            reports.push(uid);
+            await db.ref('/posts/').child(key).update({
+              reportedBy: reports,
+              reports: (reportCount + incAmount),
+            });
+            Alert.alert('This post was reported\nThank you');
+          }
+        }, style: {color: 'red'}}
+      ],
+      {cancelable: true}
+    )    
+  }else{
+    Alert.alert('You already reported this post');
   }
 }
 
@@ -59,9 +120,16 @@ async function readFromDB(navigation){
     let postItems = [];
     snapshot.forEach((child) => {
       var alreadyLikedpost = 'black';
+      var alreadyReportedpost = 'black';
       for (var user in child.val().likedBy){
         if(child.val().likedBy[user] === uid){
           alreadyLikedpost = 'blue';
+        }
+      }
+
+      for (var user in child.val().reportedBy){
+        if(child.val().reportedBy[user] === uid){
+          alreadyReportedpost = 'red';
         }
       }
 
@@ -72,9 +140,11 @@ async function readFromDB(navigation){
         question: child.val().question,
         likes: child.val().likes,
         desc: child.val().desc,
+        reports: child.val().reports,
         anon: child.val().Anon,
         pastorOnly: child.val().PastorOnly,
-        likeColor: alreadyLikedpost
+        likeColor: alreadyLikedpost,
+        reportColor: alreadyReportedpost,
       });
     })
     state.posts = postItems.reverse();
@@ -94,15 +164,16 @@ async function loadPostCards(navigation){
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
             <Text style={{marginTop: 3}}>{postData.desc}</Text>
             <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
-              { !postData.anon && <Text>Posted by: {postData.username} </Text>}
-              <Text>on {postData.date}</Text>
+              <Text>Posted</Text>
+              { !postData.anon && <Text> by: {postData.username}</Text>}
+              <Text> on {postData.date}</Text>
             </View>
             <View style={{flexDirection:'row', alignItems: 'stretch'}}>
               <Button
                 style={{backgroundColor: 'white'}}
                 color='black'
                 name='comment'
-                onPress={()=> Alert.alert('Comment')} />
+                onPress={()=> navigation.navigate('Thread', postData.key)} />
               <Button
                 style={{backgroundColor: 'white'}}
                 color='black'
@@ -120,9 +191,13 @@ async function loadPostCards(navigation){
                 >{postData.likes}</Text>}
               <Button
                 style={{backgroundColor: 'white'}}
-                color='black'
+                color={postData.reportColor}
                 name='exclamation-triangle'
-                onPress={()=> Alert.alert('Report')} />
+                onPress={()=> reportPost(postData.key)} />
+                {postData.reports > 0 && 
+                <Text
+                  style={{marginTop: 9, opacity: .5, marginLeft: -10}}
+                >{postData.reports}</Text>}
           </View>
         </Card>
         </Button>
@@ -141,7 +216,7 @@ function MainFeedScreen({navigation}) {
     readFromDB(navigation);
     LayoutAnimation.easeInEaseOut();
     return (
-      setTimeout(()=> setLoading(state.Loading), 500),
+      setTimeout(()=> setLoading(false), 500),
       <SafeAreaView style={{flex: 1}}>
         <ScrollView
           refreshControl={

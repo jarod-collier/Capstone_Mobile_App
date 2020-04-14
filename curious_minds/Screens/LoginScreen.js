@@ -16,9 +16,9 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   Image,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
-
 
 var state = {
   Username: '',
@@ -39,38 +39,22 @@ var logInUser = (navigation) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      console.log(errorCode + errorMessage);
+      Alert.alert(errorCode + errorMessage);
       if (errorCode == "auth/user-not-found"){//user doesn't exist
-        console.log("No user found.  Please sign in.")
+        Alert.alert('Incorrect username/password\nPlease try again');
       }
     });
 
-
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log("User is signed in.");
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      var providerData = user.providerData;
       global.user = user;
-
       //navigate to Main screen
       navigation.reset({
         index: 0,
         routes: [{ name: 'Main'}],
       });
-      // ...
-    } else {
-      console.log("no user found");
-      // User is signed out.
-      // ...
-    }
+    } 
   });
-
 };
 
 var clearUsername = React.createRef();
@@ -171,10 +155,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     justifyContent: 'center',
-    // borderColor: 'black',
     borderRadius: 25,
     width: 250,
     height: 30,

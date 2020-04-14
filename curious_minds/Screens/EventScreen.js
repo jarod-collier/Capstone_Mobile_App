@@ -4,7 +4,7 @@ import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
 import {
   SafeAreaView,
@@ -18,7 +18,6 @@ import {
   RefreshControl,
   LayoutAnimation,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 var state = {
   events: [],
@@ -28,6 +27,69 @@ var state = {
 };
 
 const delay = ms => new Promise(res=>setTimeout(res,ms));
+
+function addToCalendar(title, date, time){
+  date = date.split(" ");
+  time = time.split(":");
+  const year = date[3];
+  var month = "";
+  switch(date[1]){
+    case "Jan":
+      month = "01";
+      break;
+    case "Feb":
+      month = "02";
+      break;
+    case "Mar":
+      month = "03";
+      break;
+    case "Apr":
+      month = "04";
+      break;
+    case "May":
+      month = "05";
+      break;
+    case "Jun":
+      month = "06";
+      break;
+    case "Jul":
+      month = "07";
+      break;
+    case "Aug":
+      month = "08";
+      break;
+    case "Sep":
+      month = "09";
+      break;
+    case "Oct":
+      month = "10";
+      break;
+    case "Nov":
+      month = "11";
+      break;
+    case "Dec":
+      month = "12";
+      break;
+  }
+  const day = date[2];
+  var hour = "";
+  const min = time[1].substring(0,time[1].length -3);
+  if(time[0].length < 2){
+    hour = "0" + time[0];
+  }else{
+    hour = time[0];
+  }
+  
+  const startDate = (""+ year + "-" + month + "-" + day + "T" + hour + ":" + min + ":00.000Z");
+
+  const eventConfig = {
+    title,
+    startDate,
+  };
+
+  AddCalendarEvent.presentEventCreatingDialog(eventConfig);
+
+}
 
 async function canAddEvent (){
   let uid = firebase.auth().currentUser.uid;
@@ -70,6 +132,18 @@ async function loadEventCards(){
             <Text style={{marginTop: 3}}>{eventData.desc}</Text>
             <Text>Date: {eventData.date}</Text>
             <Text>Time: {eventData.time}</Text>
+            <TouchableOpacity
+            style={styles.Buttons}
+            onPress={() => addToCalendar(eventData.title, eventData.date, eventData.time)}
+            >
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.customBtnText}>Add event to calendar</Text>
+                <Button
+                  style={{backgroundColor: 'green'}}
+                  name="calendar"
+                  color="white" />
+              </View>
+            </TouchableOpacity>
           </Card>
       </View>
     )
@@ -86,7 +160,7 @@ function EventScreen({navigation}) {
   readFromDB();
   LayoutAnimation.easeInEaseOut();
   return (
-    setTimeout(()=> setLoading(state.Loading), 500),
+    setTimeout(()=> setLoading(false), 500),
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
         refreshControl={
@@ -103,7 +177,7 @@ function EventScreen({navigation}) {
             onPress={() => navigation.navigate('Add Event')}
           >
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Text style={styles.customBtnText}>Add Event</Text>
+              <Text style={styles.customBtnText}>Add New Event</Text>
               <Button
                 style={{backgroundColor: 'green'}}
                 name="calendar"
@@ -111,17 +185,10 @@ function EventScreen({navigation}) {
             </View>
           </TouchableOpacity>
         }
-        </View>
-        <View style={styles.container}>
-            {state.display}
-          </View>
-        {/* <Modal
-          transparent={true}
-          animationType={'none'}
-          visible={isLoading}
-        >
-          <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
-        </Modal> */}
+      </View>
+      <View style={styles.container}>
+        {state.display}
+      </View>
       </ScrollView>
     </SafeAreaView>
  );

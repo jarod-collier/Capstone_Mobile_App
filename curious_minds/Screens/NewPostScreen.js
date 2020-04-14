@@ -82,6 +82,8 @@ async function createPost(){
     desc: "" + state.Description,
     likes: 0,
     likedBy: [""],
+    reports: 0,
+    reportedBy: [""],
     Anon: state.Anon,
     PastorOnly: state.pastorOnly
   }).catch((error)=>{
