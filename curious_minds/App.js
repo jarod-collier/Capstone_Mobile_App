@@ -6,7 +6,7 @@
  *****************************************************************************/
 // import 'react-native-gesture-handler';
 // import React, { Component } from 'react';
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -29,6 +29,8 @@ import NewEventScreen from './Screens/NewEventScreen';
 import ThreadScreen from './Screens/ThreadScreen';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './Screens/ResetPasswordScreen';
+
+import HomeScreen from './Screens/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -173,7 +175,7 @@ const MyTheme = {
   },
 };
 
-function App() {
+function AppContainer() {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
@@ -188,6 +190,7 @@ function App() {
           headerTitleAlign: 'center',
         }}
       >
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="User Type" component={UserTypeScreen} />
         <Stack.Screen name="Thread" component={ThreadScreen} />
@@ -250,4 +253,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+// export default App;
+
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />;
+  }
+}
