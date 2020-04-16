@@ -30,8 +30,6 @@ import ThreadScreen from './Screens/ThreadScreen';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
 import ResetPasswordScreen from './Screens/ResetPasswordScreen';
 
-import HomeScreen from './Screens/HomeScreen';
-
 const Tab = createBottomTabNavigator();
 
 function Main() {
@@ -190,7 +188,6 @@ function AppContainer() {
           headerTitleAlign: 'center',
         }}
       >
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="User Type" component={UserTypeScreen} />
         <Stack.Screen name="Thread" component={ThreadScreen} />
