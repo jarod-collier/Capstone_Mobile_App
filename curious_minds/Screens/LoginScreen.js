@@ -20,113 +20,6 @@ import {
   Alert
 } from 'react-native';
 
-var state = {
-  Username: '',
-  Password: '',
-};
-
-var handleUsername = text => {
-  state.Username = text;
-};
-
-var handlePassword = text => {
-  state.Password = text;
-};
-
-var logInUser = (navigation) => {
-    global.user = null;
-    firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      Alert.alert(errorCode + errorMessage);
-      if (errorCode == "auth/user-not-found"){//user doesn't exist
-        Alert.alert('Incorrect username/password\nPlease try again');
-      }
-    });
-
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      global.user = user;
-      //navigate to Main screen
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Main'}],
-      });
-    } 
-  });
-};
-
-var clearUsername = React.createRef();
-var clearPassword = React.createRef();
-
-function LoginScreen({navigation}) {
-  firebase.auth().signOut();
-  LayoutAnimation.easeInEaseOut();
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      return () => {
-        // Do something when the screen is unfocused
-        clearUsername.current.clear();
-        clearPassword.current.clear();
-      };
-    }, [])
-  );
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <View style={styles.logo}>
-          <Image source={require('../images/CM_logo02.png')}/>
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Enter your Email"
-            keyboardType='email-address'
-            placeholderTextColor="black"
-            onChangeText={handleUsername}
-            ref={clearUsername}
-          />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Password"
-            placeholderTextColor="black"
-            secureTextEntry={true}
-            onChangeText={handlePassword}
-            ref={clearPassword}
-          />
-          <View>
-            <TouchableOpacity
-              style={styles.Buttons}
-              onPress={()=> logInUser(navigation) }>
-              <Text style={styles.customBtnText}>Log In</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <TouchableOpacity
-              style={styles.Buttons}
-              onPress={() => navigation.navigate('Forgot Password')}>
-              <Text style={styles.customBtnText}>Forgot Password?</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View>
-          <Text
-            style={styles.customBtnText}>
-            Don't have an account yet?
-          </Text>
-          <TouchableOpacity
-            style={styles.Buttons}
-            onPress={()=> navigation.navigate('User Type')}>
-            <Text style={styles.customBtnText}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -174,4 +67,117 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+
+const handleUsername = text => {
+  state.Username = text;
+};
+
+const handlePassword = text => {
+  state.Password = text;
+};
+
+const logInUser = (navigation) => {
+  global.user = null;
+  firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
+    // Handle Errors here.
+    let errorCode = error.code;
+    let errorMessage = error.message;
+    Alert.alert(errorCode + ": " + errorMessage);
+    if (errorCode == "auth/user-not-found"){//user doesn't exist
+      Alert.alert('Incorrect username/password\nPlease try again');
+    }
+  });
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      global.user = user;
+      //navigate to Main screen
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main'}],
+      });
+    }
+  });
+};
+
+const clearUsername = React.createRef();
+const clearPassword = React.createRef();
+
+firebase.auth().signOut();
+// useFocusEffect(
+//   React.useCallback(() => {
+//     // Do something when the screen is focused
+//     return () => {
+//       // Do something when the screen is unfocused
+//       clearUsername.current.clear();
+//       clearPassword.current.clear();
+//     };
+//   }, [])
+// );
+
+export default class LoginScreen extends Component {
+
+  state = {
+    Username: '',
+    Password: '',
+  };
+
+  render() {
+    LayoutAnimation.easeInEaseOut();
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <View style={styles.logo}>
+            <Image source={require('../images/CM_logo02.png')}/>
+          </View>
+          <View>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter your Email"
+              keyboardType='email-address'
+              placeholderTextColor="black"
+              onChangeText={handleUsername}
+              ref={clearUsername}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Password"
+              placeholderTextColor="black"
+              secureTextEntry={true}
+              onChangeText={handlePassword}
+              ref={clearPassword}
+            />
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={()=> logInUser(this.props.navigation) }>
+                <Text style={styles.customBtnText}>Log In</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={() => this.props.navigation.navigate('Forgot Password')}>
+                <Text style={styles.customBtnText}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <Text
+              style={styles.customBtnText}>
+              Don't have an account yet?
+            </Text>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={()=> this.props.navigation.navigate('User Type')}>
+              <Text style={styles.customBtnText}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
+
+
+// export default LoginScreen;
