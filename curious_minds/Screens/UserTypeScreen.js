@@ -16,32 +16,36 @@ import {
   Platform,
 } from 'react-native';
 
-function UserTypeScreen({navigation}) {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <View style={styles.logo}>
-          <Image source={require('../images/CM_logo02.png')} />
+export default class UserTypeScreen extends Component {
+
+  render() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <View style={styles.logo}>
+            <Image source={require('../images/CM_logo02.png')} />
+          </View>
+          <View>
+            <Text style={styles.iAmText}>INFO HERE</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => this.props.navigation.navigate('Security Code')}
+            >
+              <Text style={styles.customBtnText}>A Pastor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => this.props.navigation.navigate('User SignUp')}>
+              <Text style={styles.customBtnText}>A User</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View>
-          <Text style={styles.iAmText}>INFO HERE</Text>
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={styles.Buttons}
-            onPress={() => navigation.navigate('Security Code')}>
-            <Text style={styles.customBtnText}>A Pastor</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.Buttons}
-            onPress={() => navigation.navigate('User SignUp')}>
-            <Text style={styles.customBtnText}>A User</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -83,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserTypeScreen;
+// export default UserTypeScreen;
