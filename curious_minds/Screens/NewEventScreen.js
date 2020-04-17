@@ -19,196 +19,234 @@ import { db } from '../FireDatabase/config';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useFocusEffect } from '@react-navigation/native';
 
+// useFocusEffect(
+//   React.useCallback(() => {
+//     // Do something when the screen is focused
+//     return () => {
+//       // Do something when the screen is unfocused
+//       clearName.current.clear();
+//       clearDescription.current.clear();
+//       clearLocation.current.clear();
+//     };
+//   }, [])
+// );
 
+export default class NewEventScreen extends Component {
 
-var state = {
-    Name: '',
-    Description: '',
-    location: '',
-    chosenDate: '',
-    chosenTime: '',
-  };
+  constructor(props) {
+    super(props);
 
-const handleName = text => {
-    state.Name = text;
-};
+    this.state = {
+      Name: '',
+      Description: '',
+      location: '',
+      chosenDate: '',
+      chosenTime: '',
+      date: new Date(),
+      time: new Date(),
+      showDate: false,
+      showTime: false,
+    };
 
-const handleDescription = text => {
-    state.Description = text;
-};
+    this.clearName = React.createRef();
+    this.clearDescription = React.createRef();
+    this.clearLocation = React.createRef();
 
-const handleLocation = text => {
-    state.location = text;
-};
+    // const [date, setDate] = useState(new Date());
+    // const [time, setTime] = useState(new Date());
+    // const [showDate, setShowDate] = useState(false);
+    // const [showTime, setShowTime] = useState(false);
 
-function createEvent(){
+    // const onChangeDate = (event, selectedDate) => {
+    //   let currentDate = selectedDate || this.state.date;
+    //   // setShow(Platform.OS === 'ios');
+    //   this.setState({data: currentDate});
+    //   this.state.chosenDate = currentDate.toString().substring(0,16);
+    // };
 
-  db.ref('/events').push({
-    title: state.Name,
-    desc: state.Description,
-    date: state.chosenDate,
-    time: state.chosenTime,
-    location: state.location,
-  }.bind(this)).catch((error)=>{
-    Alert.alert('error ', error)
-  })
+    // const onChangeTime = (event, selectedTime) => {
+    //   const currentTime = selectedTime || time;
+    //   // setShow(Platform.OS === 'ios');
+    //   this.setState({time: currentTime});
+    //   let hours24 = currentTime.getHours();
+    //   let mins = currentTime.getMinutes();
+    //   if (mins < 10){
+    //       mins = "0"+mins;
+    //   }
+    //   let period = hours24 > 12 ? "PM" : "AM";
+    //   let hours12 = (currentTime.getHours() + 24) %12 || 12
+    //   this.state.chosenTime = '' + hours12 + ":" + mins + " " + period;
+    // };
 
-  Alert.alert('Event added successfully');
-};
+    // const showDatepicker = () => {
+    //   this.setState({showDate: !this.state.showDate});
+    // };
+    //
+    // const showTimepicker = () => {
+    //   this.setState({showTime: !this.state.showTime});
+    // };
+  }
 
-var clearName = React.createRef();
-var clearDescription = React.createRef();
-var clearLocation = React.createRef();
-
-function NewEventScreen({navigation}) {
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
-  const [showDate, setShowDate] = useState(false);
-  const [showTime, setShowTime] = useState(false);
-
-  const onChangeDate = (event, selectedDate) => {
-    let currentDate = selectedDate || date;
+  onChangeDate(selectedDate){
+    let currentDate = selectedDate || this.state.date;
     // setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-    state.chosenDate = currentDate.toString().substring(0,16);
-  };
+    this.setState({data: currentDate});
+    this.state.chosenDate = currentDate.toString().substring(0,16);
+  }
 
-  const onChangeTime = (event, selectedTime) => {
-    const currentTime = selectedTime || time;
+  onChangeTime(selectedTime){
+    const currentTime = selectedTime || this.state.time;
     // setShow(Platform.OS === 'ios');
-    setTime(currentTime);
+    this.setState({time: currentTime});
     let hours24 = currentTime.getHours();
     let mins = currentTime.getMinutes();
     if (mins < 10){
-        mins = "0"+mins;
+        mins = "0" + mins;
     }
     let period = hours24 > 12 ? "PM" : "AM";
     let hours12 = (currentTime.getHours() + 24) %12 || 12
-    state.chosenTime = '' + hours12 + ":" + mins + " " + period;
+    this.state.chosenTime = '' + hours12 + ":" + mins + " " + period;
+  }
+
+  createEvent(){
+
+    db.ref('/events').push({
+      title: this.state.Name,
+      desc: this.state.Description,
+      date: this.state.chosenDate,
+      time: this.state.chosenTime,
+      location: this.state.location,
+    }.bind(this)).catch((error)=>{
+      Alert.alert('error ', error)
+    })
+
+    Alert.alert('Event added successfully');
   };
 
-  const showDatepicker = () => {
-    setShowDate(!showDate);
-  };
+  render() {
+    LayoutAnimation.easeInEaseOut();
 
-  const showTimepicker = () => {
-    setShowTime(!showTime);
-  };
-
-  LayoutAnimation.easeInEaseOut();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      return () => {
-        // Do something when the screen is unfocused
-        clearName.current.clear();
-        clearDescription.current.clear();
-        clearLocation.current.clear();
-      };
-    }, [])
-  );
-
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <ScrollView>
-        <KeyboardAwareScrollView
-          resetScrollToCoords={{x: 0, y: 0}}
-          contentContainerStyle={styles.container}
-          scrollEnabled={true}
-        >
-          <View style={styles.container}>
-            <View>
-              <Text style={{ marginTop: 40, marginLeft: 15, fontSize: 24, }}>
-              Event Title
-              </Text>
-              <TextInput
-                style={styles.inputBox}
-                placeholder="Type event title here"
-                placeholderTextColor="black"
-                onChangeText={handleName}
-                ref={clearName}
-              />
-            </View>
-            <View>
-              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
-                Description
-              </Text>
-              <TextInput
-                style={styles.multiline}
-                placeholder="Type event description here"
-                placeholderTextColor="black"
-                multiline={true}
-                numberOfLines={10}
-                onChangeText={handleDescription}
-                ref={clearDescription}
-              />
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
-                Date:
-              </Text>
-              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
-                {state.chosenDate}
-              </Text>
-              <TouchableOpacity style={styles.setButtons} onPress={showDatepicker} >
-                <Text style={{ fontSize: 16, }}>
-                  Set Date
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <ScrollView>
+          <KeyboardAwareScrollView
+            resetScrollToCoords={{x: 0, y: 0}}
+            contentContainerStyle={styles.container}
+            scrollEnabled={true}
+          >
+            <View style={styles.container}>
+              <View>
+                <Text style={{ marginTop: 40, marginLeft: 15, fontSize: 24, }}>
+                Event Title
                 </Text>
-              </TouchableOpacity>
-            </View>
-            {showDate &&
-              <DateTimePicker
-                value={date}
-                mode={'date'}
-                onChange={onChangeDate}
-              />
-            }
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
-                Time:
-              </Text>
-              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
-                {state.chosenTime}
-              </Text>
-              <TouchableOpacity style={styles.setButtons} onPress={showTimepicker} >
-                <Text style={{ fontSize: 16, }}>
-                  Set Time
+                <TextInput
+                  style={styles.inputBox}
+                  placeholder="Type event title here"
+                  placeholderTextColor="black"
+                  onChangeText={e => {
+                        this.setState({
+                          Name: e,
+                        });
+                      }}
+                  ref={this.clearName}
+                />
+              </View>
+              <View>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                  Description
                 </Text>
-              </TouchableOpacity>
+                <TextInput
+                  style={styles.multiline}
+                  placeholder="Type event description here"
+                  placeholderTextColor="black"
+                  multiline={true}
+                  numberOfLines={10}
+                  onChangeText={e => {
+                        this.setState({
+                          Description: e,
+                        });
+                      }}
+                  ref={this.clearDescription}
+                />
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                  Date:
+                </Text>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
+                  {this.state.chosenDate}
+                </Text>
+                <TouchableOpacity style={styles.setButtons} onPress={() => {
+                  this.setState({showDate: !this.state.showDate});
+                }} >
+                  <Text style={{ fontSize: 16, }}>
+                    Set Date
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {this.state.showDate &&
+                <DateTimePicker
+                  value={this.state.date}
+                  mode={'date'}
+                  onChange={e => {
+                        this.onChangeDate(e);
+                      }}
+                />
+              }
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                  Time:
+                </Text>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
+                  {this.state.chosenTime}
+                </Text>
+                <TouchableOpacity style={styles.setButtons} onPress={() => {
+                  this.setState({showTime: !this.state.showTime});
+                }} >
+                  <Text style={{ fontSize: 16, }}>
+                    Set Time
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {this.state.showTime &&
+                <DateTimePicker
+                  value={this.state.time}
+                  mode={'time'}
+                  onChange={e => {
+                        this.onChangeTime(e);
+                      }}
+                />
+              }
+              <View>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                  Location:
+                </Text>
+                <TextInput
+                  style={styles.inputBox}
+                  placeholder="Type event location here"
+                  placeholderTextColor="black"
+                  onChangeText={e => {
+                        this.setState({
+                          location: e,
+                        });
+                      }}
+                  ref={this.clearLocation}
+                />
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={styles.Buttons}
+                  onPress={() => {this.createEvent(); this.props.navigation.navigate('Events')}}
+                >
+                  <Text style={styles.customBtnText}>Add Event</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            {showTime &&
-              <DateTimePicker
-                value={time}
-                mode={'time'}
-                onChange={onChangeTime}
-              />
-            }
-            <View>
-              <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
-                Location:
-              </Text>
-              <TextInput
-                style={styles.inputBox}
-                placeholder="Type event location here"
-                placeholderTextColor="black"
-                onChangeText={handleLocation}
-                ref={clearLocation}
-              />
-            </View>
-            <View>
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={() => {createEvent(); navigation.navigate('Events')}}
-              >
-                <Text style={styles.customBtnText}>Add Event</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
-      </ScrollView>
-    </SafeAreaView>
-  );
+          </KeyboardAwareScrollView>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -284,4 +322,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewEventScreen;
+// export default NewEventScreen;
