@@ -28,12 +28,6 @@ export default class MainFeedScreen extends Component {
       Loading: true,
     };
 
-
-    // const [isLoading, setLoading]= useState(true);
-    // const onRefresh = useCallback(() => {
-    //   this.setState({Loading: true})
-    //   this.statelay(2000).then(()=> this.setState({Loading: false}))}, [this.state.Loading]
-    // );
     this.readFromDB(this.props.navigation);
   }
 
