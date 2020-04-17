@@ -117,17 +117,17 @@ export default class EventScreen extends Component {
   async readFromDB(){
     this.state.Loading = true;
     await db.ref('/events/').once('value', function(snapshot){
-        let postItems = [];
-        snapshot.forEach((child) => {
-            postItems.push({
-                title: child.val().title,
-                desc: child.val().desc,
-                date: child.val().date,
-                time: child.val().time,
-                location: child.val().location,
-            });
-        })
-        this.state.events = postItems.reverse();
+      let postItems = [];
+      snapshot.forEach((child) => {
+          postItems.push({
+              title: child.val().title,
+              desc: child.val().desc,
+              date: child.val().date,
+              time: child.val().time,
+              location: child.val().location,
+          });
+      })
+      this.state.events = postItems.reverse();
     }.bind(this));
     await this.canAddEvent();
     await this.loadEventCards();

@@ -92,7 +92,7 @@ export default class ResetPasswordScreen extends Component {
       reportedBy: [""],
       Anon: this.state.Anon,
       PastorOnly: this.state.pastorOnly
-    }).catch((error)=>{
+    }.bind(this)).catch((error)=>{
       Alert.alert('error ', error)
     })
     Alert.alert('Post added successfully');

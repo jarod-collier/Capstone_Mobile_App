@@ -4,11 +4,11 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-constructor	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^  constructor(props){$/;"	function	line:24
-state.events	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^      events: [],$/;"	property	line:28
-makeDelay	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^  makeDelay(ms) {$/;"	function	line:39
-addToCalendar	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^  addToCalendar(title, date, time){$/;"	function	line:43
-month	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^    var month = "";$/;"	variable	line:47
-switch	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^    switch(date[1]){$/;"	function	line:48
-hour	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^    var hour = "";$/;"	variable	line:87
-render	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\EventScreen.js	/^  render() {$/;"	function	line:164
+constructor	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  constructor(props) {$/;"	function	line:24
+state.oldPassword	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      oldPassword: '',$/;"	property	line:28
+state.newPassword1	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      newPassword1: '',$/;"	property	line:29
+state.newPassword2	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      newPassword2: '',$/;"	property	line:30
+state.errorCounter	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      errorCounter: 0,$/;"	property	line:31
+makeDelay	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  makeDelay(ms) {$/;"	function	line:35
+resetPassword	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  resetPassword (navigation) {$/;"	function	line:39
+render	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  render() {$/;"	function	line:98

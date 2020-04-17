@@ -76,7 +76,7 @@ async function addComment(postID){
     comment: state.comment,
     username: username,
     date: "" + new Date().toLocaleDateString(),
-  }).catch((error)=>{
+  }.bind(this)).catch((error)=>{
     Alert.alert('error ', error)
   })
 
@@ -124,7 +124,7 @@ async function canComment(){
           }
         }
       });
-    });
+    }.bind(this));
   }
   state.userCanComment = userCan;
 }
@@ -179,7 +179,7 @@ async function reportPost(key){
         }, style: {color: 'red'}}
       ],
       {cancelable: true}
-    )    
+    )
   }else{
     Alert.alert('You already reported this post');
   }
@@ -230,7 +230,7 @@ async function readFromDB(postID){
     })
     state.PastorOnly = snapshot.val().PastorOnly;
     state.posterUser = snapshot.val().username;
-  });
+  }.bind(this));
   await canComment();
   await loadCommentCards(commentItems);
   await loadPostCards(postItems);
@@ -292,7 +292,7 @@ async function loadPostCards(postItems){
             color={postData.reportColor}
             name='exclamation-triangle'
             onPress={()=> reportPost(postData.key)} />
-          {postData.reports > 0 && 
+          {postData.reports > 0 &&
             <Text
               style={{marginTop: 9, opacity: .5, marginLeft: -10}}
             >{postData.reports}</Text>}

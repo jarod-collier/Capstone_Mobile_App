@@ -49,7 +49,7 @@ function createEvent(){
     date: state.chosenDate,
     time: state.chosenTime,
     location: state.location,
-  }).catch((error)=>{
+  }.bind(this)).catch((error)=>{
     Alert.alert('error ', error)
   })
 

@@ -19,19 +19,6 @@ import {
   Platform
 } from 'react-native';
 
-// var handleOldPassword = text => {
-//     state.oldPassword = text;
-// };
-//
-// var handleNewPassword1 = text => {
-//   state.newPassword1 = text;
-// };
-//
-// var handleNewPassword2 = text => {
-//   state.newPassword2 = text;
-// };
-
-
 export default class ResetPasswordScreen extends Component {
 
   constructor(props) {
@@ -87,7 +74,7 @@ export default class ResetPasswordScreen extends Component {
           //empty new password
           Alert.alert('Please fill all fields');
         }
-      }).catch(function(error){
+      }.bind(this)).catch(function(error){
         //error authenticating
         this.state.errorCounter++;
         if(this.state.errorCounter < 5){
@@ -101,7 +88,7 @@ export default class ResetPasswordScreen extends Component {
             }))
           .catch(error => Alert.alert(error.message));
         }
-      })
+      }.bind(this))
     }
     else {
         Alert.alert("Please Enter old password");
@@ -122,26 +109,38 @@ export default class ResetPasswordScreen extends Component {
               placeholder="Enter old password"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={handleOldPassword}
+              onChangeText={e => {
+                    this.setState({
+                      oldPassword: e,
+                    });
+                  }}
             />
             <TextInput
               style={styles.inputBox}
               placeholder="Enter new password*"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={handleNewPassword1}
+              onChangeText={e => {
+                    this.setState({
+                      newPassword1: e,
+                    });
+                  }}
             />
             <TextInput
               style={styles.inputBox}
               placeholder="Enter new password again*"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={handleNewPassword2}
+              onChangeText={e => {
+                    this.setState({
+                      newPassword2: e,
+                    });
+                  }}
             />
             <Text style={{fontStyle:'italic', textAlign: 'center'}}>* New password needs to be at least {'\n'}6 characters long</Text>
             <TouchableOpacity
                 style={styles.Buttons}
-                onPress={async () => {resetPassword(this.props.navigation); this.props.navigation.navigate('Main')}}>
+                onPress={async () => {this.resetPassword(this.props.navigation); this.props.navigation.navigate('Main')}}>
                 <Text style={styles.customBtnText}>Reset Password</Text>
               </TouchableOpacity>
           </View>

@@ -105,7 +105,7 @@ export default class PastorSignUpScreen extends Component {
         postNum: 0,
         score: 0,
         userType: "pastor"
-      }).catch((error)=>{
+      }.bind(this)).catch((error)=>{
         Alert.alert('error ', error)
       }))
       .then(() => navigation.reset({
@@ -120,9 +120,9 @@ export default class PastorSignUpScreen extends Component {
     let usernames = [];
     await db.ref('/userInfo/').once('value', function(snapshot){
       snapshot.forEach((child) => {
-          usernames.push(
-            child.val().Username
-          );
+        usernames.push(
+          child.val().Username
+        );
       })
   });
     if(usernames.includes(this.state.Username)){

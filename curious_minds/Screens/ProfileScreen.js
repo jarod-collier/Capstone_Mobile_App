@@ -18,235 +18,246 @@ import {
   Image,
 } from 'react-native';
 
-var state= {
-  username: '',
-  email: '',
-  aboutMe: '',
-  fName: '',
-  lName: '',
-  commentNum: 0,
-  postNum: 0,
-  score: 0,
-  Loading: true,
-  pastorUser: false,
-  preach: '',
-  seminary: '',
-  pastorCode: '',
-};
+export default class ProfileScreen extends Component {
 
-const delay = ms => new Promise(res=>setTimeout(res,ms));
+  constructor(props) {
+    super(props);
 
-async function delUser(navigation){
-  Alert.alert(
-    'Delete Account',
-    'Are you sure you want to delete your account?',
-    [
-      {text: 'Cancel', onPress: () => {}},
-      {text: 'DELETE', onPress: async () => {
-        var node;
-        let uid = firebase.auth().currentUser.uid;
-        await db.ref('/userInfo/').once('value', function(snapshot){
-          snapshot.forEach((child) => {
-            if(child.val().uid === uid){
-              node = child.key;
-            }
-          })
-        });
-        await db.ref('/userInfo/').child(node).remove();
-        delay(500);
+    this.state= {
+      username: '',
+      email: '',
+      aboutMe: '',
+      fName: '',
+      lName: '',
+      commentNum: 0,
+      postNum: 0,
+      score: 0,
+      Loading: true,
+      pastorUser: false,
+      preach: '',
+      seminary: '',
+      pastorCode: '',
+      editing: false,
+    };
 
-        var user = firebase.auth().currentUser;
-        user.delete().then(() => navigation.reset({
-          index: 0,
-          routes: [{ name: 'Login'}],
-        }))
-        .catch(error => Alert.alert(error.message));
-      }, style: {color: 'red'}}
-    ],
-    {cancelable: true}
-  )
-}
+    this.getUserInfo();
+  }
 
-async function updateAboutMe(text){
-  let uid = firebase.auth().currentUser.uid;
-  let nodeRef;
-  state.aboutMe = text;
+  makeDelay(ms) {
+    return new Promise(res => setTimeout(res, ms));
+  }
 
-  await db.ref('/userInfo/').once('value', function(snapshot){
-    snapshot.forEach((child) => {
-      if(child.val().uid === uid){
-        nodeRef = child;
-      }
-    })
-  });
+  async delUser(navigation){
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account?',
+      [
+        {text: 'Cancel', onPress: () => {}},
+        {text: 'DELETE', onPress: async () => {
+          var node;
+          let uid = firebase.auth().currentUser.uid;
+          await db.ref('/userInfo/').once('value', function(snapshot){
+            snapshot.forEach((child) => {
+              if(child.val().uid === uid){
+                node = child.key;
+              }
+            })
+          });
+          await db.ref('/userInfo/').child(node).remove();
+          this.makeDelay(500);
 
-  //update value
-  await db.ref('/userInfo/').child(nodeRef.key).update({
-    AddintionalInfo: text,
-  });
-}
+          var user = firebase.auth().currentUser;
+          user.delete().then(() => navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login'}],
+          }))
+          .catch(error => Alert.alert(error.message));
+        }, style: {color: 'red'}}
+      ],
+      {cancelable: true}
+    )
+  }
 
-async function getUserInfo(){
-  state.Loading = true;
-  let uid = firebase.auth().currentUser.uid;
+  async updateAboutMe(){
+    let uid = firebase.auth().currentUser.uid;
+    let nodeRef;
 
-  await db.ref('/userInfo/').once('value', function(snapshot){
+    await db.ref('/userInfo/').once('value', function(snapshot){
       snapshot.forEach((child) => {
-          if(child.val().uid === uid){
-            state.fName = child.val().First;
-            state.lName = child.val().Last;
-            state.email = firebase.auth().currentUser.email;
-            state.username = child.val().Username;
-            state.commentNum = child.val().commentNum;
-            state.postNum = child.val().postNum;
-            state.score = (state.postNum * 2) + state.commentNum;
-            state.aboutMe = child.val().AddintionalInfo;
-            if(child.val().userType === 'pastor'){
-              state.pastorUser = true;
-              state.preach = child.val().Preach;
-              state.seminary = child.val().Seminary;
-              state.pastorCode = child.val().pastorCode;
-            }
-          }
+        if(child.val().uid === uid){
+          nodeRef = child;
+        }
       })
-  });
-  state.Loading = false;
-}
+    });
 
-function ProfileScreen({navigation}) {
-  const [isLoading, setLoading]= useState(true);
-  const [isEditing, setEditing] = useState(false);
-  getUserInfo();
-  const [about, setAbout] = useState(state.aboutMe);
-  LayoutAnimation.easeInEaseOut();
-  return(
-    setTimeout(()=> setLoading(false), 500),
-   <View style={styles.container}>
-     <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
-       {/* image view */}
-        <View style={{justifyContent: 'center'}}>
-          <TouchableOpacity
-            style={styles.image}
-            onPress={()=> Alert.alert('Add')}
-          >
-            <Button
-              style={{backgroundColor: '#A59F9F'}}
-              color='white'
-              name='user'
-              size={50}
-               />
-          </TouchableOpacity>
-          </View>
-          {/* text view */}
-        <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-          {/*name line */}
-          <View>
-  <Text style={{fontSize: 34, fontWeight: 'bold', marginLeft: 10, marginBottom: 20, marginTop: 20}}>{state.fName} {state.lName}</Text>
-          </View>
-          {/*posts line */}
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Text style={{fontSize: 18, marginLeft: 10}}> Posts{'\n'}written</Text>
-            <Text style={{fontSize: 18, marginLeft: 10}}>      Posts{'\n'}commented{'\n'}        on</Text>
-            <Text style={{fontSize: 18, marginLeft: 10}}>{'\n'}Score</Text>
-          </View>
-          {/*numbers line */}
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> {state.postNum}</Text>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {state.commentNum}</Text>
-            <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {state.score}</Text>
-          </View>
-        </View>
-     </View>
-     <View style={{flex:4}}>
-       {/*about me section*/}
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>About me</Text>
-        <TouchableOpacity
-            style={styles.Buttons}
-            onPress={() => setEditing(!isEditing)}
-        >
-          <View>
-            <Text style={styles.customBtnText}>Edit</Text>
-          </View>
-        </TouchableOpacity>
-       </View>
-       <View>
-        {isEditing ?
-        <TextInput
-          vlaue={state.aboutMe}
-          style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}
-          onChangeText={text => setAbout(text)}
-          autoFocus
-          multiline={true}
-          maxLength={175}
-          blurOnSubmit={true}
-          returnKeyType='done'
-          onBlur={async() => {setEditing(false), updateAboutMe(about)}}
-        /> :
-        <Text style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}>{state.aboutMe}</Text>
-       }
-       </View>
-       {/*username line*/}
-       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
-        <Text style={{fontSize: 18, marginTop: 20}}>    {state.username}</Text>
-       </View>
-       {/*email line*/}
-       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Email</Text>
-        <Text style={{fontSize: 18, marginTop: 20}}>              {state.email}</Text>
-       </View>
-       {/*password line*/}
-       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Password</Text>
-        <TouchableOpacity
-            style={styles.Buttons}
-            onPress={() => navigation.navigate('Reset Password')}
-        >
-          <View>
-            <Text style={styles.customBtnText}>Reset password</Text>
-          </View>
-        </TouchableOpacity>
-       </View>
-       { state.pastorUser &&
-          <View>
-            {/* Preach line */}
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Preach</Text>
-              <Text style={{fontSize: 18, marginTop: 20}}>           {state.preach}</Text>
-            </View>
-            {/* seminary line */}
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Seminary</Text>
-              <Text style={{fontSize: 18, marginTop: 20}}>       {state.seminary}</Text>
-            </View>
-            {/* pastor code line */}
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Pastor code</Text>
-              <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>   {state.pastorCode}</Text>
-            </View>
+    //update value
+    await db.ref('/userInfo/').child(nodeRef.key).update({
+      AddintionalInfo: this.state.aboutMe,
+    }.bind(this));
+  }
 
-          </View>
+  async getUserInfo(){
+    this.state.Loading = true;
+    let uid = firebase.auth().currentUser.uid;
 
-       }
-       {/** delete button */}
-       <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
-       <TouchableOpacity
-            style={styles.Delete}
-            onPress={() => delUser(navigation)}
-          >
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Text style={styles.customBtnText}>Delete Account</Text>
+    await db.ref('/userInfo/').once('value', function(snapshot){
+        snapshot.forEach((child) => {
+            if(child.val().uid === uid){
+              this.state.fName = child.val().First;
+              this.state.lName = child.val().Last;
+              this.state.email = firebase.auth().currentUser.email;
+              this.state.username = child.val().Username;
+              this.state.commentNum = child.val().commentNum;
+              this.state.postNum = child.val().postNum;
+              this.state.score = (this.state.postNum * 2) + this.state.commentNum;
+              this.state.aboutMe = child.val().AddintionalInfo;
+              if(child.val().userType === 'pastor'){
+                this.state.pastorUser = true;
+                this.state.preach = child.val().Preach;
+                this.state.seminary = child.val().Seminary;
+                this.state.pastorCode = child.val().pastorCode;
+              }
+            }
+        })
+    }.bind(this));
+    this.state.Loading = false;
+  }
+
+  render() {
+    LayoutAnimation.easeInEaseOut();
+    return(
+      setTimeout(()=> this.setState({Loading: false}), 500),
+     <View style={styles.container}>
+       <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
+         {/* image view */}
+          <View style={{justifyContent: 'center'}}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={()=> Alert.alert('Add')}
+            >
               <Button
-                style={{backgroundColor: 'red'}}
-                name="trash"
-                color="black" />
+                style={{backgroundColor: '#A59F9F'}}
+                color='white'
+                name='user'
+                size={50}
+                 />
+            </TouchableOpacity>
+            </View>
+            {/* text view */}
+          <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+            {/*name line */}
+            <View>
+    <Text style={{fontSize: 34, fontWeight: 'bold', marginLeft: 10, marginBottom: 20, marginTop: 20}}>{this.state.fName} {this.state.lName}</Text>
+            </View>
+            {/*posts line */}
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <Text style={{fontSize: 18, marginLeft: 10}}> Posts{'\n'}written</Text>
+              <Text style={{fontSize: 18, marginLeft: 10}}>      Posts{'\n'}commented{'\n'}        on</Text>
+              <Text style={{fontSize: 18, marginLeft: 10}}>{'\n'}Score</Text>
+            </View>
+            {/*numbers line */}
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{fontSize: 18, margin: 10, marginLeft: 30}}> {this.state.postNum}</Text>
+              <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {this.state.commentNum}</Text>
+              <Text style={{fontSize: 18, margin: 10, marginLeft: 60}}> {this.state.score}</Text>
+            </View>
+          </View>
+       </View>
+       <View style={{flex:4}}>
+         {/*about me section*/}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>About me</Text>
+          <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => this.setState({editing: !this.state.editing})}
+          >
+            <View>
+              <Text style={styles.customBtnText}>Edit</Text>
             </View>
           </TouchableOpacity>
+         </View>
+         <View>
+          {this.state.editing ?
+          <TextInput
+            vlaue={this.state.aboutMe}
+            style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}
+            onChangeText={e => {
+                  this.setState({
+                    aboutMe: e,
+                  });
+                }}
+            autoFocus
+            multiline={true}
+            maxLength={175}
+            blurOnSubmit={true}
+            returnKeyType='done'
+            onBlur={async() => {this.setState({editing: false}), this.updateAboutMe()}}
+          /> :
+          <Text style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}>{this.state.aboutMe}</Text>
+         }
+         </View>
+         {/*username line*/}
+         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 20, marginLeft: 20}}>Username</Text>
+          <Text style={{fontSize: 18, marginTop: 20}}>    {this.state.username}</Text>
+         </View>
+         {/*email line*/}
+         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Email</Text>
+          <Text style={{fontSize: 18, marginTop: 20}}>              {this.state.email}</Text>
+         </View>
+         {/*password line*/}
+         <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Password</Text>
+          <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => this.props.navigation.navigate('Reset Password')}
+          >
+            <View>
+              <Text style={styles.customBtnText}>Reset password</Text>
+            </View>
+          </TouchableOpacity>
+         </View>
+         { this.state.pastorUser &&
+            <View>
+              {/* Preach line */}
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Preach</Text>
+                <Text style={{fontSize: 18, marginTop: 20}}>           {this.state.preach}</Text>
+              </View>
+              {/* seminary line */}
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Seminary</Text>
+                <Text style={{fontSize: 18, marginTop: 20}}>       {this.state.seminary}</Text>
+              </View>
+              {/* pastor code line */}
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20, marginTop: 20}}>Pastor code</Text>
+                <Text style={{fontSize: 18, marginTop: 20, fontStyle: 'italic'}}>   {this.state.pastorCode}</Text>
+              </View>
+
+            </View>
+
+         }
+         {/** delete button */}
+         <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
+         <TouchableOpacity
+              style={styles.Delete}
+              onPress={() => this.delUser(this.props.navigation)}
+            >
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.customBtnText}>Delete Account</Text>
+                <Button
+                  style={{backgroundColor: 'red'}}
+                  name="trash"
+                  color="black" />
+              </View>
+            </TouchableOpacity>
+         </View>
        </View>
      </View>
-   </View>
- );
+   );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -326,4 +337,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+// export default ProfileScreen;

@@ -86,7 +86,7 @@ export default class UserSignUpScreen extends Component {
         AddintionalInfo: "",
         score: 0,
         userType: "user"
-      }).catch((error)=>{
+      }.bind(this)).catch((error)=>{
         Alert.alert('error ', error)
       }))
       .then(() => navigation.reset({

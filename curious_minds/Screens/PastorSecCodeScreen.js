@@ -55,8 +55,8 @@ export default class PastorSecCodeScreen extends Component {
           }
         }
       })
-    });
-    return true;
+    }.bind(this));
+    return found;
   }
 
   async validateCode(navigation){
