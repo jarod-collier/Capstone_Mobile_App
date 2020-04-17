@@ -156,7 +156,7 @@ export default class MainFeedScreen extends Component {
                   style={{backgroundColor: 'white'}}
                   color= {postData.likeColor}
                   name='thumbs-up'
-                  onPress={() => likePost(postData.key)}
+                  onPress={() => this.likePost(postData.key)}
                   />
                   {postData.likes > 0 &&
                   <Text
@@ -166,7 +166,7 @@ export default class MainFeedScreen extends Component {
                   style={{backgroundColor: 'white'}}
                   color={postData.reportColor}
                   name='exclamation-triangle'
-                  onPress={()=> reportPost(postData.key)} />
+                  onPress={()=> this.reportPost(postData.key)} />
                   {postData.reports > 0 &&
                   <Text
                     style={{marginTop: 9, opacity: .5, marginLeft: -10}}
@@ -215,8 +215,8 @@ export default class MainFeedScreen extends Component {
           reportColor: alreadyReportedpost,
         });
       })
-      // this.state.posts = postItems.reverse();
-    });
+      this.setState({posts: postItems.reverse()});
+    }.bind(this));
     await this.loadPostCards(navigation);
   }
 

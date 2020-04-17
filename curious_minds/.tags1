@@ -4,11 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-constructor	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  constructor(props) {$/;"	function	line:37
-state.oldPassword	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      oldPassword: '',$/;"	property	line:41
-state.newPassword1	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      newPassword1: '',$/;"	property	line:42
-state.newPassword2	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      newPassword2: '',$/;"	property	line:43
-state.errorCounter	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^      errorCounter: 0,$/;"	property	line:44
-makeDelay	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  makeDelay(ms) {$/;"	function	line:48
-resetPassword	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  resetPassword (navigation) {$/;"	function	line:52
-render	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\ResetPasswordScreen.js	/^  render() {$/;"	function	line:111
+constructor	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\MainFeedScreen.js	/^  constructor(props) {$/;"	function	line:23
+state.posts	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\MainFeedScreen.js	/^      posts: [],$/;"	property	line:26
+makeDelay	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\MainFeedScreen.js	/^  makeDelay(ms) {$/;"	function	line:40
+render	C:\Users\Owner\Desktop\CS\capstone\curious_minds\Screens\MainFeedScreen.js	/^  render() {$/;"	function	line:223
