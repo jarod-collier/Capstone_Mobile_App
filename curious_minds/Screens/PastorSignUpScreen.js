@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
@@ -18,39 +18,30 @@ import {
   Image,
 } from 'react-native';
 
-const handleFirstName = text => {
-  state.FirstName = text;
-};
-const handleLastName = text => {
-  state.LastName = text;
-};
-const handleUsername = text => {
-  state.Username = text;
-};
-const handlePassword = text => {
-  state.Password = text;
-};
-const handleEmail = text => {
-  state.Email = text;
-};
-const handlePreach = text => {
-  state.preach = text;
-};
-const handleSeminary = text => {
-  state.seminary = text;
-};
-const handleAdditionalInfo = text => {
-  state.addintionalInfo = text;
-};
-
-const clearFirstName = React.createRef();
-const clearLastName = React.createRef();
-const clearUsername = React.createRef();
-const clearPassword = React.createRef();
-const clearEmail = React.createRef();
-const clearPreach = React.createRef();
-const clearSeminary = React.createRef();
-const clearAdditionalInfo = React.createRef();
+// const handleFirstName = text => {
+//   state.FirstName = text;
+// };
+// const handleLastName = text => {
+//   state.LastName = text;
+// };
+// const handleUsername = text => {
+//   state.Username = text;
+// };
+// const handlePassword = text => {
+//   state.Password = text;
+// };
+// const handleEmail = text => {
+//   state.Email = text;
+// };
+// const handlePreach = text => {
+//   state.preach = text;
+// };
+// const handleSeminary = text => {
+//   state.seminary = text;
+// };
+// const handleAdditionalInfo = text => {
+//   state.addintionalInfo = text;
+// };
 
 // useFocusEffect(
 //   React.useCallback(() => {
@@ -71,8 +62,8 @@ const clearAdditionalInfo = React.createRef();
 
 export default class PastorSignUpScreen extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       FirstName: '',
       LastName: '',
@@ -83,6 +74,15 @@ export default class PastorSignUpScreen extends Component {
       seminary: '',
       addintionalInfo: '',
     };
+
+    this.clearFirstName = React.createRef();
+    this.clearLastName = React.createRef();
+    this.clearUsername = React.createRef();
+    this.clearPassword = React.createRef();
+    this.clearEmail = React.createRef();
+    this.clearPreach = React.createRef();
+    this.clearSeminary = React.createRef();
+    this.clearAdditionalInfo = React.createRef();
   }
 
   async handleSignUp(navigation){
@@ -182,7 +182,7 @@ export default class PastorSignUpScreen extends Component {
                   placeholderTextColor="black"
                   onChangeText={e => {
                         this.setState({
-                          UserName: e,
+                          Username: e,
                         });
                       }}
                   ref={clearUsername}

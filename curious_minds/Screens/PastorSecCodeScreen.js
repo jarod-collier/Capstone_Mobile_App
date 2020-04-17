@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
@@ -20,11 +20,9 @@ import {
 } from 'react-native';
 
 
-const handleCode = text => {
-  state.Code = text;
-};
-
-var clearCode = React.createRef();
+// const handleCode = text => {
+//   state.Code = text;
+// };
 
 // useFocusEffect(
 //   React.useCallback(() => {
@@ -38,24 +36,26 @@ var clearCode = React.createRef();
 
 export default class PastorSecCodeScreen extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       Code: "",
     };
+
+    this.clearCode = React.createRef();
   }
 
   async readFromDB(){
     let found = false;
-    // await db.ref('/userInfo/').once('value', function(snapshot){
-    //   snapshot.forEach((child) => {
-    //     if(child.val().userType === 'pastor'){
-    //       if(child.val().pastorCode === state.Code){
-    //         found = true;
-    //       }
-    //     }
-    //   })
-    // });
+    await db.ref('/userInfo/').once('value', function(snapshot){
+      snapshot.forEach((child) => {
+        if(child.val().userType === 'pastor'){
+          if(child.val().pastorCode === this.state.Code){
+            found = true;
+          }
+        }
+      })
+    });
     return true;
   }
 
@@ -93,7 +93,7 @@ export default class PastorSecCodeScreen extends Component {
                         Code: e,
                       });
                     }}
-                ref={clearCode}
+                ref={this.clearCode}
               />
               <TouchableOpacity
                 style={styles.Buttons}

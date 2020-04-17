@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import firebase from 'firebase';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -68,42 +68,15 @@ const styles = StyleSheet.create({
 });
 
 
-const handleUsername = text => {
-  state.Username = text;
-};
+// const handleUsername = text => {
+//   this.state.Username = text;
+// };
+//
+// const handlePassword = text => {
+//   this.state.Password = text;
+// };
 
-const handlePassword = text => {
-  state.Password = text;
-};
 
-const logInUser = (navigation) => {
-  global.user = null;
-  firebase.auth().signInWithEmailAndPassword(state.Username, state.Password).catch(function(error) {
-    // Handle Errors here.
-    let errorCode = error.code;
-    let errorMessage = error.message;
-    Alert.alert(errorCode + ": " + errorMessage);
-    if (errorCode == "auth/user-not-found"){//user doesn't exist
-      Alert.alert('Incorrect username/password\nPlease try again');
-    }
-  });
-
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      global.user = user;
-      //navigate to Main screen
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Main'}],
-      });
-    }
-  });
-};
-
-const clearUsername = React.createRef();
-const clearPassword = React.createRef();
-
-firebase.auth().signOut();
 // useFocusEffect(
 //   React.useCallback(() => {
 //     // Do something when the screen is focused
@@ -117,10 +90,43 @@ firebase.auth().signOut();
 
 export default class LoginScreen extends Component {
 
-  state = {
-    Username: '',
-    Password: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      Username: '',
+      Password: '',
+    };
+
+    this.clearUsername = React.createRef();
+    this.clearPassword = React.createRef();
+
+    firebase.auth().signOut();
+  }
+
+  logInUser(navigation) {
+    // what is this global user?
+    // let global.user = null;
+    firebase.auth().signInWithEmailAndPassword(this.state.Username, this.state.Password).catch(function(error) {
+      // Handle Errors here.
+      let errorCode = error.code;
+      let errorMessage = error.message;
+      Alert.alert(errorCode + ": " + errorMessage);
+      if (errorCode == "auth/user-not-found"){//user doesn't exist
+        Alert.alert('Incorrect username/password\nPlease try again');
+      }
+    });
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // global.user = user;
+        //navigate to Main screen
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main'}],
+        });
+      }
+    });
+  }
 
   render() {
     LayoutAnimation.easeInEaseOut();
@@ -136,21 +142,29 @@ export default class LoginScreen extends Component {
               placeholder="Enter your Email"
               keyboardType='email-address'
               placeholderTextColor="black"
-              onChangeText={handleUsername}
-              ref={clearUsername}
+              onChangeText={e => {
+                    this.setState({
+                      Username: e,
+                    });
+                  }}
+              ref={this.clearUsername}
             />
             <TextInput
               style={styles.inputBox}
               placeholder="Password"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={handlePassword}
-              ref={clearPassword}
+              onChangeText={e => {
+                    this.setState({
+                      Password: e,
+                    });
+                  }}
+              ref={this.clearPassword}
             />
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={()=> logInUser(this.props.navigation) }>
+                onPress={()=> this.logInUser(this.props.navigation) }>
                 <Text style={styles.customBtnText}>Log In</Text>
               </TouchableOpacity>
             </View>

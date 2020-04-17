@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
@@ -20,27 +20,21 @@ import {
 } from 'react-native';
 
 
-const handleFirstName = text => {
-  state.FirstName = text;
-};
-const handleLastName = text => {
-  state.LastName = text;
-};
-const handleUsername = text => {
-  state.Username = text;
-};
-const handlePassword = text => {
-  state.Password = text;
-};
-const handleEmail = text => {
-  state.Email = text;
-};
-
-const clearFirstName = React.createRef();
-const clearLastName = React.createRef();
-const clearUsername = React.createRef();
-const clearPassword = React.createRef();
-const clearEmail = React.createRef();
+// const handleFirstName = text => {
+//   state.FirstName = text;
+// };
+// const handleLastName = text => {
+//   state.LastName = text;
+// };
+// const handleUsername = text => {
+//   state.Username = text;
+// };
+// const handlePassword = text => {
+//   state.Password = text;
+// };
+// const handleEmail = text => {
+//   state.Email = text;
+// };
 
 // useFocusEffect(
   //   React.useCallback(() => {
@@ -58,8 +52,8 @@ const clearEmail = React.createRef();
 
 export default class UserSignUpScreen extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       FirstName: '',
       LastName: '',
@@ -67,6 +61,12 @@ export default class UserSignUpScreen extends Component {
       Password: '',
       Email: '',
     };
+
+    this.clearFirstName = React.createRef();
+    this.clearLastName = React.createRef();
+    this.clearUsername = React.createRef();
+    this.clearPassword = React.createRef();
+    this.clearEmail = React.createRef();
   }
 
   async handleSignUp(navigation){
@@ -74,12 +74,12 @@ export default class UserSignUpScreen extends Component {
     if(valid){
       var UserId;
       firebase.auth()
-      .createUserWithEmailAndPassword(state.Email, state.Password)
+      .createUserWithEmailAndPassword(this.state.Email, this.state.Password)
       .then(data => UserId = data.user.uid)
       .then(() => db.ref('/userInfo').push({
-        First: "" + state.FirstName,
-        Last: "" + state.LastName,
-        Username: "" + state.Username,
+        First: "" + this.state.FirstName,
+        Last: "" + this.state.LastName,
+        Username: "" + this.state.Username,
         uid: UserId,
         postNum: 0,
         commentNum: 0,
@@ -106,7 +106,7 @@ export default class UserSignUpScreen extends Component {
         );
       })
     });
-    if(usernames.includes(state.Username)){
+    if(usernames.includes(this.state.Username)){
       Alert.alert('username is already in use\nPlease try a different username');
       return false;
     }else{
@@ -141,7 +141,7 @@ export default class UserSignUpScreen extends Component {
                         FirstName: e,
                       });
                     }}
-                ref={clearFirstName}
+                ref={this.clearFirstName}
               />
               <TextInput
                 style={styles.namesInput}
@@ -152,7 +152,7 @@ export default class UserSignUpScreen extends Component {
                         LastName: e,
                       });
                     }}
-                ref={clearLastName}
+                ref={this.clearLastName}
               />
             </View>
             <View style={{flexDirection: 'column'}}>
@@ -165,7 +165,7 @@ export default class UserSignUpScreen extends Component {
                         Username: e,
                       });
                     }}
-                ref={clearUsername}
+                ref={this.clearUsername}
               />
               <TextInput
                 style={styles.inputBox}
@@ -178,7 +178,7 @@ export default class UserSignUpScreen extends Component {
                         Password: e,
                       });
                     }}
-                ref={clearPassword}
+                ref={this.clearPassword}
               />
               <TextInput
                 style={styles.inputBox}
@@ -190,7 +190,7 @@ export default class UserSignUpScreen extends Component {
                         Email: e,
                       });
                     }}
-                ref={clearEmail}
+                ref={this.clearEmail}
               />
             </View>
           </View>
