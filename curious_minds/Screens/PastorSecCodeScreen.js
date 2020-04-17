@@ -19,81 +19,92 @@ import {
   Alert,
 } from 'react-native';
 
-var state = {
-  Code: "",
-};
+
 const handleCode = text => {
   state.Code = text;
 };
 
-async function readFromDB(){
-  var found = false;
-  await db.ref('/userInfo/').once('value', function(snapshot){
-    snapshot.forEach((child) => {
-      if(child.val().userType === 'pastor'){
-        if(child.val().pastorCode === state.Code){
-          found = true;
-        }
-      }
-    })
-  });
-  return found;
-}
-
-async function validateCode(navigation){
-  var valid = await readFromDB();
-  if(valid){
-    navigation.navigate('Pastor SignUp');
-  }else{
-    Alert.alert('Not a valid security code.\nPlease try again.');
-  }
-}
-
 var clearCode = React.createRef();
 
-function PastorSecCodeScreen({navigation}) {
-  LayoutAnimation.easeInEaseOut();
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      return () => {
-        // Do something when the screen is unfocused
-        clearCode.current.clear();
-      };
-    }, [])
-  );
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <KeyboardAwareScrollView
-       resetScrollToCoords={{x: 0, y: 0}}
-       contentContainerStyle={styles.container}
-       scrollEnabled={false}
-       extraHeight={100}
-       >
-          <View style={styles.logo}>
-            <Image source={require('../images/CM_logo02.png')} />
-          </View>
-          <View>
-            <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code</Text>
-          </View>
-          <View style = {{alignItems: 'center'}}>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Enter Code Here"
-              placeholderTextColor="black"
-              onChangeText={handleCode}
-              ref={clearCode}
-            />
-            <TouchableOpacity
-              style={styles.Buttons}
-              onPress={() => validateCode(navigation)}>
-              <Text style={styles.customBtnText}>Confirm</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAwareScrollView>
-    </SafeAreaView>
+// useFocusEffect(
+//   React.useCallback(() => {
+//     // Do something when the screen is focused
+//     return () => {
+//       // Do something when the screen is unfocused
+//       clearCode.current.clear();
+//     };
+//   }, [])
+// );
 
-  );
+export default class PastorSecCodeScreen extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      Code: "",
+    };
+  }
+
+  async readFromDB(){
+    let found = false;
+    // await db.ref('/userInfo/').once('value', function(snapshot){
+    //   snapshot.forEach((child) => {
+    //     if(child.val().userType === 'pastor'){
+    //       if(child.val().pastorCode === state.Code){
+    //         found = true;
+    //       }
+    //     }
+    //   })
+    // });
+    return true;
+  }
+
+  async validateCode(navigation){
+    var valid = await this.readFromDB();
+    if(valid){
+      navigation.navigate('Pastor SignUp');
+    }else{
+      Alert.alert('Not a valid security code.\nPlease try again.');
+    }
+  }
+  render() {
+    LayoutAnimation.easeInEaseOut();
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        <KeyboardAwareScrollView
+         resetScrollToCoords={{x: 0, y: 0}}
+         contentContainerStyle={styles.container}
+         scrollEnabled={false}
+         extraHeight={100}
+         >
+            <View style={styles.logo}>
+              <Image source={require('../images/CM_logo02.png')} />
+            </View>
+            <View>
+              <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code</Text>
+            </View>
+            <View style = {{alignItems: 'center'}}>
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Enter Code Here"
+                placeholderTextColor="black"
+                onChangeText={e => {
+                      this.setState({
+                        Code: e,
+                      });
+                    }}
+                ref={clearCode}
+              />
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={() => this.validateCode(this.props.navigation)}>
+                <Text style={styles.customBtnText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAwareScrollView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -144,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PastorSecCodeScreen;
+// export default PastorSecCodeScreen;
