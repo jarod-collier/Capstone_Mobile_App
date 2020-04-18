@@ -1,38 +1,36 @@
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import { Alert } from 'react-native';
 import React, {Component} from 'react';
 import firebase from 'firebase';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TextInput,
-  Button,
   LayoutAnimation,
   TouchableOpacity,
   Image,
-  Platform
 } from 'react-native';
 
+export default class ForgotPasswordScreen extends Component {
 
-var state = {
-  Email: '',
-};
+  constructor(props){
+    super(props);
 
-var handleEmail = text => {
-    state.Email = text;
-};
-var resetPassword = (navigation) => {
-    if (state.Email != null) {
-        firebase.auth().sendPasswordResetEmail(state.Email);
+    this.state = {
+      Email: ''
+    };
+  }
+
+resetPassword (navigation){
+    if (this.state.Email != '') {
+        firebase.auth().sendPasswordResetEmail(this.state.Email);
         Alert.alert(
             'Reset Password',
-            'Your password has been reset.\nPlease check your email to finish the process.',
+            'Your password has been reset.\nPlease check your email to finish the process',
             [
               {text: 'OK', onPress: () => navigation.navigate('Login')},
             ],
@@ -40,17 +38,21 @@ var resetPassword = (navigation) => {
           );
     }
     else {
-        console.log("Please Enter Email.");
+        console.log("Please enter a valid email");
     }
 };
 
-
-function ForgotPasswordScreen({navigation}) {
-  firebase.auth().signOut();
-  LayoutAnimation.easeInEaseOut();
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
+  render(){
+    LayoutAnimation.easeInEaseOut();
+    return(
+      <SafeAreaView style={{flex: 1}}>
+      <KeyboardAwareScrollView
+          resetScrollToCoords={{x: 0, y: 0}}
+          contentContainerStyle={styles.container}
+          scrollEnabled={true}
+          extraHeight={100}
+          keyboardShouldPersistTaps='handled'
+          >
         <View style={styles.logo}>
           <Image source={require('../images/CM_logo02.png')}/>
         </View>
@@ -59,17 +61,19 @@ function ForgotPasswordScreen({navigation}) {
             style={styles.inputBox}
             placeholder="Enter account email."
             placeholderTextColor="black"
-            onChangeText={handleEmail}
+            returnKeyType='done'
+            onChangeText={ e => this.setState({Email: e})}
           />
           <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => resetPassword(navigation)}>
+              onPress={() => this.resetPassword(this.props.navigation)}>
               <Text style={styles.customBtnText}>Send Email</Text>
             </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
-  );
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -81,8 +85,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    marginTop: 50,
-    marginBottom: 30,
+    marginHorizontal: 100,
+    marginTop: 100,
+    marginBottom:50,
   },
   inputBox: {
     borderRadius: 15,
@@ -120,5 +125,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 });
-
-export default ForgotPasswordScreen;

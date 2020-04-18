@@ -14,20 +14,6 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { db } from '../FireDatabase/config';
-import { useFocusEffect } from '@react-navigation/native';
-
-// useFocusEffect(
-//   React.useCallback(() => {
-//     // Do something when the screen is focused
-//     return () => {
-//       // Do something when the screen is unfocused
-//       clearQuestion.current.clear();
-//       clearDescription.current.clear();
-//       setPastorOnly(false);
-//       setAnon(false);
-//     };
-//   }, [])
-// );
 
 export default class ResetPasswordScreen extends Component {
 
@@ -63,7 +49,6 @@ export default class ResetPasswordScreen extends Component {
     });
 
     numberOfPosts = numberOfPosts + 1;
-    // console.log(userRef.key);
 
     //update the value.
     await db.ref('/userInfo/').child(userRef.key).update({
@@ -92,7 +77,7 @@ export default class ResetPasswordScreen extends Component {
       reportedBy: [""],
       Anon: this.state.Anon,
       PastorOnly: this.state.pastorOnly
-    }.bind(this)).catch((error)=>{
+    }).catch((error)=>{
       Alert.alert('error ', error)
     })
     Alert.alert('Post added successfully');
@@ -116,11 +101,7 @@ export default class ResetPasswordScreen extends Component {
               style={styles.inputBox}
               placeholder="Type your question here"
               placeholderTextColor="black"
-              onChangeText={e => {
-                    this.setState({
-                      Question: e,
-                    });
-                  }}
+              onChangeText={e => {this.setState({Question: e});}}
               ref={this.clearQuestion}
             />
           </View>
@@ -139,11 +120,9 @@ export default class ResetPasswordScreen extends Component {
               placeholderTextColor="black"
               multiline={true}
               numberOfLines={10}
-              onChangeText={e => {
-                    this.setState({
-                      Description: e,
-                    });
-                  }}
+              blurOnSubmit={true}
+              returnKeyType='done'
+              onChangeText={e => {this.setState({Description: e});}}
               ref={this.clearDescription}
             />
           </View>

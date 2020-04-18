@@ -1,38 +1,19 @@
 import 'react-native-gesture-handler';
 import React, {Component, useState} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { db } from '../FireDatabase/config';
-import firebase from 'firebase';
-import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   LayoutAnimation,
   Text,
   TextInput,
-  Button,
+  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
-
-
-// const handleCode = text => {
-//   state.Code = text;
-// };
-
-// useFocusEffect(
-//   React.useCallback(() => {
-//     // Do something when the screen is focused
-//     return () => {
-//       // Do something when the screen is unfocused
-//       clearCode.current.clear();
-//     };
-//   }, [])
-// );
 
 export default class PastorSecCodeScreen extends Component {
 
@@ -64,24 +45,27 @@ export default class PastorSecCodeScreen extends Component {
     if(valid){
       navigation.navigate('Pastor SignUp');
     }else{
-      Alert.alert('Not a valid security code.\nPlease try again.');
+      Alert.alert('Not a valid security code\nPlease try again');
     }
   }
+
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
       <SafeAreaView style={{flex: 1}}>
-        <KeyboardAwareScrollView
-         resetScrollToCoords={{x: 0, y: 0}}
-         contentContainerStyle={styles.container}
-         scrollEnabled={false}
-         extraHeight={100}
+        <KeyboardAvoidingView
+         style={styles.container}
+         behavior="position"
          >
             <View style={styles.logo}>
               <Image source={require('../images/CM_logo02.png')} />
             </View>
             <View>
-              <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code</Text>
+              <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code*</Text>
+              <Text style={{marginHorizontal: 80, marginTop: 20,textAlign: 'center'}}>
+                *Pastors can only sign-up using a security code from a pastor that is already signed up.
+                {'\n\n'}Security code can be found on pastor profile screen
+              </Text>
             </View>
             <View style = {{alignItems: 'center'}}>
               <TextInput
@@ -101,7 +85,7 @@ export default class PastorSecCodeScreen extends Component {
                 <Text style={styles.customBtnText}>Confirm</Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAwareScrollView>
+          </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -114,12 +98,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    margin: 100,
+    marginHorizontal: 100,
+    marginTop: 100,
+    marginBottom:50,
   },
   inputBox: {
-    //borderRadius: 30,
-    //borderColor: 'white',
-    //borderWidth: 1,
     borderBottomWidth: 1.0,
     width: 250,
     textAlign: 'center',
@@ -127,18 +110,15 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOffset: {height: 3, width: 3}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    // borderColor: 'white',
     borderRadius: 25,
     width: 150,
-    //margin: 10,
     marginTop: 25,
   },
   customBtnText: {
@@ -154,5 +134,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 });
-
-// export default PastorSecCodeScreen;

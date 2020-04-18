@@ -20,6 +20,8 @@ import {
 
 export default class MainFeedScreen extends Component {
 
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +29,17 @@ export default class MainFeedScreen extends Component {
       display: [],
       Loading: true,
     };
+  }
 
-    this.readFromDB(this.props.navigation);
+  async componentDidMount(){
+    this._isMounted = true;
+    this.setState({Loading: true});
+    await this.readFromDB(this.props.navigation);
+    this.setState({Loading: false});
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   makeDelay(ms) {
@@ -56,7 +67,7 @@ export default class MainFeedScreen extends Component {
         likedBy: likes,
         likes: (likesCount + 1),
       });
-      Alert.alert('post liked\nPlease refresh the screen');
+      this.refreshScreen();
 
     }else{
       Alert.alert('post already liked');
@@ -100,14 +111,16 @@ export default class MainFeedScreen extends Component {
           {text: 'REPORT', onPress: async () => {
             if((reportCount + incAmount) >= 5){
               await db.ref('/posts/').child(key).remove().then(function(){
+                this.refreshScreen();
                 Alert.alert('Report count exceeded the limit\nThis post will be deleted now\nPlease refresh the screen');
-              })
+              }.bind(this));
             }else{
               reports.push(uid);
               await db.ref('/posts/').child(key).update({
                 reportedBy: reports,
                 reports: (reportCount + incAmount),
               });
+              this.refreshScreen();
               Alert.alert('This post was reported\nThank you');
             }
           }, style: {color: 'red'}}
@@ -126,7 +139,7 @@ export default class MainFeedScreen extends Component {
         <View key={postData.key}>
           <Button
           style={{backgroundColor: 'silver'}}
-          onPress = {()=> navigation.navigate('Thread', postData.key)}>
+          onPress = {()=> navigation.navigate('Thread', {ID: postData.key})}>
           <Card style={{ padding: 15, alignSelf: 'center'}}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
               <Text style={{marginTop: 3}}>{postData.desc}</Text>
@@ -171,11 +184,16 @@ export default class MainFeedScreen extends Component {
         </View>
       )
     });
-    this.state.Loading = false;
+  }
+
+  async refreshScreen (){
+    this.setState({Loading: true}),
+    await this.readFromDB(this.props.navigation),
+    this.makeDelay(500).then(()=> this.setState({Loading: false}));
   }
 
   async readFromDB(navigation){
-    this.state.Loading = true;
+    
     let uid = firebase.auth().currentUser.uid;
 
     await db.ref('/posts/').once('value', function(snapshot){
@@ -217,32 +235,31 @@ export default class MainFeedScreen extends Component {
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
-      setTimeout(()=> this.setState({Loading: false}), 500),
       <SafeAreaView style={{flex: 1}}>
         <ScrollView
           refreshControl={
             <RefreshControl
               refreshing={this.state.Loading}
-              onRefresh={() => {
-                this.setState({Loading: true}),
-                this.makeDelay(2000).then(()=> this.setState({Loading: false}))}}
+              onRefresh={async () => {this.refreshScreen();}}
             />
           }
         >
+          {/* <Modal
+           transparent={true}
+           animationType={'none'}
+           visible={this.state.Loading}
+          >
+            <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
+          </Modal>  */}
           <View style={styles.container}>
             {this.state.display.length > 0 ?
               this.state.display
               :
-              <Text style={{color: 'black', alignSelf: 'center', opacity: 0.5}}>No posts found. Please make a new post</Text>
+              <Text style={{color: 'black', alignSelf: 'center', opacity: 0.5, marginTop: 30}}>
+                No posts found. Please make a new post
+              </Text>
             }
           </View>
-          {/* <Modal
-           transparent={true}
-           animationType={'none'}
-           visible={isLoading}
-          >
-            <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
-          </Modal> */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -252,7 +269,6 @@ export default class MainFeedScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'red',
   },
   logo: {
     margin: 100,
@@ -310,4 +326,3 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 });
-// export default MainFeedScreen;

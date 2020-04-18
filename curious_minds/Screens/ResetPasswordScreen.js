@@ -1,22 +1,18 @@
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import { Alert } from 'react-native';
-import React, {Component, useState} from 'react';
+import { Alert, Keyboard } from 'react-native';
+import React, {Component} from 'react';
 import firebase from 'firebase';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TextInput,
-  Button,
   LayoutAnimation,
   TouchableOpacity,
   Image,
-  Platform
 } from 'react-native';
 
 export default class ResetPasswordScreen extends Component {
@@ -47,7 +43,7 @@ export default class ResetPasswordScreen extends Component {
 
       user.reauthenticateWithCredential(credential).then(function(){
         //user re-authenticated
-        if(this.state.newPassword1 != null && this.state.newPassword2 != null){
+        if(this.state.newPassword1 != '' && this.state.newPassword2 != ''){
           //passwords exist
           if(this.state.newPassword1.length >= 6 && this.state.newPassword2.length >= 6){
           //password longer than 6 characters
@@ -55,13 +51,14 @@ export default class ResetPasswordScreen extends Component {
               //passwords match
               firebase.auth().currentUser.updatePassword(this.state.newPassword1).then(function(){
                 Alert.alert("Your password has been reset");
+                navigation.navigate('Profile');
                 //reset credential and re-authenticate user session
                 credential = firebase.auth.EmailAuthProvider.credential(
                   firebase.auth().currentUser.email,
                   this.state.newPassword1
                 );
                 user.reauthenticateWithCredential(credential);
-              })
+              }.bind(this))
             }else{
               //passwords dont match
               Alert.alert('New passwords don\'t match');
@@ -74,8 +71,9 @@ export default class ResetPasswordScreen extends Component {
           //empty new password
           Alert.alert('Please fill all fields');
         }
-      }.bind(this)).catch(function(error){
+      }.bind(this)).catch( function(error){
         //error authenticating
+        Alert.alert("" + error);
         this.state.errorCounter++;
         if(this.state.errorCounter < 5){
           Alert.alert('Old password is incorrect\nYou have ' + (5 - this.state.errorCounter) + ' attempts left');
@@ -89,9 +87,8 @@ export default class ResetPasswordScreen extends Component {
           .catch(error => Alert.alert(error.message));
         }
       }.bind(this))
-    }
-    else {
-        Alert.alert("Please Enter old password");
+    }else {
+      Alert.alert("Please Enter old password");
     }
   };
 
@@ -99,52 +96,48 @@ export default class ResetPasswordScreen extends Component {
     LayoutAnimation.easeInEaseOut();
     return (
       <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{x: 0, y: 0}}
+          contentContainerStyle={styles.container}
+          scrollEnabled={true}
+          extraHeight={100}
+          keyboardShouldPersistTaps='handled'
+          >
           <View style={styles.logo}>
             <Image source={require('../images/CM_logo02.png')}/>
           </View>
           <View>
+            <Text style={{fontStyle:'italic', textAlign: 'center'}}>
+              * New password needs to be at least {'\n'}6 characters long
+            </Text>
             <TextInput
               style={styles.inputBox}
               placeholder="Enter old password"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={e => {
-                    this.setState({
-                      oldPassword: e,
-                    });
-                  }}
+              onChangeText={e => {this.setState({oldPassword: e});}}
             />
             <TextInput
               style={styles.inputBox}
               placeholder="Enter new password*"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={e => {
-                    this.setState({
-                      newPassword1: e,
-                    });
-                  }}
+              onChangeText={e => {this.setState({newPassword1: e});}}
             />
             <TextInput
               style={styles.inputBox}
               placeholder="Enter new password again*"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={e => {
-                    this.setState({
-                      newPassword2: e,
-                    });
-                  }}
+              onChangeText={e => {this.setState({newPassword2: e});}}
             />
-            <Text style={{fontStyle:'italic', textAlign: 'center'}}>* New password needs to be at least {'\n'}6 characters long</Text>
             <TouchableOpacity
-                style={styles.Buttons}
-                onPress={async () => {this.resetPassword(this.props.navigation); this.props.navigation.navigate('Main')}}>
-                <Text style={styles.customBtnText}>Reset Password</Text>
-              </TouchableOpacity>
+              style={styles.Buttons}
+              onPress={async () => {Keyboard.dismiss,this.resetPassword(this.props.navigation)}}>
+              <Text style={styles.customBtnText}>Reset Password</Text>
+            </TouchableOpacity>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     );
   }
@@ -159,8 +152,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    marginTop: 50,
-    marginBottom: 30,
+    marginHorizontal: 100,
+    marginTop: 100,
+    marginBottom:50,
   },
   inputBox: {
     borderRadius: 15,
@@ -198,5 +192,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 });
-
-// export default ResetPasswordScreen;

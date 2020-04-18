@@ -20,9 +20,10 @@ import {
 
 export default class ProfileScreen extends Component {
 
+  _isMounted = false;
+
   constructor(props) {
     super(props);
-
     this.state= {
       username: '',
       email: '',
@@ -39,12 +40,21 @@ export default class ProfileScreen extends Component {
       pastorCode: '',
       editing: false,
     };
-
-    this.getUserInfo();
   }
 
   makeDelay(ms) {
     return new Promise(res => setTimeout(res, ms));
+  }
+
+  async componentDidMount(){
+    this._isMounted = true;
+    this.setState({Loading: true});
+    await this.getUserInfo();
+    this.setState({Loading: false});
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async delUser(navigation){
@@ -93,11 +103,10 @@ export default class ProfileScreen extends Component {
     //update value
     await db.ref('/userInfo/').child(nodeRef.key).update({
       AddintionalInfo: this.state.aboutMe,
-    }.bind(this));
+    });
   }
 
   async getUserInfo(){
-    this.state.Loading = true;
     let uid = firebase.auth().currentUser.uid;
 
     await db.ref('/userInfo/').once('value', function(snapshot){
@@ -120,13 +129,11 @@ export default class ProfileScreen extends Component {
             }
         })
     }.bind(this));
-    this.state.Loading = false;
   }
 
   render() {
     LayoutAnimation.easeInEaseOut();
     return(
-      setTimeout(()=> this.setState({Loading: false}), 500),
      <View style={styles.container}>
        <View style={{flex:2, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 3}}>
          {/* image view */}
@@ -179,19 +186,15 @@ export default class ProfileScreen extends Component {
          <View>
           {this.state.editing ?
           <TextInput
-            vlaue={this.state.aboutMe}
+            defaultValue={this.state.aboutMe}
             style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}
-            onChangeText={e => {
-                  this.setState({
-                    aboutMe: e,
-                  });
-                }}
+            onChangeText={e => {this.setState({aboutMe: e});}}
             autoFocus
             multiline={true}
             maxLength={175}
             blurOnSubmit={true}
             returnKeyType='done'
-            onBlur={async() => {this.setState({editing: false}), this.updateAboutMe()}}
+            onSubmitEditing={async() => {await this.updateAboutMe(), this.setState({editing: false})}}
           /> :
           <Text style={{fontSize: 18, marginTop: 20, marginHorizontal: 20}}>{this.state.aboutMe}</Text>
          }
@@ -237,7 +240,6 @@ export default class ProfileScreen extends Component {
               </View>
 
             </View>
-
          }
          {/** delete button */}
          <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>

@@ -1,54 +1,20 @@
 import 'react-native-gesture-handler';
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
-import { useFocusEffect } from '@react-navigation/native';
 
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TextInput,
-  Button,
   LayoutAnimation,
   TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
-
-
-// const handleFirstName = text => {
-//   state.FirstName = text;
-// };
-// const handleLastName = text => {
-//   state.LastName = text;
-// };
-// const handleUsername = text => {
-//   state.Username = text;
-// };
-// const handlePassword = text => {
-//   state.Password = text;
-// };
-// const handleEmail = text => {
-//   state.Email = text;
-// };
-
-// useFocusEffect(
-  //   React.useCallback(() => {
-    //     // Do something when the screen is focused
-    //     return () => {
-      //       // Do something when the screen is unfocused
-      //       clearFirstName.current.clear();
-      //       clearLastName.current.clear();
-      //       clearUsername.current.clear();
-      //       clearPassword.current.clear();
-      //       clearEmail.current.clear();
-      //     };
-      //   }, [])
-      // );
 
 export default class UserSignUpScreen extends Component {
 
@@ -86,7 +52,7 @@ export default class UserSignUpScreen extends Component {
         AddintionalInfo: "",
         score: 0,
         userType: "user"
-      }.bind(this)).catch((error)=>{
+      }).catch((error)=>{
         Alert.alert('error ', error)
       }))
       .then(() => navigation.reset({
@@ -121,78 +87,60 @@ export default class UserSignUpScreen extends Component {
         <KeyboardAwareScrollView
           resetScrollToCoords={{x: 0, y: 0}}
           contentContainerStyle={styles.container}
-          scrollEnabled={false}
+          scrollEnabled={true}
           extraHeight={100}
-        >
+          >
           <View style={styles.logo}>
             <Image source={require('../images/CM_logo02.png')} />
           </View>
           <View>
-            <Text style={styles.infoHereText}>INFO HERE</Text>
+            <Text style={styles.infoHereText}>* required fields</Text>
           </View>
-          <View>
-            <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-              <TextInput
-                style={styles.namesInput}
-                placeholder="  FirstName"
-                placeholderTextColor="black"
-                onChangeText={e => {
-                      this.setState({
-                        FirstName: e,
-                      });
-                    }}
-                ref={this.clearFirstName}
-              />
-              <TextInput
-                style={styles.namesInput}
-                placeholder="  LastName"
-                placeholderTextColor="black"
-                onChangeText={e => {
-                      this.setState({
-                        LastName: e,
-                      });
-                    }}
-                ref={this.clearLastName}
-              />
-            </View>
-            <View style={{flexDirection: 'column'}}>
-              <TextInput
-                style={styles.inputBox}
-                placeholder="  Username"
-                placeholderTextColor="black"
-                onChangeText={e => {
-                      this.setState({
-                        Username: e,
-                      });
-                    }}
-                ref={this.clearUsername}
-              />
-              <TextInput
-                style={styles.inputBox}
-                placeholder="  Password"
-                secureTextEntry={true}
-                autoCapitalize='none'
-                placeholderTextColor="black"
-                onChangeText={e => {
-                      this.setState({
-                        Password: e,
-                      });
-                    }}
-                ref={this.clearPassword}
-              />
-              <TextInput
-                style={styles.inputBox}
-                placeholder="  Email"
-                keyboardType='email-address'
-                placeholderTextColor="black"
-                onChangeText={e => {
-                      this.setState({
-                        Email: e,
-                      });
-                    }}
-                ref={this.clearEmail}
-              />
-            </View>
+          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+            <TextInput
+              style={styles.namesInput}
+              placeholder="  First name"
+              placeholderTextColor="black"
+              blurOnSubmit={true}
+              onChangeText={e => {this.setState({FirstName: e,});}}
+              ref={this.clearFirstName}
+            />
+            <TextInput
+              style={styles.namesInput}
+              placeholder="  Last name"
+              placeholderTextColor="black"
+              blurOnSubmit={true}
+              onChangeText={e => {this.setState({LastName: e,});}}
+              ref={this.clearLastName}
+            />
+          </View>
+          <View style={{flexDirection: 'column'}}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="  Username*"
+              placeholderTextColor="black"
+              blurOnSubmit={true}
+              onChangeText={e => {this.setState({Username: e,});}}
+              ref={this.clearUsername}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="  Password*"
+              secureTextEntry={true}
+              placeholderTextColor="black"
+              blurOnSubmit={true}
+              onChangeText={e => {this.setState({Password: e,});}}
+              ref={this.clearPassword}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="  Email*"
+              placeholderTextColor="black"
+              keyboardType="email-address"
+              blurOnSubmit={true}
+              onChangeText={e => {this.setState({Email: e,});}}
+              ref={this.clearEmail}
+            />
           </View>
           <View>
             <TouchableOpacity
@@ -214,8 +162,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
+    marginHorizontal: 100,
     marginTop: 100,
-    marginBottom: 50,
+    marginBottom:50,
   },
   namesInput: {
     borderRadius: 15,
@@ -235,7 +184,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 320,
     height: 40,
-    // textAlign: 'center',
     marginTop: 10,
     margin: 10,
   },
@@ -245,11 +193,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    // borderColor: 'white',
     borderRadius: 25,
     width: 250,
     marginTop: 15,
@@ -261,11 +207,9 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   infoHereText: {
-    fontSize: 35,
+    fontSize: 20,
     fontWeight: '400',
     color: "black",
     textAlign: "center"
   },
 });
-
-// export default UserSignUpScreen;

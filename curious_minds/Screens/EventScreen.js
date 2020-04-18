@@ -12,14 +12,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
   ScrollView,
-  Alert,
   RefreshControl,
   LayoutAnimation,
 } from 'react-native';
 
 export default class EventScreen extends Component {
+
+  _isMounted = false;
 
   constructor(props){
     super(props);
@@ -30,73 +30,41 @@ export default class EventScreen extends Component {
       canAdd: false,
       Loading: true,
     };
-
-    // const [isLoading, setLoading]= useState(true);
-    this.readFromDB();
-
   }
 
   makeDelay(ms) {
     return new Promise(res => setTimeout(res, ms));
   }
 
-  addToCalendar(title, date, time){
+  async componentDidMount(){
+    this._isMounted = true;
+    this.setState({Loading: true});
+    await this.readFromDB(this.props.navigation);
+    this.setState({Loading: false});
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
+  async refreshScreen (){
+    this.setState({Loading: true}),
+    await this.readFromDB(this.props.navigation),
+    this.makeDelay(500).then(()=> this.setState({Loading: false}));
+  }
+
+  addToCalendar(title, date, time, location, notes){
+
     date = date.split(" ");
-    time = time.split(":");
-    const year = date[3];
-    var month = "";
-    switch(date[1]){
-      case "Jan":
-        month = "01";
-        break;
-      case "Feb":
-        month = "02";
-        break;
-      case "Mar":
-        month = "03";
-        break;
-      case "Apr":
-        month = "04";
-        break;
-      case "May":
-        month = "05";
-        break;
-      case "Jun":
-        month = "06";
-        break;
-      case "Jul":
-        month = "07";
-        break;
-      case "Aug":
-        month = "08";
-        break;
-      case "Sep":
-        month = "09";
-        break;
-      case "Oct":
-        month = "10";
-        break;
-      case "Nov":
-        month = "11";
-        break;
-      case "Dec":
-        month = "12";
-        break;
-    }
-    const day = date[2];
-    var hour = "";
-    const min = time[1].substring(0,time[1].length -3);
-    if(time[0].length < 2){
-      hour = "0" + time[0];
-    }else{
-      hour = time[0];
-    }
-
-    const startDate = (""+ year + "-" + month + "-" + day + "T" + hour + ":" + min + ":00.000Z");
-
+    time = time.split(" ");
+    var startDate = 
+    new Date("" + date[1] + " " + date[2] + ", " + date[3] +
+            " " + time[0]+":00 " + time[1]).toISOString();
     const eventConfig = {
       title,
       startDate,
+      location,
+      notes,
     };
     AddCalendarEvent.presentEventCreatingDialog(eventConfig);
   }
@@ -115,7 +83,6 @@ export default class EventScreen extends Component {
   }
 
   async readFromDB(){
-    this.state.Loading = true;
     await db.ref('/events/').once('value', function(snapshot){
       let postItems = [];
       snapshot.forEach((child) => {
@@ -142,9 +109,16 @@ export default class EventScreen extends Component {
               <Text style={{marginTop: 3}}>{eventData.desc}</Text>
               <Text>Date: {eventData.date}</Text>
               <Text>Time: {eventData.time}</Text>
+              <Text>Where: {eventData.location}</Text>
               <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => this.addToCalendar(eventData.title, eventData.date, eventData.time)}
+              onPress={() => 
+                this.addToCalendar(
+                  eventData.title, 
+                  eventData.date, 
+                  eventData.time, 
+                  eventData.location,
+                  eventData.desc)}
               >
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                   <Text style={styles.customBtnText}>Add event to calendar</Text>
@@ -158,21 +132,17 @@ export default class EventScreen extends Component {
         </View>
       )
     });
-    this.state.Loading = false;
   }
 
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
-      setTimeout(()=> this.setState({Loading: false}), 500),
       <SafeAreaView style={{flex: 1}}>
         <ScrollView
           refreshControl={
             <RefreshControl
               refreshing={this.state.Loading}
-              onRefresh={() => {
-                this.setState({Loading: true}),
-                this.makeDelay(2000).then(()=> this.setState({Loading: false}))}}
+              onRefresh={() => {this.refreshScreen();}}
             />
           }
         >
@@ -196,7 +166,9 @@ export default class EventScreen extends Component {
         {(this.state.display.length > 0) ?
           this.state.display
           :
-          <Text style={{color: 'black', alignSelf: 'center', opacity: 0.5}}>No events found. Please make a new event</Text>
+          <Text style={{color: 'black', alignSelf: 'center', opacity: 0.5, marginTop: 30}}>
+            No events found. Please make a new event
+          </Text>
         }
         </View>
         </ScrollView>

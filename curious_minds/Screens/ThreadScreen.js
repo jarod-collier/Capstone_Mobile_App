@@ -1,11 +1,10 @@
-import React, {Component, useCallback, useState} from 'react';
+import React, {Component} from 'react';
 import 'react-native-gesture-handler';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
-import { useFocusEffect } from '@react-navigation/native';
-import renderIf from 'render-if'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   SafeAreaView,
@@ -14,26 +13,14 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator,
-  ScrollView,
   Alert,
   RefreshControl,
   LayoutAnimation,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-// useFocusEffect(
-//   React.useCallback(() => {
-//     focused = true;
-//     // Do something when the screen is focused
-//     return () => {
-//       focused = false;
-//       // Do something when the screen is unfocused
-//     };
-//   }, [])
-// );
 
 export default class ThreadScreen extends Component {
+
+  _isMounted = false;
 
   constructor(props){
     super(props);
@@ -46,18 +33,32 @@ export default class ThreadScreen extends Component {
       PastorOnly: false,
       posterUser: '',
       userCanComment: true,
+      postID: '',
     };
-    const {navigation} = this.props;
-    let postID = navigation.getParam("Thread");
-
-    this.readFromDB(postID);
-
-    this.focused = false;
-    this.clearComment = React.createRef();
   }
 
   makeDelay(ms) {
     return new Promise(res => setTimeout(res, ms));
+  }
+
+  async componentDidMount(){
+    this._isMounted = true;
+    this.setState({Loading: true});
+    this.state.postID = this.props["route"]["params"]["ID"];
+    await this.readFromDB(this.state.postID);
+    this.setState({Loading: false});
+    this.focused = false;
+    this.clearComment = React.createRef();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
+  async refreshScreen (){
+    this.setState({Loading: true}),
+    await this.readFromDB(this.state.postID),
+    this.makeDelay(500).then(()=> this.setState({Loading: false}));
   }
 
   async profileComment(userRef) {
@@ -77,7 +78,6 @@ export default class ThreadScreen extends Component {
   }
 
   async addComment(postID){
-    this.state.Loading = true;
     var username;
     let uid = firebase.auth().currentUser.uid;
     var userRef;
@@ -91,18 +91,18 @@ export default class ThreadScreen extends Component {
       })
     });
 
-    await profileComment(userRef);
+    await this.profileComment(userRef);
 
     db.ref('/posts/' + postID).push({
       comment: this.state.comment,
       username: username,
       date: "" + new Date().toLocaleDateString(),
-    }.bind(this)).catch((error)=>{
+    }).catch((error)=>{
       Alert.alert('error ', error)
     })
 
     Alert.alert('comment added successfully');
-    this.state.Loading = false;
+    this.refreshScreen();
     this.clearComment.current.clear();
   }
 
@@ -252,9 +252,9 @@ export default class ThreadScreen extends Component {
       this.state.PastorOnly = snapshot.val().PastorOnly;
       this.state.posterUser = snapshot.val().username;
     }.bind(this));
-    await canComment();
-    await loadCommentCards(commentItems);
-    await loadPostCards(postItems);
+    await this.canComment();
+    await this.loadCommentCards(commentItems);
+    await this.loadPostCards(postItems);
   }
 
   async loadCommentCards(commentItems){
@@ -329,15 +329,12 @@ export default class ThreadScreen extends Component {
     return (
       setTimeout(()=> this.setState({Loading: false}), 500),
       <SafeAreaView style={{flex: 1}}>
-      {renderIf(this.focused)(
         <KeyboardAwareScrollView
           style={{flexGrow: 1}}
           refreshControl={
             <RefreshControl
               refreshing={this.state.Loading}
-              onRefresh={() => {
-                this.setState({Loading: true}),
-                this.makeDelay(2000).then(()=> this.setState({Loading: false}))}}
+              onRefresh={async () => {this.refreshScreen();}}
             />
           }
         >
@@ -348,23 +345,20 @@ export default class ThreadScreen extends Component {
             <Text style={{marginTop: 20, marginLeft: 18, fontSize: 24,}}>
               Add comment:
             </Text>
-
             <TextInput
               style={styles.multiline}
               multiline = {true}
               numberOfLines={10}
               placeholder="  Enter Comment Here"
               placeholderTextColor="black"
-              onChangeText={e => {
-                    this.setState({
-                      comment: e,
-                    });
-                  }}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onChangeText={e => {this.setState({comment: e});}}
               ref={this.clearComment}
             />
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => {this.addComment(postID), () => {
+              onPress={() => {this.addComment(this.state.postID), () => {
                 this.setState({Loading: true}),
                 this.makeDelay(2000).then(()=> this.setState({Loading: false}))}}}
             >
@@ -372,9 +366,7 @@ export default class ThreadScreen extends Component {
             </TouchableOpacity>
           </View>}
         </View>
-
       </KeyboardAwareScrollView>
-      )}
     </SafeAreaView>
    );
   }
@@ -385,33 +377,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'silver',
   },
-  logo: {
-    margin: 100,
-  },
-  inputBox: {
-    alignItems:'stretch',
-    borderRadius: 15,
-    borderColor: 'black',
-    borderWidth: 1,
-    textAlign: 'center',
-    // padding: 10,
-    margin: 10,
-  },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
     shadowOffset: {height: 3, width: 3}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
     backgroundColor: 'green',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    // borderColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 30,
     height: 30,
     marginHorizontal: 15,
+    marginBottom: 20,
   },
   multiline: {
     borderRadius: 10,
@@ -428,10 +407,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '400',
     color: "black",
-    textAlign: "center"
-  },
-  footer: {
-    bottom: 0,
+    textAlign: "center",
   },
 });
-// export default ThreadScreen;

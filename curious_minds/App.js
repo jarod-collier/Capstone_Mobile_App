@@ -214,6 +214,7 @@ function AppContainer() {
   );
 }
 
+
 const styles = StyleSheet.create({
   tabIcons: {
     flex: 1,
@@ -249,8 +250,6 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 });
-
-// export default App;
 
 export default class App extends React.Component {
   render() {

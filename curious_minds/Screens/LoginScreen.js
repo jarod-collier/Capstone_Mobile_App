@@ -8,17 +8,132 @@ import { useFocusEffect } from '@react-navigation/native';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TextInput,
-  Button,
   LayoutAnimation,
   TouchableOpacity,
   Image,
-  Platform,
+  Modal,
+  ActivityIndicator,
   Alert
 } from 'react-native';
+
+export default class LoginScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      Username: '',
+      Password: '',
+      Loading: false,
+    };
+
+    this.clearUsername = React.createRef();
+    this.clearPassword = React.createRef();
+
+    firebase.auth().signOut();
+  }
+
+  logInUser(navigation) {
+    firebase.auth().signInWithEmailAndPassword(this.state.Username, this.state.Password).catch(function(error) {
+      // Handle Errors here.
+      let errorCode = error.code;
+      let errorMessage = error.message;
+      
+      if (errorCode === "auth/user-not-found"){
+        //user doesn't exist
+        Alert.alert('Incorrect username or password\nPlease try again');
+      }else if(errorCode === "auth/invalid-email"){
+        Alert.alert("Please enter an email");
+      }else if(errorCode === "auth/wrong-password"){
+        Alert.alert("Invalid email or password\nTry again");
+      }else{
+        Alert.alert(errorCode + ": " + errorMessage);
+      }
+    });
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        //navigate to Main screen
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main'}],
+        });
+      }
+    });
+  }
+
+  render() {
+    LayoutAnimation.easeInEaseOut();
+    return (
+      <SafeAreaView style={{flex: 1}}>
+        {/* <Modal
+          transparent={true}
+          animationType={'none'}
+          visible={this.state.Loading}
+        >
+          <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
+        </Modal>  */}
+        <View style={styles.container}>
+          <View style={styles.logo}>
+            <Image source={require('../images/CM_logo02.png')}/>
+          </View>
+          <View>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter your Email"
+              keyboardType='email-address'
+              placeholderTextColor="black"
+              onChangeText={e => {
+                    this.setState({
+                      Username: e,
+                    });
+                  }}
+              ref={this.clearUsername}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Password"
+              placeholderTextColor="black"
+              secureTextEntry={true}
+              onChangeText={e => {
+                    this.setState({
+                      Password: e,
+                    });
+                  }}
+              ref={this.clearPassword}
+            />
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={async ()=> this.logInUser(this.props.navigation)}>
+                <Text style={styles.customBtnText}>Log In</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.Buttons}
+                onPress={() => this.props.navigation.navigate('Forgot Password')}>
+                <Text style={styles.customBtnText}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <Text
+              style={styles.customBtnText}>
+              Don't have an account yet?
+            </Text>
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={()=> this.props.navigation.navigate('User Type')}>
+              <Text style={styles.customBtnText}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -66,132 +181,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 });
-
-
-// const handleUsername = text => {
-//   this.state.Username = text;
-// };
-//
-// const handlePassword = text => {
-//   this.state.Password = text;
-// };
-
-
-// useFocusEffect(
-//   React.useCallback(() => {
-//     // Do something when the screen is focused
-//     return () => {
-//       // Do something when the screen is unfocused
-//       clearUsername.current.clear();
-//       clearPassword.current.clear();
-//     };
-//   }, [])
-// );
-
-export default class LoginScreen extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      Username: '',
-      Password: '',
-    };
-
-    this.clearUsername = React.createRef();
-    this.clearPassword = React.createRef();
-
-    firebase.auth().signOut();
-  }
-
-  logInUser(navigation) {
-    // what is this global user?
-    // let global.user = null;
-    firebase.auth().signInWithEmailAndPassword(this.state.Username, this.state.Password).catch(function(error) {
-      // Handle Errors here.
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      Alert.alert(errorCode + ": " + errorMessage);
-      if (errorCode == "auth/user-not-found"){//user doesn't exist
-        Alert.alert('Incorrect username/password\nPlease try again');
-      }
-    });
-
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // global.user = user;
-        //navigate to Main screen
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Main'}],
-        });
-      }
-    });
-  }
-
-  render() {
-    LayoutAnimation.easeInEaseOut();
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          <View style={styles.logo}>
-            <Image source={require('../images/CM_logo02.png')}/>
-          </View>
-          <View>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Enter your Email"
-              keyboardType='email-address'
-              placeholderTextColor="black"
-              onChangeText={e => {
-                    this.setState({
-                      Username: e,
-                    });
-                  }}
-              ref={this.clearUsername}
-            />
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Password"
-              placeholderTextColor="black"
-              secureTextEntry={true}
-              onChangeText={e => {
-                    this.setState({
-                      Password: e,
-                    });
-                  }}
-              ref={this.clearPassword}
-            />
-            <View>
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={()=> this.logInUser(this.props.navigation) }>
-                <Text style={styles.customBtnText}>Log In</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={() => this.props.navigation.navigate('Forgot Password')}>
-                <Text style={styles.customBtnText}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View>
-            <Text
-              style={styles.customBtnText}>
-              Don't have an account yet?
-            </Text>
-            <TouchableOpacity
-              style={styles.Buttons}
-              onPress={()=> this.props.navigation.navigate('User Type')}>
-              <Text style={styles.customBtnText}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
-
-
-// export default LoginScreen;

@@ -18,48 +18,6 @@ import {
   Image,
 } from 'react-native';
 
-// const handleFirstName = text => {
-//   state.FirstName = text;
-// };
-// const handleLastName = text => {
-//   state.LastName = text;
-// };
-// const handleUsername = text => {
-//   state.Username = text;
-// };
-// const handlePassword = text => {
-//   state.Password = text;
-// };
-// const handleEmail = text => {
-//   state.Email = text;
-// };
-// const handlePreach = text => {
-//   state.preach = text;
-// };
-// const handleSeminary = text => {
-//   state.seminary = text;
-// };
-// const handleAdditionalInfo = text => {
-//   state.addintionalInfo = text;
-// };
-
-// useFocusEffect(
-//   React.useCallback(() => {
-//     // Do something when the screen is focused
-//     return () => {
-//       // Do something when the screen is unfocused
-//       clearFirstName.current.clear();
-//       clearLastName.current.clear();
-//       clearUsername.current.clear();
-//       clearPassword.current.clear();
-//       clearEmail.current.clear();
-//       clearPreach.current.clear();
-//       clearSeminary.current.clear();
-//       clearAdditionalInfo.current.clear();
-//     };
-//   }, [])
-// );
-
 export default class PastorSignUpScreen extends Component {
 
   constructor(props) {
@@ -105,7 +63,7 @@ export default class PastorSignUpScreen extends Component {
         postNum: 0,
         score: 0,
         userType: "pastor"
-      }.bind(this)).catch((error)=>{
+      }).catch((error)=>{
         Alert.alert('error ', error)
       }))
       .then(() => navigation.reset({
@@ -133,7 +91,6 @@ export default class PastorSignUpScreen extends Component {
     }
   }
 
-
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
@@ -143,94 +100,75 @@ export default class PastorSignUpScreen extends Component {
             resetScrollToCoords={{x: 0, y: 0}}
             contentContainerStyle={styles.container}
             scrollEnabled={true}
+            extraHeight={100}
           >
             <View style={styles.logo}>
               <Image source={require('../images/CM_logo02.png')} />
             </View>
             <View>
-              <Text style={styles.infoHereText}>INFO HERE</Text>
+              <Text style={styles.infoHereText}>* required fields</Text>
             </View>
             <View>
               <View style={{justifyContent: 'center', flexDirection: 'row'}}>
                 <TextInput
                   style={styles.namesInput}
-                  placeholder="  FirstName"
+                  placeholder="  First name"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          FirstName: e,
-                        });
-                      }}
-                  ref={clearFirstName}
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({FirstName: e,});}}
+                  ref={this.clearFirstName}
                 />
                 <TextInput
                   style={styles.namesInput}
-                  placeholder="  LastName"
+                  placeholder="  Last name"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          LastName: e,
-                        });
-                      }}
-                  ref={clearLastName}
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({LastName: e,});}}
+                  ref={this.clearLastName}
                 />
               </View>
               <View style={{flexDirection: 'column'}}>
                 <TextInput
                   style={styles.inputBox}
-                  placeholder="  Username"
+                  placeholder="  Username*"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          Username: e,
-                        });
-                      }}
-                  ref={clearUsername}
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({Username: e,});}}
+                  ref={this.clearUsername}
                 />
                 <TextInput
                   style={styles.inputBox}
-                  placeholder="  Password"
+                  placeholder="  Password*"
                   secureTextEntry={true}
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          Password: e,
-                        });
-                      }}
-                  ref={clearPassword}
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({Password: e,});}}
+                  ref={this.clearPassword}
                 />
                 <TextInput
                   style={styles.inputBox}
-                  placeholder="  Email"
+                  placeholder="  Email*"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          Email: e,
-                        });
-                      }}
-                  ref={clearEmail}
+                  keyboardType="email-address"
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({Email: e,});}}
+                  ref={this.clearEmail}
                 />
                 <TextInput
                   style={styles.inputBox}
                   placeholder="  Church preaching at"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          preach: e,
-                        });
-                      }}
-                  ref={clearPreach}
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({preach: e,});}}
+                  ref={this.clearPreach}
                 />
                 <TextInput
                   style={styles.inputBox}
                   placeholder="  Where did you attend Seminary?"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          seminary: e,
-                        });
-                      }}
-                  ref={clearSeminary}
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({seminary: e,});}}
+                  ref={this.clearSeminary}
                 />
                 <TextInput
                   style={styles.multiline}
@@ -238,12 +176,10 @@ export default class PastorSignUpScreen extends Component {
                   placeholderTextColor="black"
                   multiline={true}
                   numberOfLines={10}
-                  onChangeText={e => {
-                        this.setState({
-                          addintionalInfo: e,
-                        });
-                      }}
-                  ref={clearAdditionalInfo}
+                  blurOnSubmit={true}
+                  returnKeyType='done'
+                  onChangeText={e => {this.setState({addintionalInfo: e,});}}
+                  ref={this.clearAdditionalInfo}
                 />
               </View>
             </View>
@@ -268,8 +204,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginTop: 100,
-    marginBottom: 70,
+    marginHorizontal: 100,
+    marginTop: 50,
+    marginBottom:30,
   },
   namesInput: {
     borderRadius: 15,
@@ -306,15 +243,13 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOffset: {height: 3, width: 3}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
     backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'center',
-    // borderColor: 'white',
     borderRadius: 25,
     width: 250,
     marginVertical: 15,
@@ -326,11 +261,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   infoHereText: {
-    fontSize: 35,
+    fontSize: 20,
     fontWeight: '400',
     color: "black",
     textAlign: "center"
   },
 });
-
-// export default PastorSignUpScreen;

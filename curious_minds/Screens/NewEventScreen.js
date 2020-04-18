@@ -1,6 +1,10 @@
 import 'react-native-gesture-handler';
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
+import { db } from '../FireDatabase/config';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,28 +12,8 @@ import {
   Text,
   TouchableOpacity,
   LayoutAnimation,
-  Image,
-  Button,
-  Overlay,
   Alert,
-  Platform,
 } from 'react-native';
-import { TextInput, ScrollView } from 'react-native-gesture-handler';
-import { db } from '../FireDatabase/config';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useFocusEffect } from '@react-navigation/native';
-
-// useFocusEffect(
-//   React.useCallback(() => {
-//     // Do something when the screen is focused
-//     return () => {
-//       // Do something when the screen is unfocused
-//       clearName.current.clear();
-//       clearDescription.current.clear();
-//       clearLocation.current.clear();
-//     };
-//   }, [])
-// );
 
 export default class NewEventScreen extends Component {
 
@@ -46,57 +30,21 @@ export default class NewEventScreen extends Component {
       time: new Date(),
       showDate: false,
       showTime: false,
-    };
+    }
 
     this.clearName = React.createRef();
     this.clearDescription = React.createRef();
     this.clearLocation = React.createRef();
-
-    // const [date, setDate] = useState(new Date());
-    // const [time, setTime] = useState(new Date());
-    // const [showDate, setShowDate] = useState(false);
-    // const [showTime, setShowTime] = useState(false);
-
-    // const onChangeDate = (event, selectedDate) => {
-    //   let currentDate = selectedDate || this.state.date;
-    //   // setShow(Platform.OS === 'ios');
-    //   this.setState({data: currentDate});
-    //   this.state.chosenDate = currentDate.toString().substring(0,16);
-    // };
-
-    // const onChangeTime = (event, selectedTime) => {
-    //   const currentTime = selectedTime || time;
-    //   // setShow(Platform.OS === 'ios');
-    //   this.setState({time: currentTime});
-    //   let hours24 = currentTime.getHours();
-    //   let mins = currentTime.getMinutes();
-    //   if (mins < 10){
-    //       mins = "0"+mins;
-    //   }
-    //   let period = hours24 > 12 ? "PM" : "AM";
-    //   let hours12 = (currentTime.getHours() + 24) %12 || 12
-    //   this.state.chosenTime = '' + hours12 + ":" + mins + " " + period;
-    // };
-
-    // const showDatepicker = () => {
-    //   this.setState({showDate: !this.state.showDate});
-    // };
-    //
-    // const showTimepicker = () => {
-    //   this.setState({showTime: !this.state.showTime});
-    // };
   }
 
-  onChangeDate(selectedDate){
+  onChangeDate = (event , selectedDate) => {
     let currentDate = selectedDate || this.state.date;
-    // setShow(Platform.OS === 'ios');
-    this.setState({data: currentDate});
+    this.setState({date: currentDate});
     this.state.chosenDate = currentDate.toString().substring(0,16);
   }
 
-  onChangeTime(selectedTime){
+  onChangeTime = (event, selectedTime) => {
     const currentTime = selectedTime || this.state.time;
-    // setShow(Platform.OS === 'ios');
     this.setState({time: currentTime});
     let hours24 = currentTime.getHours();
     let mins = currentTime.getMinutes();
@@ -116,7 +64,7 @@ export default class NewEventScreen extends Component {
       date: this.state.chosenDate,
       time: this.state.chosenTime,
       location: this.state.location,
-    }.bind(this)).catch((error)=>{
+    }).catch((error)=>{
       Alert.alert('error ', error)
     })
 
@@ -143,11 +91,7 @@ export default class NewEventScreen extends Component {
                   style={styles.inputBox}
                   placeholder="Type event title here"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          Name: e,
-                        });
-                      }}
+                  onChangeText={e => {this.setState({Name: e});}}
                   ref={this.clearName}
                 />
               </View>
@@ -161,11 +105,9 @@ export default class NewEventScreen extends Component {
                   placeholderTextColor="black"
                   multiline={true}
                   numberOfLines={10}
-                  onChangeText={e => {
-                        this.setState({
-                          Description: e,
-                        });
-                      }}
+                  returnKeyType='done'
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({Description: e});}}
                   ref={this.clearDescription}
                 />
               </View>
@@ -176,9 +118,10 @@ export default class NewEventScreen extends Component {
                 <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
                   {this.state.chosenDate}
                 </Text>
-                <TouchableOpacity style={styles.setButtons} onPress={() => {
-                  this.setState({showDate: !this.state.showDate});
-                }} >
+                <TouchableOpacity 
+                style={styles.setButtons} 
+                onPress={() => {this.setState({showDate: !this.state.showDate});}} 
+                >
                   <Text style={{ fontSize: 16, }}>
                     Set Date
                   </Text>
@@ -188,9 +131,8 @@ export default class NewEventScreen extends Component {
                 <DateTimePicker
                   value={this.state.date}
                   mode={'date'}
-                  onChange={e => {
-                        this.onChangeDate(e);
-                      }}
+                  onChange={this.onChangeDate}
+                  
                 />
               }
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -200,9 +142,10 @@ export default class NewEventScreen extends Component {
                 <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
                   {this.state.chosenTime}
                 </Text>
-                <TouchableOpacity style={styles.setButtons} onPress={() => {
-                  this.setState({showTime: !this.state.showTime});
-                }} >
+                <TouchableOpacity 
+                style={styles.setButtons} 
+                onPress={() => {this.setState({showTime: !this.state.showTime});}} 
+                >
                   <Text style={{ fontSize: 16, }}>
                     Set Time
                   </Text>
@@ -212,9 +155,7 @@ export default class NewEventScreen extends Component {
                 <DateTimePicker
                   value={this.state.time}
                   mode={'time'}
-                  onChange={e => {
-                        this.onChangeTime(e);
-                      }}
+                  onChange={this.onChangeTime}
                 />
               }
               <View>
@@ -225,11 +166,7 @@ export default class NewEventScreen extends Component {
                   style={styles.inputBox}
                   placeholder="Type event location here"
                   placeholderTextColor="black"
-                  onChangeText={e => {
-                        this.setState({
-                          location: e,
-                        });
-                      }}
+                  onChangeText={e => {this.setState({location: e});}}
                   ref={this.clearLocation}
                 />
               </View>
