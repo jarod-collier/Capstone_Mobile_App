@@ -3,7 +3,6 @@ import { Alert, Keyboard } from 'react-native';
 import React, {Component} from 'react';
 import firebase from 'firebase';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,7 +18,6 @@ export default class ResetPasswordScreen extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       oldPassword: '',
       newPassword1: '',
@@ -46,7 +44,7 @@ export default class ResetPasswordScreen extends Component {
         if(this.state.newPassword1 != '' && this.state.newPassword2 != ''){
           //passwords exist
           if(this.state.newPassword1.length >= 6 && this.state.newPassword2.length >= 6){
-          //password longer than 6 characters
+            //password longer than 6 characters
             if(this.state.newPassword1 === this.state.newPassword2){
               //passwords match
               firebase.auth().currentUser.updatePassword(this.state.newPassword1).then(function(){
@@ -102,7 +100,7 @@ export default class ResetPasswordScreen extends Component {
           scrollEnabled={true}
           extraHeight={100}
           keyboardShouldPersistTaps='handled'
-          >
+        >
           <View style={styles.logo}>
             <Image source={require('../images/CM_logo02.png')}/>
           </View>
@@ -180,10 +178,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 30,
     marginVertical: 10,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
   },
   customBtnText: {
     fontSize: 20,

@@ -1,9 +1,7 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
-import { useFocusEffect } from '@react-navigation/native';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -32,7 +30,6 @@ export default class PastorSignUpScreen extends Component {
       seminary: '',
       addintionalInfo: '',
     };
-
     this.clearFirstName = React.createRef();
     this.clearLastName = React.createRef();
     this.clearUsername = React.createRef();
@@ -82,7 +79,7 @@ export default class PastorSignUpScreen extends Component {
           child.val().Username
         );
       })
-  });
+    });
     if(usernames.includes(this.state.Username)){
       Alert.alert('username is already in use\nPlease try a different username');
       return false;

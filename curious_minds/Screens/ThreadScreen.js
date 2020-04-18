@@ -5,7 +5,6 @@ import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -24,7 +23,6 @@ export default class ThreadScreen extends Component {
 
   constructor(props){
     super(props);
-
     this.state = {
       display: [],
       comments: [],
@@ -68,7 +66,6 @@ export default class ThreadScreen extends Component {
     await db.ref('/userInfo').child(userRef.key).once('value',function(snapshot) {
       commentNumber = snapshot.val().commentNum;
     });
-
     commentNumber = commentNumber + 1;
 
     //update the value.
@@ -127,7 +124,7 @@ export default class ThreadScreen extends Component {
         likedBy: likes,
         likes: (likesCount + 1),
       });
-      Alert.alert('post liked\nPlease refresh the screen');
+      this.refreshScreen(this.state.postID);
     }else{
       Alert.alert('post already liked');
     }
@@ -187,8 +184,9 @@ export default class ThreadScreen extends Component {
           {text: 'REPORT', onPress: async () => {
             if((reportCount + incAmount) >= 5){
               await db.ref('/posts/').child(key).remove().then(function(){
-                Alert.alert('Report count exceeded the limit\nThis post will be deleted now\nPlease refresh the screen');
+                Alert.alert('Report count exceeded the limit\nThis post will be deleted now\nPlease refresh the screen'); 
               })
+              this.props.navigation.navigate('Main');
             }else{
               reports.push(uid);
               await db.ref('/posts/').child(key).update({
@@ -196,6 +194,7 @@ export default class ThreadScreen extends Component {
                 reports: (reportCount + incAmount),
               });
               Alert.alert('This post was reported\nThank you');
+              this.refreshScreen(this.state.postID);
             }
           }, style: {color: 'red'}}
         ],
@@ -215,13 +214,13 @@ export default class ThreadScreen extends Component {
       var alreadyLikedpost = 'black';
       var alreadyReportedpost = 'black';
       snapshot.forEach((child) => {
-          if(((child.key != "likedBy")&& (child.key != "reportedBy")) && child.hasChildren()){
-              commentItems.push({
-                comment: child.val().comment,
-                date: child.val().date,
-                username: child.val().username,
-              });
-          }
+        if(((child.key != "likedBy")&& (child.key != "reportedBy")) && child.hasChildren()){
+          commentItems.push({
+          comment: child.val().comment,
+          date: child.val().date,
+          username: child.val().username,
+          });
+        }
       });
 
       for (var user in snapshot.val().likedBy){
@@ -274,7 +273,8 @@ export default class ThreadScreen extends Component {
                 style={{backgroundColor: 'white'}}
                 color='black'
                 name='exclamation-triangle'
-                onPress={()=> Alert.alert('Report')} />
+                onPress={()=> Alert.alert('Report')} 
+              />
             </View>
           </Card>
         </View>
@@ -303,7 +303,7 @@ export default class ThreadScreen extends Component {
               style={{backgroundColor: 'white'}}
               color={postData.likeColor}
               name='thumbs-up'
-              onPress={()=> likePost(postData.key)} />
+              onPress={()=> this.likePost(postData.key)} />
               {postData.likes > 0 &&
               <Text
                 style={{marginTop: 9, opacity: .5, marginLeft: -10}}
@@ -312,22 +312,21 @@ export default class ThreadScreen extends Component {
               style={{backgroundColor: 'white'}}
               color={postData.reportColor}
               name='exclamation-triangle'
-              onPress={()=> reportPost(postData.key)} />
+              onPress={()=> this.reportPost(postData.key)} />
             {postData.reports > 0 &&
-              <Text
-                style={{marginTop: 9, opacity: .5, marginLeft: -10}}
-              >{postData.reports}</Text>}
+              <Text style={{marginTop: 9, opacity: .5, marginLeft: -10}}>
+                {postData.reports}
+              </Text>
+            }
           </View>
         </Card>
       </View>
     )});
-    this.state.Loading = false;
   }
 
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
-      setTimeout(()=> this.setState({Loading: false}), 500),
       <SafeAreaView style={{flex: 1}}>
         <KeyboardAwareScrollView
           style={{flexGrow: 1}}
@@ -341,34 +340,33 @@ export default class ThreadScreen extends Component {
           <View style={styles.container}>
             {this.state.display}
             {this.state.comments}
-            {this.state.userCanComment && <View>
-            <Text style={{marginTop: 20, marginLeft: 18, fontSize: 24,}}>
-              Add comment:
-            </Text>
-            <TextInput
-              style={styles.multiline}
-              multiline = {true}
-              numberOfLines={10}
-              placeholder="  Enter Comment Here"
-              placeholderTextColor="black"
-              returnKeyType="done"
-              blurOnSubmit={true}
-              onChangeText={e => {this.setState({comment: e});}}
-              ref={this.clearComment}
-            />
-            <TouchableOpacity
-              style={styles.Buttons}
-              onPress={() => {this.addComment(this.state.postID), () => {
-                this.setState({Loading: true}),
-                this.makeDelay(2000).then(()=> this.setState({Loading: false}))}}}
-            >
-              <Text style={styles.customBtnText}>Post</Text>
-            </TouchableOpacity>
-          </View>}
-        </View>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
-   );
+            {this.state.userCanComment && 
+              <View>
+                <Text style={{marginTop: 20, marginLeft: 18, fontSize: 24,}}>
+                  Add comment:
+                </Text>
+                <TextInput
+                  style={styles.multiline}
+                  multiline = {true}
+                  numberOfLines={10}
+                  placeholder="  Enter Comment Here"
+                  placeholderTextColor="black"
+                  returnKeyType="done"
+                  blurOnSubmit={true}
+                  onChangeText={e => {this.setState({comment: e});}}
+                  ref={this.clearComment}
+                />
+                <TouchableOpacity
+                  style={styles.Buttons}
+                  onPress={async() => {await this.addComment(this.state.postID), this.refreshScreen(this.state.postID)}}
+                >
+                  <Text style={styles.customBtnText}>Post</Text>
+                </TouchableOpacity>
+              </View>}
+          </View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
+    );
   }
 }
 

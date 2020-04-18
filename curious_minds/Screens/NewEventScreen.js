@@ -4,7 +4,6 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { db } from '../FireDatabase/config';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,7 +18,6 @@ export default class NewEventScreen extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       Name: '',
       Description: '',
@@ -31,7 +29,6 @@ export default class NewEventScreen extends Component {
       showDate: false,
       showTime: false,
     }
-
     this.clearName = React.createRef();
     this.clearDescription = React.createRef();
     this.clearLocation = React.createRef();
@@ -49,7 +46,7 @@ export default class NewEventScreen extends Component {
     let hours24 = currentTime.getHours();
     let mins = currentTime.getMinutes();
     if (mins < 10){
-        mins = "0" + mins;
+      mins = "0" + mins;
     }
     let period = hours24 > 12 ? "PM" : "AM";
     let hours12 = (currentTime.getHours() + 24) %12 || 12
@@ -57,7 +54,6 @@ export default class NewEventScreen extends Component {
   }
 
   createEvent(){
-
     db.ref('/events').push({
       title: this.state.Name,
       desc: this.state.Description,
@@ -67,13 +63,11 @@ export default class NewEventScreen extends Component {
     }).catch((error)=>{
       Alert.alert('error ', error)
     })
-
     Alert.alert('Event added successfully');
   };
 
   render() {
     LayoutAnimation.easeInEaseOut();
-
     return (
       <SafeAreaView style={{flex: 1}}>
         <ScrollView>
@@ -84,8 +78,8 @@ export default class NewEventScreen extends Component {
           >
             <View style={styles.container}>
               <View>
-                <Text style={{ marginTop: 40, marginLeft: 15, fontSize: 24, }}>
-                Event Title
+                <Text style={{ marginTop: 40, marginLeft: 15, fontSize: 24,}}>
+                  Event Title
                 </Text>
                 <TextInput
                   style={styles.inputBox}
@@ -96,7 +90,7 @@ export default class NewEventScreen extends Component {
                 />
               </View>
               <View>
-                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24,}}>
                   Description
                 </Text>
                 <TextInput
@@ -112,7 +106,7 @@ export default class NewEventScreen extends Component {
                 />
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24,}}>
                   Date:
                 </Text>
                 <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
@@ -132,21 +126,20 @@ export default class NewEventScreen extends Component {
                   value={this.state.date}
                   mode={'date'}
                   onChange={this.onChangeDate}
-                  
                 />
               }
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24,}}>
                   Time:
                 </Text>
-                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20,}}>
                   {this.state.chosenTime}
                 </Text>
                 <TouchableOpacity 
                 style={styles.setButtons} 
                 onPress={() => {this.setState({showTime: !this.state.showTime});}} 
                 >
-                  <Text style={{ fontSize: 16, }}>
+                  <Text style={{ fontSize: 16,}}>
                     Set Time
                   </Text>
                 </TouchableOpacity>
@@ -159,7 +152,7 @@ export default class NewEventScreen extends Component {
                 />
               }
               <View>
-                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24, }}>
+                <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 24,}}>
                   Location:
                 </Text>
                 <TextInput
@@ -191,9 +184,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'silver',
   },
-  logo: {
-    margin: 100,
-  },
   inputBox: {
     alignItems:'stretch',
     backgroundColor: 'white',
@@ -214,7 +204,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     justifyContent: 'center',
     alignSelf: 'stretch',
-    // borderColor: 'black',
     borderRadius: 15,
     height: 40,
     marginHorizontal: 15,
@@ -236,14 +225,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
-    // borderWidth: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
-    // alignSelf: 'stretch',
     alignItems: 'center',
-    // borderColor: 'black',
     borderRadius: 8,
-    // height: 30,
     width: 90,
     marginHorizontal: 15,
     marginTop: 17,
@@ -254,9 +239,4 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center"
   },
-  footer: {
-    bottom: 0,
-  },
 });
-
-// export default NewEventScreen;

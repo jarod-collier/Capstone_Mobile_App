@@ -1,17 +1,14 @@
 import 'react-native-gesture-handler';
-import React, {Component, useState, useCallback, useRef} from 'react';
+import React, {Component} from 'react';
 import {Card} from 'react-native-shadow-cards';
 import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
-
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
-  ActivityIndicator,
-  Modal,
   ScrollView,
   RefreshControl,
   Alert,
@@ -68,7 +65,6 @@ export default class MainFeedScreen extends Component {
         likes: (likesCount + 1),
       });
       this.refreshScreen();
-
     }else{
       Alert.alert('post already liked');
     }
@@ -135,12 +131,12 @@ export default class MainFeedScreen extends Component {
   async loadPostCards(navigation){
     this.state.display = this.state.posts.map(postData => {
       return(
-        likeColor = 'black',
         <View key={postData.key}>
           <Button
-          style={{backgroundColor: 'silver'}}
-          onPress = {()=> navigation.navigate('Thread', {ID: postData.key})}>
-          <Card style={{ padding: 15, alignSelf: 'center'}}>
+            style={{backgroundColor: 'silver'}}
+            onPress = {()=> navigation.navigate('Thread', {ID: postData.key})}
+          >
+            <Card style={{ padding: 15, alignSelf: 'center'}}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
               <Text style={{marginTop: 3}}>{postData.desc}</Text>
               <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>
@@ -178,8 +174,8 @@ export default class MainFeedScreen extends Component {
                   <Text
                     style={{marginTop: 9, opacity: .5, marginLeft: -10}}
                   >{postData.reports}</Text>}
-            </View>
-          </Card>
+              </View>
+            </Card>
           </Button>
         </View>
       )
@@ -193,7 +189,6 @@ export default class MainFeedScreen extends Component {
   }
 
   async readFromDB(navigation){
-    
     let uid = firebase.auth().currentUser.uid;
 
     await db.ref('/posts/').once('value', function(snapshot){
@@ -244,13 +239,6 @@ export default class MainFeedScreen extends Component {
             />
           }
         >
-          {/* <Modal
-           transparent={true}
-           animationType={'none'}
-           visible={this.state.Loading}
-          >
-            <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
-          </Modal>  */}
           <View style={styles.container}>
             {this.state.display.length > 0 ?
               this.state.display
@@ -269,60 +257,5 @@ export default class MainFeedScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  logo: {
-    margin: 100,
-  },
-  overlay: {
-    // flex:1,
-    justifyContent: 'center',
-    alignSelf: 'stretch',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    // opacity: 0.1,
-    // backgroundColor: '#696969',
-  },
-  inputBox: {
-    alignItems:'stretch',
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    textAlign: 'left',
-    padding: 10,
-    margin: 15,
-  },
-  Buttons: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 3, width: 3}, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
-    elevation: 4, // Android
-    borderWidth: 1,
-    backgroundColor: 'green',
-    justifyContent: 'center',
-    alignSelf: 'stretch',
-    borderColor: 'white',
-    borderRadius: 15,
-    height: 40,
-    marginHorizontal: 15,
-  },
-  multiline: {
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    alignItems: 'stretch',
-    height: 150,
-    textAlign: 'left',
-    margin: 15,
-  },
-  customBtnText: {
-    fontSize: 20,
-    fontWeight: '400',
-    color: "white",
-    textAlign: "center"
-  },
-  footer: {
-    bottom: 0,
   },
 });

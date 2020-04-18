@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {CheckBox} from 'react-native-elements';
 import firebase from 'firebase';
-
+import { TextInput } from 'react-native-gesture-handler';
+import { db } from '../FireDatabase/config';
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,14 +13,11 @@ import {
   LayoutAnimation,
   Alert,
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { db } from '../FireDatabase/config';
 
 export default class ResetPasswordScreen extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       checked: {},
       Question: '',
@@ -47,7 +45,6 @@ export default class ResetPasswordScreen extends Component {
           }
       })
     });
-
     numberOfPosts = numberOfPosts + 1;
 
     //update the value.
@@ -89,12 +86,11 @@ export default class ResetPasswordScreen extends Component {
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View>
-            <Text style={
-              {
-                marginTop: 40,
-                marginLeft: 15,
-                fontSize: 24,
-              }}>
+            <Text style={{
+              marginTop: 40,
+              marginLeft: 15,
+              fontSize: 24,
+            }}>
               Your Question
             </Text>
             <TextInput
@@ -106,13 +102,12 @@ export default class ResetPasswordScreen extends Component {
             />
           </View>
           <View>
-            <Text style={
-              {
-                marginTop: 20,
-                marginLeft: 15,
-                fontSize: 24,
-              }}>
-                Description
+            <Text style={{
+              marginTop: 20,
+              marginLeft: 15,
+              fontSize: 24,
+            }}>
+              Description
             </Text>
             <TextInput
               style={styles.multiline}
@@ -127,23 +122,12 @@ export default class ResetPasswordScreen extends Component {
             />
           </View>
           <View>
-            <Text style={
-              {
-                marginTop: 20,
-                marginLeft: 15,
-                fontSize: 24,
-              }}>
-                Attachment:
-            </Text>
-          </View>
-          <View>
-            <Text style={
-              {
-                marginTop: 20,
-                marginLeft: 15,
-                fontSize: 24,
-              }}>
-                Options:
+            <Text style={{
+              marginTop: 20,
+              marginLeft: 15,
+              fontSize: 24,
+            }}>
+              Options:
             </Text>
             <View style={{ flexDirection: 'row'}}>
               <CheckBox
@@ -164,12 +148,11 @@ export default class ResetPasswordScreen extends Component {
               <Text style={{marginTop: 15, fontSize: 18}}>only pastor response</Text>
             </View>
           </View>
-          <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}
-          >
+          <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
             <TouchableOpacity
               style={styles.Buttons}
-               onPress={async () => {await this.createPost(); await this.updateProfile(); this.props.navigation.navigate('Main')}}
-              >
+              onPress={async () => {await this.createPost(); await this.updateProfile(); this.props.navigation.navigate('Main')}}
+            >
               <Text style={styles.customBtnText}>Post</Text>
             </TouchableOpacity>
           </View>
@@ -179,14 +162,10 @@ export default class ResetPasswordScreen extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'silver',
-  },
-  logo: {
-    margin: 100,
   },
   inputBox: {
     alignItems:'stretch',
@@ -231,9 +210,4 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center"
   },
-  footer: {
-    bottom: 0,
-  },
 });
-
-// export default NewPostScreen;

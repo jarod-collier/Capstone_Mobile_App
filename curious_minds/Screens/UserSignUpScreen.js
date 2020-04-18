@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'firebase';
 import { db } from '../FireDatabase/config';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -27,7 +26,6 @@ export default class UserSignUpScreen extends Component {
       Password: '',
       Email: '',
     };
-
     this.clearFirstName = React.createRef();
     this.clearLastName = React.createRef();
     this.clearUsername = React.createRef();
@@ -89,7 +87,7 @@ export default class UserSignUpScreen extends Component {
           contentContainerStyle={styles.container}
           scrollEnabled={true}
           extraHeight={100}
-          >
+        >
           <View style={styles.logo}>
             <Image source={require('../images/CM_logo02.png')} />
           </View>

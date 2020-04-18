@@ -3,7 +3,6 @@ import { Alert } from 'react-native';
 import React, {Component} from 'react';
 import firebase from 'firebase';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,59 +18,58 @@ export default class ForgotPasswordScreen extends Component {
 
   constructor(props){
     super(props);
-
     this.state = {
       Email: ''
     };
   }
 
 resetPassword (navigation){
-    if (this.state.Email != '') {
-        firebase.auth().sendPasswordResetEmail(this.state.Email);
-        Alert.alert(
-            'Reset Password',
-            'Your password has been reset.\nPlease check your email to finish the process',
-            [
-              {text: 'OK', onPress: () => navigation.navigate('Login')},
-            ],
-            { cancelable: false }
-          );
-    }
-    else {
-        console.log("Please enter a valid email");
-    }
+  if (this.state.Email != '') {
+    firebase.auth().sendPasswordResetEmail(this.state.Email);
+    Alert.alert(
+      'Reset Password',
+      'Your password has been reset.\nPlease check your email to finish the process',
+      [
+        {text: 'OK', onPress: () => navigation.navigate('Login')},
+      ],
+      { cancelable: false }
+    );
+  }
+  else {
+    console.log("Please enter a valid email");
+  }
 };
 
   render(){
     LayoutAnimation.easeInEaseOut();
     return(
       <SafeAreaView style={{flex: 1}}>
-      <KeyboardAwareScrollView
+        <KeyboardAwareScrollView
           resetScrollToCoords={{x: 0, y: 0}}
           contentContainerStyle={styles.container}
           scrollEnabled={true}
           extraHeight={100}
           keyboardShouldPersistTaps='handled'
-          >
-        <View style={styles.logo}>
-          <Image source={require('../images/CM_logo02.png')}/>
-        </View>
-        <View>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Enter account email."
-            placeholderTextColor="black"
-            returnKeyType='done'
-            onChangeText={ e => this.setState({Email: e})}
-          />
-          <TouchableOpacity
+        >
+          <View style={styles.logo}>
+            <Image source={require('../images/CM_logo02.png')}/>
+          </View>
+          <View>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter account email."
+              placeholderTextColor="black"
+              returnKeyType='done'
+              onChangeText={ e => this.setState({Email: e})}
+            />
+            <TouchableOpacity
               style={styles.Buttons}
               onPress={() => this.resetPassword(this.props.navigation)}>
               <Text style={styles.customBtnText}>Send Email</Text>
             </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+          </View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     )
   }
 }
@@ -113,10 +111,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 30,
     marginVertical: 10,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
   },
   customBtnText: {
     fontSize: 20,

@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {Component, useState} from 'react';
 import { db } from '../FireDatabase/config';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -22,7 +21,6 @@ export default class PastorSecCodeScreen extends Component {
     this.state = {
       Code: "",
     };
-
     this.clearCode = React.createRef();
   }
 
@@ -57,35 +55,31 @@ export default class PastorSecCodeScreen extends Component {
          style={styles.container}
          behavior="position"
          >
-            <View style={styles.logo}>
-              <Image source={require('../images/CM_logo02.png')} />
-            </View>
-            <View>
-              <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code*</Text>
-              <Text style={{marginHorizontal: 80, marginTop: 20,textAlign: 'center'}}>
-                *Pastors can only sign-up using a security code from a pastor that is already signed up.
-                {'\n\n'}Security code can be found on pastor profile screen
-              </Text>
-            </View>
-            <View style = {{alignItems: 'center'}}>
-              <TextInput
-                style={styles.inputBox}
-                placeholder="Enter Code Here"
-                placeholderTextColor="black"
-                onChangeText={e => {
-                      this.setState({
-                        Code: e,
-                      });
-                    }}
-                ref={this.clearCode}
-              />
-              <TouchableOpacity
-                style={styles.Buttons}
-                onPress={() => this.validateCode(this.props.navigation)}>
-                <Text style={styles.customBtnText}>Confirm</Text>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
+          <View style={styles.logo}>
+            <Image source={require('../images/CM_logo02.png')} />
+          </View>
+          <View>
+            <Text style={styles.securityCodeText}>Pastors{"\n"}Security Code*</Text>
+            <Text style={{marginHorizontal: 80, marginTop: 20,textAlign: 'center'}}>
+              *Pastors can only sign-up using a security code from a pastor that is already signed up.
+              {'\n\n'}Security code can be found on pastor profile screen
+            </Text>
+          </View>
+          <View style = {{alignItems: 'center'}}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter Code Here"
+              placeholderTextColor="black"
+              onChangeText={e => {this.setState({Code: e});}}
+              ref={this.clearCode}
+            />
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={() => this.validateCode(this.props.navigation)}>
+              <Text style={styles.customBtnText}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }

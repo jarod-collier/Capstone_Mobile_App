@@ -5,7 +5,6 @@ import {Button} from 'react-native-vector-icons/FontAwesome';
 import { db } from '../FireDatabase/config';
 import firebase from 'firebase';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,7 +22,6 @@ export default class EventScreen extends Component {
 
   constructor(props){
     super(props);
-
     this.state = {
       events: [],
       display: [],
@@ -54,7 +52,6 @@ export default class EventScreen extends Component {
   }
 
   addToCalendar(title, date, time, location, notes){
-
     date = date.split(" ");
     time = time.split(" ");
     var startDate = 
@@ -86,13 +83,13 @@ export default class EventScreen extends Component {
     await db.ref('/events/').once('value', function(snapshot){
       let postItems = [];
       snapshot.forEach((child) => {
-          postItems.push({
-              title: child.val().title,
-              desc: child.val().desc,
-              date: child.val().date,
-              time: child.val().time,
-              location: child.val().location,
-          });
+        postItems.push({
+          title: child.val().title,
+          desc: child.val().desc,
+          date: child.val().date,
+          time: child.val().time,
+          location: child.val().location,
+        });
       })
       this.state.events = postItems.reverse();
     }.bind(this));
@@ -104,13 +101,13 @@ export default class EventScreen extends Component {
     this.state.display = this.state.events.map(eventData => {
       return(
         <View key={eventData.title}>
-            <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{eventData.title}</Text>
-              <Text style={{marginTop: 3}}>{eventData.desc}</Text>
-              <Text>Date: {eventData.date}</Text>
-              <Text>Time: {eventData.time}</Text>
-              <Text>Where: {eventData.location}</Text>
-              <TouchableOpacity
+          <Card style={{ padding: 15, margin:5, alignSelf: 'center'}}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{eventData.title}</Text>
+            <Text style={{marginTop: 3}}>{eventData.desc}</Text>
+            <Text>Date: {eventData.date}</Text>
+            <Text>Time: {eventData.time}</Text>
+            <Text>Where: {eventData.location}</Text>
+            <TouchableOpacity
               style={styles.Buttons}
               onPress={() => 
                 this.addToCalendar(
@@ -119,16 +116,16 @@ export default class EventScreen extends Component {
                   eventData.time, 
                   eventData.location,
                   eventData.desc)}
-              >
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                  <Text style={styles.customBtnText}>Add event to calendar</Text>
-                  <Button
-                    style={{backgroundColor: 'green'}}
-                    name="calendar"
-                    color="white" />
-                </View>
-              </TouchableOpacity>
-            </Card>
+            >
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.customBtnText}>Add event to calendar</Text>
+                <Button
+                  style={{backgroundColor: 'green'}}
+                  name="calendar"
+                  color="white" />
+              </View>
+            </TouchableOpacity>
+          </Card>
         </View>
       )
     });
@@ -182,18 +179,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'silver',
   },
-  logo: {
-    margin: 100,
-  },
-  inputBox: {
-    alignItems:'stretch',
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    textAlign: 'left',
-    padding: 10,
-    margin: 15,
-  },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
     shadowOffset: {height: 3, width: 3}, // IOS
@@ -210,23 +195,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 15,
   },
-  multiline: {
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 1,
-    alignItems: 'stretch',
-    height: 150,
-    textAlign: 'left',
-    margin: 15,
-  },
   customBtnText: {
     fontSize: 20,
     fontWeight: '400',
     color: "white",
     textAlign: "center"
   },
-  footer: {
-    bottom: 0,
-  },
 });
-// export default EventScreen;

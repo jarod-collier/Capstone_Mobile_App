@@ -1,10 +1,6 @@
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component, useState} from 'react';
 import firebase from 'firebase';
-import { useFocusEffect } from '@react-navigation/native';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,8 +10,6 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   Image,
-  Modal,
-  ActivityIndicator,
   Alert
 } from 'react-native';
 
@@ -28,10 +22,10 @@ export default class LoginScreen extends Component {
       Password: '',
       Loading: false,
     };
-
     this.clearUsername = React.createRef();
     this.clearPassword = React.createRef();
 
+    /*TODO: IF WE WANT USERS TO STAY LOGGED IN WE CAN'T DO THIS */
     firebase.auth().signOut();
   }
 
@@ -67,13 +61,6 @@ export default class LoginScreen extends Component {
     LayoutAnimation.easeInEaseOut();
     return (
       <SafeAreaView style={{flex: 1}}>
-        {/* <Modal
-          transparent={true}
-          animationType={'none'}
-          visible={this.state.Loading}
-        >
-          <ActivityIndicator size="large" color="black" style={{flex: 1}}/>
-        </Modal>  */}
         <View style={styles.container}>
           <View style={styles.logo}>
             <Image source={require('../images/CM_logo02.png')}/>
@@ -84,11 +71,7 @@ export default class LoginScreen extends Component {
               placeholder="Enter your Email"
               keyboardType='email-address'
               placeholderTextColor="black"
-              onChangeText={e => {
-                    this.setState({
-                      Username: e,
-                    });
-                  }}
+              onChangeText={e => {this.setState({Username: e});}}
               ref={this.clearUsername}
             />
             <TextInput
@@ -96,11 +79,7 @@ export default class LoginScreen extends Component {
               placeholder="Password"
               placeholderTextColor="black"
               secureTextEntry={true}
-              onChangeText={e => {
-                    this.setState({
-                      Password: e,
-                    });
-                  }}
+              onChangeText={e => {this.setState({Password: e});}}
               ref={this.clearPassword}
             />
             <View>
@@ -159,7 +138,7 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: {height: 5, width: 5}, // IOS
+    shadowOffset: {height: 3, width: 3}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     elevation: 4, // Android
@@ -169,10 +148,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 30,
     marginVertical: 10,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 20,
   },
   customBtnText: {
     fontSize: 20,
