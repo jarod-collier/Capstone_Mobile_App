@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>curious_minds</string>
+	<string>Curious Mind</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -51,7 +51,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCalendarsUsageDescription</key>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<string>Curious Mind would like to access your calendar</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

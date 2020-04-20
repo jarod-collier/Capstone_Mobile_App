@@ -299,7 +299,7 @@ export default class ThreadScreen extends Component {
 
       for (var user in snapshot.val().reportedBy){
         if(snapshot.val().reportedBy[user] === uid){
-          alreadyReportedpost = 'red';
+          alreadyReportedpost = 'orange';
         }
       }
 

@@ -208,7 +208,7 @@ export default class MainFeedScreen extends Component {
 
         for (var user in child.val().reportedBy){
           if(child.val().reportedBy[user] === uid){
-            alreadyReportedpost = 'red';
+            alreadyReportedpost = 'orange';
           }
         }
 
