@@ -131,22 +131,43 @@ function Nested_Main(){
       <Nested_Stack.Screen
         name="Thread"
         component={ThreadScreen}
-        options={({ route }) => ({
+        options={({ route, navigation }) => ({
           headerTitle: "Thread",
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={()=> navigation.navigate("Main Feed")}>
+              <Text style={styles.customBtnText}>Back</Text>
+            </TouchableOpacity>
+          ),
         })}
       />
       <Nested_Stack.Screen
         name="Add Event"
         component={NewEventScreen}
-        options={({ route }) => ({
+        options={({ route, navigation }) => ({
           headerTitle: "Add Event",
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={()=> navigation.navigate("Events")}>
+              <Text style={styles.customBtnText}>Back</Text>
+            </TouchableOpacity>
+          ),
         })}
       />
       <Nested_Stack.Screen
         name="Reset Password"
         component={ResetPasswordScreen}
-        options={({ route }) => ({
+        options={({ route, navigation }) => ({
           headerTitle: "Reset Password",
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.Buttons}
+              onPress={()=> navigation.navigate("Profile")}>
+              <Text style={styles.customBtnText}>Back</Text>
+            </TouchableOpacity>
+          ),
         })}
       />
     </Nested_Stack.Navigator>
