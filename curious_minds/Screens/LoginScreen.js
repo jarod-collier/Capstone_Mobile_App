@@ -48,13 +48,14 @@ export default class LoginScreen extends Component {
     });
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        this.setState({Username: '', Password: ''});
         //navigate to Main screen
         navigation.reset({
           index: 0,
           routes: [{ name: 'Main'}],
         });
       }
-    });
+    }.bind(this));
   }
 
   render() {
@@ -92,7 +93,10 @@ export default class LoginScreen extends Component {
             <View>
               <TouchableOpacity
                 style={styles.Buttons}
-                onPress={() => this.props.navigation.navigate('Forgot Password')}>
+                onPress={() => 
+                  this.setState({Username: '', Password: ''}),
+                  this.props.navigation.navigate('Forgot Password')}
+              >
                 <Text style={styles.customBtnText}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
@@ -104,7 +108,10 @@ export default class LoginScreen extends Component {
             </Text>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={()=> this.props.navigation.navigate('User Type')}>
+              onPress={()=> 
+                this.setState({Username: '', Password: ''}),
+                this.props.navigation.navigate('User Type')}
+            >
               <Text style={styles.customBtnText}>Sign Up</Text>
             </TouchableOpacity>
           </View>

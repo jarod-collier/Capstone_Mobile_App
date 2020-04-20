@@ -94,6 +94,8 @@ export default class ThreadScreen extends Component {
       comment: this.state.comment,
       username: username,
       date: "" + new Date().toLocaleDateString(),
+      reportedBy: [""],
+      reports: 0,
     }).catch((error)=>{
       Alert.alert('error ', error)
     })
@@ -184,7 +186,7 @@ export default class ThreadScreen extends Component {
           {text: 'REPORT', onPress: async () => {
             if((reportCount + incAmount) >= 5){
               await db.ref('/posts/').child(key).remove().then(function(){
-                Alert.alert('Report count exceeded the limit\nThis post will be deleted now\nPlease refresh the screen'); 
+                Alert.alert('Report count exceeded the limit\nThis post will be deleted now'); 
               })
               this.props.navigation.navigate('Main');
             }else{
@@ -205,6 +207,60 @@ export default class ThreadScreen extends Component {
     }
   }
 
+  async reportComment(commentId){
+    let uid = firebase.auth().currentUser.uid;
+    let reports = [];
+    let reportCount;
+    let userType;
+    let incAmount = 1;
+
+    await db.ref('/userInfo/').once('value', function(snapshot){
+      snapshot.forEach((child) => {
+        if(child.val().uid === uid){
+          userType = child.val().userType;
+        }
+      });
+    });
+
+    if(userType === 'pastor'){
+      incAmount = 5;
+    }
+
+    await db.ref('/posts/' + this.state.postID + '/' + commentId).once('value', function(snapshot){
+      reports = snapshot.val().reportedBy;
+      reportCount = snapshot.val().reports;
+    });
+
+    if(!reports.includes(uid)){
+      Alert.alert(
+        'Report Comment',
+        'Are you sure you want to report this comment?',
+        [
+          {text: 'Cancel', onPress: () => {}},
+          {text: 'REPORT', onPress: async () => {
+            if((reportCount + incAmount) >= 5){
+              await db.ref('/posts/' + this.state.postID).child(commentId).remove().then(function(){
+                Alert.alert('Comment count exceeded the limit\nThis post will be deleted now'); 
+              })
+              this.refreshScreen(this.state.postID);
+            }else{
+              reports.push(uid);
+              await db.ref('/posts/' + this.state.postID).child(commentId).update({
+                reportedBy: reports,
+                reports: (reportCount + incAmount),
+              });
+              Alert.alert('This comment was reported\nThank you');
+              this.refreshScreen(this.state.postID);
+            }
+          }, style: {color: 'red'}}
+        ],
+        {cancelable: true}
+      )
+    }else{
+      Alert.alert('You already reported this comment');
+    }
+  }
+
   async readFromDB(postID){
     this.state.Loading = true;
     let uid = firebase.auth().currentUser.uid;
@@ -213,12 +269,24 @@ export default class ThreadScreen extends Component {
     await db.ref('/posts/' + postID).once('value', function(snapshot){
       var alreadyLikedpost = 'black';
       var alreadyReportedpost = 'black';
+      
       snapshot.forEach((child) => {
+        var alreadyReportedcomment = 'black';
         if(((child.key != "likedBy")&& (child.key != "reportedBy")) && child.hasChildren()){
+          
+          for(var user in child.val().reportedBy){
+            if(child.val().reportedBy[user] === uid){
+              alreadyReportedcomment = 'red'
+            }
+          }
+
           commentItems.push({
-          comment: child.val().comment,
-          date: child.val().date,
-          username: child.val().username,
+            commentId: child.key,
+            comment: child.val().comment,
+            date: child.val().date,
+            username: child.val().username,
+            cReportColor: alreadyReportedcomment,
+            cReportCount: child.val().reports,
           });
         }
       });
@@ -257,11 +325,9 @@ export default class ThreadScreen extends Component {
   }
 
   async loadCommentCards(commentItems){
-    var cardId = 0;
     this.state.comments = commentItems.map(commentData => {
-      cardId++;
       return(
-        <View key={cardId}>
+        <View key={commentData.commentId}>
           <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>{commentData.comment}</Text>
             <View style={{flexDirection: 'row',alignSelf: 'flex-end', opacity: 0.5}}>
@@ -271,10 +337,14 @@ export default class ThreadScreen extends Component {
             <View style={{flexDirection:'row', alignItems: 'stretch'}}>
               <Button
                 style={{backgroundColor: 'white'}}
-                color='black'
+                color={commentData.cReportColor}
                 name='exclamation-triangle'
-                onPress={()=> Alert.alert('Report')} 
+                onPress={()=> this.reportComment(commentData.commentId)} 
               />
+              {commentData.cReportCount > 0 &&
+              <Text
+                style={{marginTop: 9, opacity: .5, marginLeft: -10}}
+              >{commentData.cReportCount}</Text>}
             </View>
           </Card>
         </View>
@@ -286,7 +356,7 @@ export default class ThreadScreen extends Component {
     this.state.display = postItems.map(postData => {
     return(
       <View key={postData.key}>
-        <Card style={{ padding: 15, margin: 5, alignSelf: 'center'}}>
+        <Card style={{ padding: 15, margin: 10, alignSelf: 'center'}}>
           <Text style={{fontSize: 18, fontWeight: 'bold'}}>{postData.question}</Text>
           <Text style={{marginTop: 3}}>{postData.desc}</Text>
           <View style={{flexDirection: 'row', alignSelf: 'flex-end', opacity: 0.5}}>

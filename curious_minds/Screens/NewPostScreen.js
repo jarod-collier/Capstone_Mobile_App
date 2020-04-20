@@ -16,7 +16,10 @@ import {
 
 export default class ResetPasswordScreen extends Component {
 
+  _isMounted = false;
+
   constructor(props) {
+
     super(props);
     this.state = {
       checked: {},
@@ -26,7 +29,6 @@ export default class ResetPasswordScreen extends Component {
       pastorOnly: false,
       username: '',
     };
-
     this.clearQuestion = React.createRef();
     this.clearDescription = React.createRef();
   }
@@ -96,6 +98,7 @@ export default class ResetPasswordScreen extends Component {
             <TextInput
               style={styles.inputBox}
               placeholder="Type your question here"
+              value={this.state.Question}
               placeholderTextColor="black"
               onChangeText={e => {this.setState({Question: e});}}
               ref={this.clearQuestion}
@@ -112,6 +115,7 @@ export default class ResetPasswordScreen extends Component {
             <TextInput
               style={styles.multiline}
               placeholder="Type your description here"
+              value={this.state.Description}
               placeholderTextColor="black"
               multiline={true}
               numberOfLines={10}
@@ -151,7 +155,17 @@ export default class ResetPasswordScreen extends Component {
           <View style={{bottom: 0, position: 'absolute', justifyContent: 'center', alignSelf: 'center'}}>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={async () => {await this.createPost(); await this.updateProfile(); this.props.navigation.navigate('Main')}}
+              onPress={async () => {
+                await this.createPost(); 
+                await this.updateProfile(); 
+                this.setState({
+                  Question: '',
+                  Description: '',
+                  Anon: false,
+                  pastorOnly: false,
+                });
+                this.props.navigation.navigate('Main')}
+              }
             >
               <Text style={styles.customBtnText}>Post</Text>
             </TouchableOpacity>
