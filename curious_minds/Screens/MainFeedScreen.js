@@ -33,10 +33,14 @@ export default class MainFeedScreen extends Component {
     this.setState({Loading: true});
     await this.readFromDB(this.props.navigation);
     this.setState({Loading: false});
+    this.unsubscribe = this.props.navigation.addListener('focus', async e => {
+      this.refreshScreen();
+    });
   }
 
   componentWillUnmount(){
     this._isMounted = false;
+    this.unsubscribe.remove();
   }
 
   makeDelay(ms) {

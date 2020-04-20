@@ -37,13 +37,6 @@ export default class ProfileScreen extends Component {
 
   }
 
-  async refreshScreen (){
-    this.setState({Loading: true});
-    await this.getUserInfo();
-    this.setState({Loading: false});
-    console.log("\n\n ****** \n \n");
-  }
-
   makeDelay(ms) {
     return new Promise(res => setTimeout(res, ms));
   }
@@ -53,16 +46,16 @@ export default class ProfileScreen extends Component {
     this.setState({Loading: true});
     await this.getUserInfo();
     this.setState({Loading: false});
-    const unsubscribe = this.props.navigation.addListener('focus', async e => {
+    this.unsubscribe = this.props.navigation.addListener('focus', async e => {
       this.setState({Loading: true});
       await this.getUserInfo();
       this.setState({Loading: false});
-      console.log(" \n printing things \n ");
     });
   }
 
   componentWillUnmount(){
     this._isMounted = false;
+    this.unsubscribe.remove();
   }
 
   async delUser(navigation){
