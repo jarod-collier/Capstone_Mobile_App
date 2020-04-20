@@ -94,7 +94,6 @@ export default class LoginScreen extends Component {
               <TouchableOpacity
                 style={styles.Buttons}
                 onPress={() => 
-                  this.setState({Username: '', Password: ''}),
                   this.props.navigation.navigate('Forgot Password')}
               >
                 <Text style={styles.customBtnText}>Forgot Password?</Text>
@@ -109,7 +108,6 @@ export default class LoginScreen extends Component {
             <TouchableOpacity
               style={styles.Buttons}
               onPress={()=> 
-                this.setState({Username: '', Password: ''}),
                 this.props.navigation.navigate('User Type')}
             >
               <Text style={styles.customBtnText}>Sign Up</Text>
