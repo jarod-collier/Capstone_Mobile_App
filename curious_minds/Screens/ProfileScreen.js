@@ -34,6 +34,14 @@ export default class ProfileScreen extends Component {
       pastorCode: '',
       editing: false,
     };
+
+  }
+
+  async refreshScreen (){
+    this.setState({Loading: true});
+    await this.getUserInfo();
+    this.setState({Loading: false});
+    console.log("\n\n ****** \n \n");
   }
 
   makeDelay(ms) {
@@ -45,6 +53,12 @@ export default class ProfileScreen extends Component {
     this.setState({Loading: true});
     await this.getUserInfo();
     this.setState({Loading: false});
+    const unsubscribe = this.props.navigation.addListener('focus', async e => {
+      this.setState({Loading: true});
+      await this.getUserInfo();
+      this.setState({Loading: false});
+      console.log(" \n printing things \n ");
+    });
   }
 
   componentWillUnmount(){
