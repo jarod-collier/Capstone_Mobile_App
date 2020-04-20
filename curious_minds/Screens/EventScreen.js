@@ -39,10 +39,14 @@ export default class EventScreen extends Component {
     this.setState({Loading: true});
     await this.readFromDB(this.props.navigation);
     this.setState({Loading: false});
+    this.unsubscribe = this.props.navigation.addListener('focus', async e => {
+      this.refreshScreen();
+    });
   }
 
   componentWillUnmount(){
     this._isMounted = false;
+    this.unsubscribe.remove();
   }
 
   async refreshScreen (){
@@ -54,7 +58,7 @@ export default class EventScreen extends Component {
   addToCalendar(title, date, time, location, notes){
     date = date.split(" ");
     time = time.split(" ");
-    var startDate = 
+    var startDate =
     new Date("" + date[1] + " " + date[2] + ", " + date[3] +
             " " + time[0]+":00 " + time[1]).toISOString();
     const eventConfig = {
@@ -109,11 +113,11 @@ export default class EventScreen extends Component {
             <Text>Where: {eventData.location}</Text>
             <TouchableOpacity
               style={styles.Buttons}
-              onPress={() => 
+              onPress={() =>
                 this.addToCalendar(
-                  eventData.title, 
-                  eventData.date, 
-                  eventData.time, 
+                  eventData.title,
+                  eventData.date,
+                  eventData.time,
                   eventData.location,
                   eventData.desc)}
             >
