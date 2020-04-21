@@ -35,22 +35,35 @@ export default class NewEventScreen extends Component {
   }
 
   onChangeDate = (event , selectedDate) => {
-    let currentDate = selectedDate || this.state.date;
-    this.setState({date: currentDate});
-    this.state.chosenDate = currentDate.toString().substring(0,16);
+    console.log("event tyep: " + event.type);
+    if (event.type === "set") {
+      let currentDate = selectedDate || this.state.date;
+      this.state.chosenDate = currentDate.toString().substring(0,16);
+      this.setState({showDate: false});
+      this.setState({date: currentDate});
+    }
+    else{
+      this.setState({showDate: false});
+    }
   }
 
   onChangeTime = (event, selectedTime) => {
-    const currentTime = selectedTime || this.state.time;
-    this.setState({time: currentTime});
-    let hours24 = currentTime.getHours();
-    let mins = currentTime.getMinutes();
-    if (mins < 10){
-      mins = "0" + mins;
+    if (event.type === "set") {
+      const currentTime = selectedTime || this.state.time;
+      let hours24 = currentTime.getHours();
+      let mins = currentTime.getMinutes();
+      if (mins < 10){
+        mins = "0" + mins;
+      }
+      let period = hours24 > 12 ? "PM" : "AM";
+      let hours12 = (currentTime.getHours() + 24) %12 || 12
+      this.state.chosenTime = '' + hours12 + ":" + mins + " " + period;
+      this.setState({showTime: false});
+      this.setState({time: currentTime});
     }
-    let period = hours24 > 12 ? "PM" : "AM";
-    let hours12 = (currentTime.getHours() + 24) %12 || 12
-    this.state.chosenTime = '' + hours12 + ":" + mins + " " + period;
+    else{
+      this.setState({showTime: false});
+    }
   }
 
   createEvent(){
@@ -112,9 +125,9 @@ export default class NewEventScreen extends Component {
                 <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20, }}>
                   {this.state.chosenDate}
                 </Text>
-                <TouchableOpacity 
-                style={styles.setButtons} 
-                onPress={() => {this.setState({showDate: !this.state.showDate});}} 
+                <TouchableOpacity
+                style={styles.setButtons}
+                onPress={() => {this.setState({showDate: !this.state.showDate});}}
                 >
                   <Text style={{ fontSize: 16, }}>
                     Set Date
@@ -135,9 +148,9 @@ export default class NewEventScreen extends Component {
                 <Text style={{ marginTop: 20, marginLeft: 15, fontSize: 20,}}>
                   {this.state.chosenTime}
                 </Text>
-                <TouchableOpacity 
-                style={styles.setButtons} 
-                onPress={() => {this.setState({showTime: !this.state.showTime});}} 
+                <TouchableOpacity
+                style={styles.setButtons}
+                onPress={() => {this.setState({showTime: !this.state.showTime});}}
                 >
                   <Text style={{ fontSize: 16,}}>
                     Set Time
