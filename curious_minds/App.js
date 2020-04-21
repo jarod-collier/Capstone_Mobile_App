@@ -32,6 +32,10 @@ import ResetPasswordScreen from './Screens/ResetPasswordScreen';
 
 const Tab = createBottomTabNavigator();
 
+console.ignoredYellowBox = [
+  'Setting a timer'
+]
+
 function Main() {
   return (
     <Tab.Navigator
